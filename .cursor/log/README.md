@@ -2,6 +2,25 @@
 
 This directory contains task-based logs for all work performed on the Idle Card Battler project. The logging system is part of the project's strict methodology for AI agent collaboration.
 
+## Directory Structure
+
+Logs are organized into subdirectories by type:
+
+```
+.cursor/log/
+├── sessions/        # Task-based logs following ROADMAP/CHECKLIST
+├── setup/          # Setup and configuration logs
+├── administrative/ # Planning, discussions, and meta work
+├── README.md       # This file
+└── log-template.md # Template for all task logs
+```
+
+### Directory Descriptions
+
+- **sessions/**: Contains all logs that correspond to ROADMAP.md sessions and CHECKLIST.md items. Use the naming convention `session-X-Y-task-name.md`.
+- **setup/**: Logs related to project setup, tooling configuration, and environment initialization.
+- **administrative/**: Logs for planning discussions, design explorations, and meta-work that doesn't fit into a specific ROADMAP task.
+
 ## Purpose
 
 The logging system serves multiple purposes:
@@ -111,15 +130,17 @@ Logs must demonstrate that work was validated:
 ## Finding Logs
 
 To find relevant logs:
-- Look up session/task numbers from ROADMAP.md or CHECKLIST.md
-- Use the naming convention to locate files
+- **Session/Task logs**: Look in `sessions/` directory for `session-X-Y-task-name.md` files
+- **Setup logs**: Check `setup/` for configuration and initialization work
+- **Administrative logs**: Check `administrative/` for planning and meta-work
+- Use ROADMAP.md or CHECKLIST.md to find specific session/task numbers
 - Check Cross-References sections in related logs
 - Search for file paths within logs to find which tasks affected them
 
 ## Example Workflow
 
 1. User assigns Task 1.1 from CHECKLIST.md
-2. Agent creates `session-1-1-theme-selection.md`
+2. Agent creates `sessions/session-1-1-theme-selection.md`
 3. Agent fills in Background Assessment
 4. Agent performs work, logging each action
 5. Agent records decisions and user confirmations

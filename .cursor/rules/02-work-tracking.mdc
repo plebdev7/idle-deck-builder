@@ -7,8 +7,10 @@ alwaysApply: true
 
 ## Task-Based Log Files
 
-- Create a separate log file for each ROADMAP/CHECKLIST task in `.cursor/log/`
-- Use naming convention: `session-X-Y-task-name.md` (e.g., `session-1-1-theme-selection.md`)
+- Create a separate log file for each ROADMAP/CHECKLIST task in `.cursor/log/sessions/`
+- Use naming convention: `session-X-Y-task-name.md` (e.g., `sessions/session-1-1-theme-selection.md`)
+- For setup/configuration work, use `.cursor/log/setup/`
+- For planning/administrative work, use `.cursor/log/administrative/`
 - Log files must use the structured template from `log-template.md`
 - All work must be logged as it is performed, not retroactively
 
