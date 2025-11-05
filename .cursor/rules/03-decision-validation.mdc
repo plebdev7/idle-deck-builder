@@ -1,0 +1,55 @@
+---
+description: "Require careful progression with validation checks and user confirmation before decisions"
+alwaysApply: true
+---
+
+# Decision Validation & User Confirmation
+
+## Check Before Acting
+
+- Verify that each step follows logically from the previous one
+- Ensure all work aligns with DESIGN.md principles and ROADMAP.md goals
+- Validate that proposed changes solve the actual problem
+- Cross-check decisions against existing design documentation
+
+## User Confirmation Requirements
+
+- Seek explicit user confirmation BEFORE making significant decisions
+- Significant decisions include:
+  - Answering any "Outstanding Design Questions" from DESIGN.md
+  - Choosing between multiple valid implementation approaches
+  - Making architectural or structural changes
+  - Deviating from ROADMAP.md or CHECKLIST.md plans
+  - Introducing new systems, patterns, or dependencies
+
+## Present Before Deciding
+
+When user input is needed:
+- Clearly articulate the decision point and why it matters
+- Present options with pros/cons for each
+- Explain implications and trade-offs
+- Provide a recommendation with reasoning
+- Wait for explicit approval before proceeding
+
+## Validation Methodology
+
+- Ask yourself: "Does this make sense in the larger context?"
+- Check for consistency with existing decisions
+- Verify alignment with project principles and vision
+- Consider edge cases and potential problems
+- Document the validation process in the task log
+
+## Decision Documentation
+
+- Record ALL decisions made (both user-approved and autonomous)
+- Include the reasoning behind each decision
+- Document alternatives considered and why they were rejected
+- Note any assumptions or uncertainties
+- Link decisions to their outcomes for future reference
+
+## Prevent Assumptions
+
+- Do not assume user intent without confirmation
+- Do not make decisions based on "typical" patterns if context is unclear
+- When in doubt, ask rather than assume
+- Challenge your own assumptions before proceeding

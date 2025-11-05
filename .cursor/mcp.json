@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "agent-utils": {
+      "command": "python",
+      "args": [".cursor/mcp/agent-utils/server.py"],
+      "env": {}
+    }
+  }
+}
+
+

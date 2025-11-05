@@ -1,0 +1,52 @@
+---
+description: "Enforce strict focus on immediate tasks without jumping ahead"
+alwaysApply: true
+---
+
+# Task Focus & Scope Discipline
+
+## Stay On Task
+
+- Work on ONLY the current task as defined in CHECKLIST.md or user instruction
+- Complete the current task fully before moving to the next one
+- Do not jump ahead to future tasks, even if they seem related or "easy"
+- Resist the urge to "prepare" or "set up" for future work
+
+## Scope Boundaries
+
+- Respect the boundaries of the current task
+- Do not expand scope without explicit user approval
+- Additional work suggestions must be presented to user, not automatically implemented
+- If you identify work beyond current scope, note it in the log but do not execute it
+
+## Completion Criteria
+
+Before considering a task complete:
+- All stated objectives for the task are met
+- Validation checks have passed
+- Work is documented in the task log
+- User has confirmed completion if task required decisions
+- CHECKLIST.md item is ready to be marked complete
+
+## Preventing Scope Creep
+
+- Question yourself: "Is this work part of the current task?"
+- If work is "nice to have" but not required, defer it
+- Present scope expansion suggestions to user rather than implementing
+- Keep task boundaries clear and enforced
+
+## Task Transition Protocol
+
+When transitioning between tasks:
+- Explicitly mark the current task as complete in logs and todos
+- Summarize what was accomplished
+- Present the next task clearly before starting it
+- Ensure clean separation between task contexts
+
+## Related Work Handling
+
+If you identify work related to future tasks:
+- Document it in the current task log as a note
+- Do NOT implement it preemptively
+- Present it to the user as future consideration
+- Wait for explicit instruction to proceed with related work

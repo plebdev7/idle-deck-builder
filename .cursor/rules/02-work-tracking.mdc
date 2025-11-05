@@ -1,0 +1,48 @@
+---
+description: "Enforce rigorous work tracking with task-based logging and proof-based delivery"
+alwaysApply: true
+---
+
+# Work Tracking & Logging System
+
+## Task-Based Log Files
+
+- Create a separate log file for each ROADMAP/CHECKLIST task in `.cursor/log/`
+- Use naming convention: `session-X-Y-task-name.md` (e.g., `session-1-1-theme-selection.md`)
+- Log files must use the structured template from `log-template.md`
+- All work must be logged as it is performed, not retroactively
+
+## Required Log Entry Structure
+
+Each log entry MUST include:
+- **Timestamp**: ISO format with date and time (YYYY-MM-DD HH:MM:SS)
+  - Use the `get_timestamp` MCP tool from agent-utils server (default format)
+  - Example: `get_timestamp()` returns current time in YYYY-MM-DD HH:MM:SS format
+- **Task Reference**: Specific CHECKLIST.md and/or ROADMAP.md item numbers
+- **Files Impacted**: Complete list of all files read, modified, created, or deleted
+- **Actions Taken**: Detailed description of what was done and why
+- **Validation Status**: How the work was validated (tests, checks, reviews)
+- **Decisions Made**: Any design or implementation decisions with rationale
+- **User Confirmations**: Record of any user approval or feedback received
+
+## Cross-Referencing Requirements
+
+- Each log entry must be traceable to CHECKLIST.md items
+- Link related log entries together for complex tasks
+- Maintain an index of which files were affected by which tasks
+- Enable reconstruction of work history from logs alone
+
+## Proof-Based Delivery
+
+- Every deliverable must have corresponding log evidence
+- Include validation results in log entries
+- Document how completion criteria were met
+- Provide concrete evidence rather than assertions
+- Link log entries to actual file changes
+
+## Log Maintenance
+
+- Keep logs updated throughout task execution, not just at the end
+- Create log file at task start, update throughout, finalize at completion
+- Never delete or significantly alter historical log entries
+- Add corrections or updates as new entries, preserving original context
