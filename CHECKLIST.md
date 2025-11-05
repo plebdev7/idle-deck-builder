@@ -6,15 +6,15 @@
   - [x] Choose theme (Elemental Magic Tower Defense)
   - [x] Define basic narrative framework (Apprentice mage defending tower from invaders)
   - [x] Name currencies and tiers (Essence system: Arcane, Fire, Water, Earth, Air)
-  - [ ] Create visual/style direction brief (moved to 1.1A)
+  - [x] Create visual/style direction brief (completed in 1.1A)
 
-- [ ] **1.1A** Visual Direction & Style Guide
-  - [ ] Define color palettes for each tier (exact hex codes)
-  - [ ] Design icon/symbol style for elements
-  - [ ] Create card layout mockup (wireframe or text-based)
-  - [ ] Specify UI color scheme and layout principles
-  - [ ] Define animation/particle style (if any)
-  - [ ] Create basic asset list
+- [x] **1.1A** Visual Direction & Style Guide
+  - [x] Define color palettes for each tier (exact hex codes)
+  - [x] Design icon/symbol style for elements
+  - [x] Create card layout mockup (wireframe or text-based)
+  - [x] Specify UI color scheme and layout principles
+  - [x] Define animation/particle style (if any)
+  - [x] Create basic asset list
 
 - [ ] **1.2** Critical Design Decisions (Outstanding Questions)
   - [ ] Answer Question 1: Class Switching Cost (free/cost/prestige/hybrid?)
@@ -39,6 +39,7 @@
   - [ ] Create complete card template/stats structure
   - [ ] Define card leveling progression curves
   - [ ] Specify card text format and ability descriptions
+  - [ ] Validate card examples against visual-style-guide.md (layout, text length, stats fit)
 
 - [ ] **2.2** Card Interaction Specifications
   - [ ] Define trigger chains (exact conditions and effects)
