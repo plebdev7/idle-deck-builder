@@ -16,20 +16,28 @@
   - [x] Define animation/particle style (if any)
   - [x] Create basic asset list
 
-- [ ] **1.2** Critical Design Decisions (Outstanding Questions)
-  - [ ] Answer Question 1: Class Switching Cost (free/cost/prestige/hybrid?)
-  - [ ] Answer Question 4: Gray Tier Combat Role (independent/contributes/passive?)
-  - [ ] Answer Question 5: Gray Points Currency Model (gray-only/convertible/global?)
-  - [ ] Answer Question 9: Deck Size Limits (fixed/variable/point-based?)
-  - [ ] Answer Question 10: Combat Timing (continuous/intervals/event-based?)
-  - [ ] Document decisions in DESIGN.md with rationale
+- [x] **1.2** Critical Design Decisions (Outstanding Questions)
+  - [x] Answer Question 1: Class Switching Cost → Prestige-only
+  - [x] Answer Question 4: Arcane Tier Combat Role → Unified deck (contributes to colored decks)
+  - [x] Answer Question 5: Arcane Essence Currency Model → Universal currency with conversion mechanic
+  - [x] Answer Question 9: Deck Size Limits → Fixed with multi-layer constraints (per-tier, per-card)
+  - [x] Answer Question 10: Combat Timing → Interval-based with continuous card draw
+  - [x] Document decisions in DESIGN.md with rationale
 
-- [ ] **1.3** Core Loop Detailed Specification
-  - [ ] Define exact first 30 minutes of gameplay (step-by-step)
-  - [ ] Specify starter deck composition (exact cards, stats, costs)
+- [ ] **1.3** High-Level Experience
+  - [ ] Define exact first 30 minutes of gameplay (step-by-step, minute-by-minute narrative)
+  - [ ] Create gameplay flow diagram showing decision points and branches
+  - [ ] Identify key milestones and progression gates
+
+- [ ] **1.3A** Baseline Numbers
+  - [ ] Establish resource generation baseline rates (rough numbers for balancing)
   - [ ] Define pack pricing model with scaling formulas
-  - [ ] Establish resource generation baseline rates
-  - [ ] Create gameplay flow diagram
+  - [ ] Create economy flow model (how resources move through systems)
+
+- [ ] **1.3B**: Starter Deck
+  - [ ] Design 5-8 simple starter cards (using baseline numbers from 1.3A)
+  - [ ] Specify exact starter deck composition (cards, stats, costs)
+  - [ ] Validate deck against first 30 minutes experience from 1.3
 
 ## Session 2: Card System Design & Specifications
 

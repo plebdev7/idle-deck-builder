@@ -39,17 +39,34 @@ Answer questions 1, 4, 5, 9, 10 from DESIGN.md (most blocking):
 Document decisions in DESIGN.md with rationale and implications for other systems.
 
 #### 1.3 Core Loop Detailed Specification
-- Define exact first 30 minutes of gameplay (step-by-step, minute-by-minute)
-- Specify starter deck composition (exact cards, stats, costs)
-- Define pack pricing model (question 8) with scaling formulas
-- Establish resource generation baseline rates (per second/minute with examples)
+
+**Approach:** Work through in three parts for better flow: Experience → Numbers → Content
+
+**Part A: High-Level Experience (Qualitative)**
+- Define exact first 30 minutes of gameplay (step-by-step, minute-by-minute narrative)
 - Create gameplay flow diagram showing all decision points and branches
+- Identify key milestones and progression gates
+- Focus on player experience, not exact numbers yet
+
+**Part B: Baseline Numbers (Quantitative)**
+- Establish resource generation baseline rates (rough numbers, will be refined in Session 4)
+- Define pack pricing model (question 8) with scaling formulas
+- Create economy flow model (how Arcane → Elemental conversion works)
+- Rough numbers to validate core loop timing
+
+**Part C: Starter Deck (Concrete Content)**
+- Design 5-8 simple starter cards (basic examples, Session 2 will expand to 15-20)
+- Specify exact starter deck composition (cards, stats, costs)
+- Use baseline numbers from Part B
+- Validate against first 30 minutes experience from Part A
+- Keep cards simple (Session 2 will add complexity and variety)
 
 ### Deliverables
-- Theme document (1-2 pages)
-- Updated DESIGN.md with resolved questions and detailed rationale
-- Detailed core loop specification document (step-by-step gameplay)
-- Resource generation baseline spreadsheet/model
+- ✅ Theme document (1-2 pages) - Complete (theme-specification.md, visual-style-guide.md)
+- ✅ Updated DESIGN.md with resolved questions and detailed rationale - Complete (Version 1.2)
+- [ ] Detailed core loop specification document (step-by-step gameplay) - Task 1.3
+- [ ] Resource generation baseline spreadsheet/model - Task 1.3
+- [ ] Starter deck card designs - Task 1.3
 
 ---
 

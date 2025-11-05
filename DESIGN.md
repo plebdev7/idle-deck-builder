@@ -111,13 +111,21 @@ Future currencies for prestige/crafting will use different terminology (Prisms, 
   - Special synergies and bonuses
   - Examples: Primalist (all elements), Void Weaver (forbidden magic)
 
-#### Class Mechanics
+#### Class Mechanics (Session 1.2 Decision)
 - **Activation:** Equip a Class Card to unlock its tier path
 - **Single Active Class:** Only one class active at a time
+- **Deck Limit Profiles:** Each class defines its own per-tier deck size limits
+  - Common classes: Specialist distributions (e.g., 5 Arcane / 10 Fire)
+  - Rare classes: Balanced distributions (e.g., 6 Arcane / 7 Earth / 7 Fire)
+  - Epic/Legendary: Larger totals and more flexible limits
+  - Class choice determines deck-building strategy
 - **Switching:** 
-  - Unequip current class → Equip new class
-  - May require prestige or cost (to be determined)
-- **Collection:** Can collect multiple class cards, choose which to use
+  - Classes can ONLY be switched during prestige resets
+  - Makes class choice meaningful and strategic
+  - Natural prestige incentive (want to try new class? Prestige!)
+  - Commit to class for entire run
+- **Collection:** Can collect multiple class cards from packs, but only one active per run
+- **Strategic Weight:** Class choice affects both tier access AND deck composition constraints
 
 #### Class Path Examples
 - **Fire Apprentice (Common):** Arcane → Fire
@@ -145,30 +153,66 @@ Future currencies for prestige/crafting will use different terminology (Prisms, 
 
 **Core Principle:** Specific cards generate resources. Deck composition determines income rate, making resource generation a strategic deck-building decision.
 
+**Critical Economy Model (Session 1.2 Decision):** All resource generation starts with Arcane Essence. Elemental Essences are created through conversion by generator cards.
+
 #### Resource Generation Cards
-- **Pure Generators:** Cards that primarily generate resources (weaker combat stats)
+
+**Arcane Generators (Foundation):**
+- **Pure Arcane Generators:** Cards that generate Arcane Essence directly
   - Example: "Arcane Conduit" - Generates +2 Arcane Essence/second while in deck
-- **Hybrid Cards:** Cards that generate resources AND have combat abilities
+  - These are the foundation of the entire economy
+  - Available from Arcane packs
+  - Remain valuable throughout entire game
+
+**Elemental Converters (Transformation):**
+- **Elemental Generator Cards:** Cards that CONVERT Arcane Essence → Elemental Essence
+  - Example: "Flame Transmuter" - Consumes 3 Arcane Essence, generates +2 Fire Essence/second
+  - Function as "converters" rather than pure generators
+  - Conversion rate is key balance point
+  - May have combat stats (Hybrid Converters) or pure conversion (Weak combat, strong conversion)
+
+**Hybrid Cards:** Cards that generate resources AND have combat abilities
   - Example: "Victory Harvest" - +5 Arcane Essence per battle won + combat ability
-- **Conditional Generators:** Cards that generate based on game state or combos
-  - Example: "Elemental Resonance" - While in deck, each Fire card generates +1 Fire Essence/second
+  - Battle rewards as resource generation
+  - Scales with combat performance
+
+**Conditional Generators:** Cards that generate based on game state or combos
+  - Example: "Elemental Resonance" - While in deck, each Fire card boosts Arcane generation by +1/second
+  - Synergy-based generation
+  - Rewards thoughtful deck composition
+
+#### Resource Flow Model
+
+```
+Arcane Generator Cards → Generate Arcane Essence
+                              ↓
+                    Spend on Arcane Packs
+                    OR Spend on Universal Upgrades
+                    OR Feed to Converter Cards
+                              ↓
+Elemental Converter Cards → Convert Arcane → Elemental Essence
+                              ↓
+                    Spend on Elemental Packs
+                    OR Spend on Tier-Specific Upgrades
+```
 
 #### Scaling Mechanisms
-- **Card Leveling:** Upgrade cards to increase their resource generation rate
+- **Card Leveling:** Upgrade cards to increase generation/conversion rates
 - **Card Quantity:** Number of generator cards in deck affects total generation
 - **Synergies:** Cross-tier synergies can boost resource generation
+- **Conversion Efficiency:** Higher tier/level converters have better conversion rates
 
-#### Cross-Tier Resource Generation
-- **Multi-Currency Cards:** Higher tier cards can generate multiple currencies
-  - Fire card might generate both Fire Essence and Arcane Essence
-  - Advanced elemental cards might generate multiple Essences
-- **Foundation Support:** Arcane tier cards can generate resources for elemental tiers (less efficient)
-- **Strategic Balance:** Players balance combat power vs resource generation in deck composition
+#### Strategic Implications
+- **Arcane Generators are Critical:** Without them, no resources flow
+- **Conversion Rate Decisions:** Spend Arcane on upgrades vs convert to Elemental?
+- **Deck Balance:** Must include Arcane generators + Elemental converters + Combat cards
+- **Progression Gates:** Can't progress to new tier without efficient conversion
+- **Foundation Never Obsolete:** Arcane generation remains valuable forever
 
-#### Resource Generation Rates
-- **Scaling with Card Level:** Upgrade cards to increase generation
-- **Deck Composition Matters:** More generator cards = faster economy, but weaker combat
-- **Balanced Strategy:** Optimal decks balance generators and combat cards
+#### Resource Generation Rates (To Be Balanced in Session 4)
+- **Arcane Generation:** Base rate to be determined (e.g., 1-5 Essence/second early game)
+- **Conversion Rates:** To be balanced (e.g., 3:1, 5:2, etc.)
+- **Deck Composition:** Optimal ratio of Generators:Converters:Combat to be tested
 
 ---
 
@@ -176,11 +220,56 @@ Future currencies for prestige/crafting will use different terminology (Prisms, 
 
 ### Core Deck Mechanics
 
-#### Deck Constraints
-- **Size Limits:** Fixed deck size OR variable with diminishing returns
-- **Point/Cost System:** Each card has a cost; deck budget increases with progression
-- **Type Restrictions:** Max copies per card, minimum/maximum of certain types
-- **Synergy Bonuses:** Matching sets or factions provide bonuses
+#### Deck Constraints (Session 1.2 Decision)
+
+**Multi-Layered Constraint System:**
+
+1. **Total Deck Size (Fixed):**
+   - Fixed number of cards in deck (e.g., 15 cards)
+   - Varies by class rarity (Common: 15, Rare: 18, Epic: 21, Legendary: 24+)
+   - May increase with progression/prestige upgrades
+   - Purchased with Arcane Essence or prestige currency
+   
+2. **Per-Tier Limits (Class-Specific):**
+   - **Each class defines its own per-tier limit distribution**
+   - Maximum cards from each tier determined by active class
+   - Common classes: Specialist focus (5 foundation / 10 primary)
+   - Rare classes: Balanced multi-tier (6/7/7 distribution)
+   - Epic/Legendary: More total slots and flexible distributions
+   - Ensures cross-tier deck building
+   - Prevents stacking only highest tier
+   - Creates mechanical differentiation between classes
+   
+3. **Card Copy Limits:**
+   - Maximum copies of same card (e.g., 2-3 copies)
+   - Prevents dominant single-card strategies
+   - May vary by card rarity
+   - Encourages diverse deck composition
+
+**Example Deck Constraints by Class:**
+
+**Fire Apprentice (Common):**
+```
+Total Deck Size:        15 cards
+Max Arcane Cards:       5 cards (foundation support)
+Max Fire Cards:         10 cards (specialist focus)
+Max Copies per Card:    3 copies
+```
+
+**Geomancer (Rare, Earth → Fire):**
+```
+Total Deck Size:        18 cards
+Max Arcane Cards:       6 cards (balanced)
+Max Earth Cards:        7 cards
+Max Fire Cards:         7 cards
+Max Copies per Card:    3 copies
+```
+
+**Constraint Scaling with Progression:**
+- Early game: Common classes, tight specialist limits (5/10)
+- Mid game: Rare classes, balanced multi-tier limits (6/7/7)
+- Late game: Epic/Legendary classes, flexible high limits (5/8/8/8)
+- Prestige: Access to better classes + possible limit upgrades
 
 #### Deck Building Strategy
 - **Resource Optimization:** Include generator cards vs combat cards
@@ -301,25 +390,101 @@ Future currencies for prestige/crafting will use different terminology (Prisms, 
 
 ## Combat System
 
-### Fully Passive Combat
+### Fully Passive Combat with Card Draw Mechanic
 
 **Core Principle:** Combat is fully automated. Player strategy is in deck construction, not combat management.
 
+#### Combat Loop (Session 1.2 Decision)
+
+**Two-Phase System: Charging + Combat**
+
+**Phase 1: Charging (Continuous)**
+- Cards drawn from deck at fast intervals (e.g., every 0.5-1 second)
+- Each drawn card adds its stats to accumulated Power and Defense
+- Drawing continues constantly, building combat readiness
+- Deck cycles and reshuffles when exhausted
+- Power/Defense accumulate over time
+
+**Phase 2: Combat (Interval-Based)**
+- Enemies arrive at regular intervals (e.g., every 10-15 seconds)
+- When enemy arrives:
+  - Accumulated Power becomes Attack value
+  - Player Defense vs Enemy Attack
+  - Player Attack vs Enemy Defense
+  - Victory/defeat determined
+  - Rewards granted on victory
+- Card drawing continues during combat
+- Brief recovery period after enemy defeat before next enemy
+
+**Combat Flow Example:**
+```
+Time 0-10s:   [CHARGING] Draw cards continuously, Power/Defense build up
+Time 10s:     [ENEMY ARRIVES] Combat resolves with accumulated stats
+Time 10-25s:  [FIGHTING + CHARGING] Combat ongoing, cards still drawing
+Time 25s:     [ENEMY DEFEATED] Rewards granted
+Time 25-35s:  [CHARGING] Brief recovery, power accumulates
+Time 35s:     [NEXT ENEMY] Cycle repeats
+```
+
 #### Combat Mechanics
-- **Auto-Battles:** Decks battle automatically against NPCs
-- **No Active Input:** No clicking or manual skill usage during combat
-- **Performance Based on Deck:** Deck composition determines combat effectiveness
-- **Results:** Victories earn resources, unlock content, progress story/milestones
+- **Auto-Battles:** Fully automated, no player input during combat
+- **Card Draw Strategy:** Deck composition and draw order matter
+- **Stat Accumulation:** Cards drawn = power built
+- **Deck Cycling:** Fast draw means deck cycles multiple times per enemy
+- **Results:** Victories earn resources, unlock content, progress milestones
 
 #### Combat Triggers
-- **Continuous Battles:** Auto-battles run continuously based on deck power
-- **Milestone Battles:** Special boss/challenge battles (may have different mechanics)
+- **Interval-Based Battles:** Enemies arrive at regular intervals
+- **Milestone Battles:** Special boss/challenge battles (different intervals/mechanics)
 - **Event Battles:** Periodic special encounters
+- **Wave System (Future):** Boss waves, escalating challenges
 
 #### Combat Progression
-- **Difficulty Scaling:** Enemies scale with player progression
-- **Victory Rewards:** Resources, pack unlocks, milestone progress
+- **Difficulty Scaling:** Enemy stats scale with player progression
+- **Victory Rewards:** Resources (primarily Arcane Essence), pack unlocks, milestone progress
 - **Defeat Consequences:** May slow progression, but no permanent loss (light roguelike)
+- **Draw Speed Upgrades:** Potential progression path (draw cards faster)
+- **Interval Tuning:** Enemy arrival intervals may change with progression
+
+#### Offline Calculation
+Offline progress calculated as:
+```
+Cards Drawn = (Draw Rate × Time Away)
+Power Accumulated = Sum of drawn card stats
+Battles Fought = (Time Away / Battle Interval)
+Estimated Victories = Battle Win Rate × Battles Fought
+Resources Earned = Victories × Reward per Victory
+```
+
+#### Strategic Implications
+- **Deck Cycling Speed:** Smaller decks cycle faster, larger decks cycle slower
+- **Card Draw Order Matters:** For draw mechanic to be meaningful, order must affect outcomes
+- **Generator Cards in Draw:** Drawing generator cards may trigger generation effects
+- **Combat Power Curve:** Deck must accumulate power faster than enemy difficulty scales
+- **Balanced Deck Required:** Need both generators (economy) and combat cards (power)
+
+#### Order-Dependent Card Effects (To Be Designed in Session 5)
+
+**Critical Design Note:** Card draw order must create meaningful variance, otherwise draw mechanic is unnecessary.
+
+**Potential Order-Dependent Mechanics:**
+- **Multipliers:** "Next 3 cards deal +50% damage"
+- **Modifiers:** "Next card's attack is doubled"
+- **Combo Chains:** Card A enhances Card B if drawn in sequence
+- **Temporary Buffs:** "For next 5 cards drawn, +10 power"
+- **Conditional Effects:** "If previous card was Fire, trigger X"
+- **Persistent State:** Some effects last until deck reshuffle
+- **Reset Triggers:** Effects may reset on enemy defeat, deck cycle, or time intervals
+
+**State Management Considerations:**
+- What persists across enemy defeats?
+- What resets on deck reshuffle?
+- How do effects stack or override each other?
+- Timing of effect application vs resolution
+
+**Design Goal:** Draw order creates strategic variance without making combat unpredictable or unbalanced.
+
+**To Be Specified:** Session 5 will design concrete card effect types, timing rules, and state management.
 
 ---
 
@@ -403,19 +568,195 @@ Future currencies for prestige/crafting will use different terminology (Prisms, 
 
 ---
 
-## Outstanding Design Questions
+## Resolved Design Decisions (Session 1.2)
 
-### To Be Determined
-1. **Class Switching Cost:** Free anytime, cost currency, only on prestige, or hybrid?
+### Class Switching Mechanics
+**Decision:** Classes can only be switched during prestige resets.
+
+**Rationale:**
+- Makes class choice meaningful and strategic for each run
+- Provides natural prestige incentive (want to try new class? Prestige!)
+- Aligns with "light roguelike" design philosophy
+- Creates clearer progression arc per class path
+
+**Implications:**
+- Players commit to a class for entire run until prestige
+- Class collection becomes long-term goal
+- Prestige system must be designed to feel rewarding
+- Finding new class cards is significant moment
+
+---
+
+### Arcane Tier Combat Role
+**Decision:** Arcane cards contribute to elemental tier decks (unified combat system).
+
+**Rationale:**
+- Keeps Arcane tier relevant throughout entire game
+- Enables deep cross-tier synergies
+- Simpler than managing multiple separate battles
+- Aligns with "Tiers as Foundation" principle
+- Avoids confusion of multiple simultaneous decks
+
+**Implications:**
+- Players build one "active" deck mixing Arcane + current elemental cards
+- Deck size limits become critical for balance
+- Arcane cards must remain competitive with elemental cards
+- Cross-tier synergies are primary strategic depth
+- Card power must scale appropriately across tiers
+
+---
+
+### Arcane Essence as Universal Currency
+**Decision:** Arcane Essence is the universal upgrade currency. Elemental Essences are generated through conversion by generator cards.
+
+**Economy Model:**
+- **Arcane Essence:** Used for universal upgrades (card leveling, prestige upgrades, deck size increases, Arcane packs)
+- **Elemental Essences:** Used for tier-specific packs and possibly tier-specific upgrades
+- **Conversion Mechanic:** Generator cards convert Arcane Essence → Elemental Essence as their primary function
+
+**Critical Design Insight:** Elemental Essences may ONLY be generated through conversion. Direct elemental generation may not exist. This means:
+- All economy starts with Arcane Essence generation
+- Elemental generator cards function as "converters" (consume Arcane, produce Elemental)
+- Resource flow: Generate Arcane → Convert to Elemental → Buy Elemental packs
+- Arcane generation remains foundational throughout entire game
+
+**Rationale:**
+- Supports "Arcane as foundational magic" theme perfectly
+- Arcane Essence always valuable at any stage of game
+- Creates strategic choices: spend on upgrades vs convert to elemental
+- Unified economy model with clear resource flow
+- Generator cards become "conversion specialists" rather than pure generators
+
+**Implications:**
+- Arcane generator cards are critically important
+- Conversion rates must be carefully balanced
+- Resource flow creates natural pacing
+- Cross-tier resource generation takes on new meaning
+- Economy design (Session 4) must model conversion rates
+
+---
+
+### Deck Size Constraints
+**Decision:** Fixed deck size with multiple constraint layers. **Per-tier limits are class-specific.**
+
+**Constraint Types:**
+1. **Total Deck Size:** Fixed number (e.g., 15 cards) that may increase with progression
+2. **Per-Tier Limits (Class-Specific):** Each class defines its own tier limit distribution
+3. **Card Copy Limits:** Maximum copies of same card (e.g., 2-3 per unique card)
+
+**Rationale:**
+- Fixed size easiest to balance during design phase
+- Multiple constraints create deep strategic choices
+- Forces meaningful decisions (can't just stack best cards)
+- Traditional card game feel with added complexity
+- Prevents dominant strategies
+- **Class-specific limits create mechanical differentiation between classes**
+
+**Class-Specific Deck Limit Examples:**
+
+**Fire Apprentice (Common - Fire Specialist):**
+```
+Total Deck Size: 15 cards
+Max Arcane Cards: 5 (foundation support)
+Max Fire Cards: 10 (specialist focus)
+Max Copies per Card: 3
+```
+*Strategy:* Fire-focused specialist, relies heavily on elemental power, limited conversion capacity
+
+**Geomancer (Rare - Earth → Fire Multi-Path):**
+```
+Total Deck Size: 18 cards (higher rarity = more slots)
+Max Arcane Cards: 6 (balanced foundation)
+Max Earth Cards: 7 (primary element)
+Max Fire Cards: 7 (secondary element)
+Max Copies per Card: 3
+```
+*Strategy:* Balanced multi-tier approach, better cross-tier synergies, more flexible deck building
+
+**Stormlord (Epic - Air → Water → Lightning):**
+```
+Total Deck Size: 21 cards (epic = even more slots)
+Max Arcane Cards: 5 (focused foundation)
+Max Air Cards: 8
+Max Water Cards: 8
+Max Lightning Cards: 8
+Max Copies per Card: 3
+```
+*Strategy:* Complex multi-element builds, maximum synergy potential
+
+**Implications:**
+- **Class Identity:** Classes feel mechanically different beyond just tier access
+- **Strategic Differentiation:** Different classes encourage different deck compositions
+- **Prestige Incentive:** Better classes have better/more flexible limit distributions
+- **Replayability:** Different classes require different deck-building strategies
+- Deck building requires careful balancing across tiers
+- Must mix generator cards and combat cards strategically
+- Deck constraints scale with class rarity and progression
+
+**Future Progression Mechanics (Not Yet Designed):**
+- Class leveling system to increase tier limits
+- Tier-specific upgrades (spend resources to expand limits)
+- Prestige bonuses for permanent limit increases
+- Milestone unlocks for special limit expansions
+
+---
+
+### Combat Timing: Interval-Based with Card Draw
+**Decision:** Timed interval combat with continuous card draw charging mechanic.
+
+**Combat Loop Mechanics:**
+
+**Charging Phase (Continuous):**
+- Cards drawn from deck at fast intervals (e.g., every 0.5-1 second)
+- Each drawn card adds its stats to accumulated Power and Defense
+- Drawing continues constantly, building up combat readiness
+
+**Combat Phase (Interval-Based):**
+- Enemies arrive on slower intervals (e.g., every 10-15 seconds)
+- When enemy arrives, accumulated Power becomes Attack
+- Combat triggers: Attack vs Enemy Defense, Enemy Attack vs Player Defense
+- Combat continues while cards keep drawing
+- Victory/defeat determined, resources awarded
+- Brief window before next enemy for continued charging
+
+**Flow Example:**
+```
+[Charging] Draw cards → Accumulate Power/Defense
+[Enemy Arrives] → Combat resolves
+[Charging while Fighting] Draw more cards → Power/Defense increase
+[Enemy Defeated] → Rewards given
+[Charging] Brief recovery period
+[Next Enemy Arrives] → Repeat
+```
+
+**Rationale:**
+- Provides discrete events for feedback and excitement
+- Idle-friendly (runs automatically)
+- Card draw adds strategic layer (deck cycling matters)
+- Interval timing easy to calculate for offline progress
+- Can evolve to wave/boss system for special content
+- Balances passive idle with engaging combat moments
+
+**Implications:**
+- Deck composition affects both power accumulation and combat
+- Draw speed becomes potential upgrade path
+- Combat interval timing critical for game feel
+- Need to design enemy stats and scaling
+- Combat simulation (Session 5) must model draw + intervals
+- Offline calculation: (cards drawn per second × draw power) + (battles per minute × victory rewards)
+
+**Future Evolution:** Wave-based system for boss battles, milestone events, special challenges while maintaining interval-based core.
+
+---
+
+## Outstanding Design Questions (Remaining)
+
+### Still To Be Determined
 2. **Secondary Class Slot:** Can prestige unlock passive bonuses from inactive class?
 3. **Resource Generation Balance:** Low rate (many cards needed) vs high rate (few needed)?
-4. **Gray Tier Combat Role:** Independent battles, contributes to colored decks, or passive bonuses?
-5. **Gray Points as Universal Currency:** Gray-only, convertible, or global upgrade currency?
 6. **Prestige Reset Details:** What exactly resets (cards, levels, progress, or combinations)?
 7. **Card Rarity System:** How many rarities? How do rarities affect stats/abilities?
 8. **Pack Pricing:** How do pack costs scale? Fixed or dynamic pricing?
-9. **Deck Size Limits:** Fixed size, variable with diminishing returns, or point-based?
-10. **Combat Timing:** Continuous auto-battles, timed intervals, or event-based?
 
 ---
 
@@ -429,7 +770,36 @@ Future currencies for prestige/crafting will use different terminology (Prisms, 
 
 ---
 
-**Document Version:** 1.1  
-**Last Updated:** 2025-11-04 (Theme Integration)  
-**Status:** Core Mechanics Established + Theme Defined, Implementation Details Pending
+## Document Changelog
+
+**Version 1.2** (2025-11-04) - Session 1.2: Critical Design Decisions
+- Resolved 5 critical design questions:
+  - Class switching (prestige-only)
+  - Arcane combat role (unified deck)
+  - Arcane Essence economy (universal currency + conversion mechanic)
+  - Deck size constraints (fixed with multi-layer limits)
+  - Combat timing (interval-based with card draw)
+- **Refinement:** Per-tier deck limits are class-specific (creates mechanical class differentiation)
+- Updated Resource Generation System with conversion mechanic
+- Updated Deck Building System with class-specific constraint specifications
+- Updated Combat System with detailed card draw mechanics
+- Updated Class System with switching restrictions and deck limit profiles
+- Added "Resolved Design Decisions" section
+- Removed questions 1, 4, 5, 9, 10 from outstanding questions
+
+**Version 1.1** (2025-11-04) - Theme Integration
+- Theme established: Elemental Magic Tower Defense
+- Element system defined
+- Currency names finalized
+
+**Version 1.0** - Initial Design Document
+- Core mechanics established
+- Tier and class systems defined
+- Initial design questions identified
+
+---
+
+**Document Version:** 1.2  
+**Last Updated:** 2025-11-04 23:05:00 (Session 1.2 - Critical Design Decisions)  
+**Status:** Core Mechanics Established + 5 Critical Decisions Resolved, Ready for Session 1.3
 
