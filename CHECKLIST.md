@@ -30,7 +30,7 @@
   - [x] Identify key milestones and progression gates
   - [x] Resolve 7 critical design questions (pack costs, guaranteed cards, defense, economy model, etc.)
   - [x] Define baseline numbers (Part B: generator rates, shard drops, pack costs, enemy stats) - CORRECTED for stacking
-  - [ ] Design starter deck (Part C: 8 starter cards with concrete stats)
+  - [x] Design starter deck (Part C: 8 starter cards with concrete stats) - COMPLETE
 
 - [x] **1.3B** Baseline Numbers (COMPLETE - Corrected for Stacking)
   - [x] Establish resource generation baseline rates (generator cards, shard drops)
@@ -42,17 +42,39 @@
   - [x] CORRECTED: Generator stacking mechanic (every draw adds, including duplicates)
   - [x] Validated complete 30-minute timeline with stacking accumulation
 
-- [ ] **1.3C**: Starter Deck
-  - [ ] Design 8 simple starter cards (using baseline numbers from 1.3B)
-  - [ ] Specify exact starter deck composition (cards, stats, costs)
-  - [ ] Design guaranteed cards for first 2 packs
-  - [ ] Validate deck against first 30 minutes experience from 1.3
+- [x] **1.3C**: Starter Deck (COMPLETE)
+  - [x] Design 8 simple starter cards (using baseline numbers from 1.3B)
+  - [x] Specify exact starter deck composition (cards, stats, costs)
+  - [x] All flat values, no complex mechanics
+  - [x] 3 generator types: Rate (+2/sec), Burst (+150 flat), Hybrid (+1/sec + 12/6)
+  - [x] 5 combat cards: Pure specialists, generalists, various balance points
+  - [x] Design philosophy: Different strategies, not power levels
+  - [x] Guaranteed cards for first 2 packs (deferred to Session 2)
+  - [x] Validate deck against first 30 minutes experience (conceptual validation done, math validation awaits simulator)
 
 ## Session 2: Card System Design & Specifications
 
-- [ ] **2.1** Card System Complete Specification
+- [ ] **2.0** Gameplay Simulator (Foundation)
+  - [ ] Build basic combat simulator (card draw, power accumulation, enemy intervals)
+  - [ ] Implement generator mechanics (rate, burst, hybrid, stacking)
+  - [ ] Implement combat mechanics (power accumulation, enemy scaling, victory/defeat)
+  - [ ] Validate Session 1.3 baseline numbers (starter deck, pack timing, essence rates)
+  - [ ] Create simulation output/visualization (timeline, deck analysis, balance metrics)
+
+- [ ] **2.1** Pack Card Design (15-20 cards for Packs 1-3)
   - [ ] Define card rarity levels (answer question 7) with stat differences
-  - [ ] Design 15-20 example cards for Gray tier
+  - [ ] Design Pack 1 guaranteed cards (5 cards: 2 generators, 2 combat, 1 utility)
+    - [ ] Introduce conditional bonuses ("If drawn in first 5 seconds...")
+    - [ ] Simple synergies ("If you have 3+ Arcane cards...")
+    - [ ] Better generators (+3, +4 Essence/sec)
+  - [ ] Design Pack 2 guaranteed cards (5 cards: 1 generator, 3 combat, 1 rare synergy)
+    - [ ] Introduce multiplier generator (Current rate × Y seconds)
+    - [ ] Order-dependent effects ("Next card gets +50%")
+    - [ ] First Rare card with combo mechanics
+  - [ ] Design 5-10 Pack 3+ random pool cards for Arcane tier
+    - [ ] Deck manipulation ("Draw extra card", "Shuffle deck")
+    - [ ] State-based effects ("Lasts until reshuffle")
+    - [ ] Higher power level cards (Rare/Epic)
   - [ ] Create complete card template/stats structure
   - [ ] Define card leveling progression curves
   - [ ] Specify card text format and ability descriptions
@@ -63,12 +85,24 @@
   - [ ] Specify conditional abilities ("If X, then Y" mechanics)
   - [ ] Design combo requirements (card combinations and effects)
   - [ ] Create interaction matrix (which cards interact and how)
+  - [ ] Specify order-dependent mechanics (sequencing rules)
+  - [ ] Define state management (what persists, what resets)
 
-- [ ] **2.3** Card Type Specifications
-  - [ ] Combat Cards: damage formulas, defense mechanics, scaling
-  - [ ] Generator Cards: generation formulas, scaling
-  - [ ] Synergy Cards: trigger conditions, effect magnitudes
-  - [ ] Utility Cards: special effects, edge cases
+- [ ] **2.3** Generator Card Pattern Specifications
+  - [ ] Rate Generators: +X Essence/sec when drawn (scales with level)
+  - [ ] Burst Generators: +X flat Essence when drawn (scales with level)
+  - [ ] Hybrid Generators: +X Essence/sec + combat stats (balanced scaling)
+  - [ ] Multiplier Generators: +(Current rate × Y seconds) Essence (scales with accumulated rate)
+  - [ ] Conditional Generators: +X Essence/sec if condition met (higher rates, conditional)
+  - [ ] Define generation formulas and scaling with card level
+
+- [ ] **2.4** Combat Card Pattern Specifications
+  - [ ] Pure Specialists: High attack OR high defense, no other stats
+  - [ ] Generalists: Balanced attack and defense
+  - [ ] Conditional Combat: Bonus stats if conditions met ("If drawn early...", "If 3+ cards...")
+  - [ ] Order-Dependent Combat: Modifies other cards ("Next card gets +X%", "Previous card triggers...")
+  - [ ] Combo Combat: Requires multiple cards for full effect
+  - [ ] Define combat formulas, defense mechanics, and scaling with card level
 
 ## Session 3: Tier & Class System Design
 
@@ -178,25 +212,28 @@
   - [ ] Establish prestige bonus magnitude (formulas, examples)
   - [ ] Create progression curve spreadsheet
 
-## Session 8: Gameplay Simulation & Integration Testing
+## Session 8: Integration Testing & Multi-Tier Validation
 
-- [ ] **8.1** Integrated Gameplay Simulation
-  - [ ] Create comprehensive gameplay simulator (spreadsheet or simple tool)
-  - [ ] Model complete game loop: pack opening → deck building → combat → resource generation
-  - [ ] Simulate progression through Gray tier and first colored tier
-  - [ ] Test resource flow and economy balance
+- [ ] **8.1** Multi-Tier Simulator Extension
+  - [ ] Extend Session 2 simulator to support multiple tiers
+  - [ ] Implement Arcane → Elemental tier transitions
+  - [ ] Implement cross-tier deck building (mixed Arcane + Elemental)
+  - [ ] Implement elemental essence conversion mechanics
+  - [ ] Implement class-specific deck limit profiles
+  - [ ] Implement prestige reset mechanics and class switching
 
-- [ ] **8.2** System Interaction Validation
-  - [ ] Test cross-tier interactions in simulation
-  - [ ] Validate resource generation vs combat balance
-  - [ ] Test deck composition strategies
-  - [ ] Validate progression curves (time to unlock tiers, classes)
+- [ ] **8.2** Cross-Tier Interaction Validation
+  - [ ] Test cross-tier synergies (Arcane + Elemental)
+  - [ ] Validate resource conversion flows (Arcane → Elemental)
+  - [ ] Test class switching strategies (Fire, Water, Earth, Air paths)
+  - [ ] Validate balance between tier progression
 
-- [ ] **8.3** Balance Testing & Iteration
-  - [ ] Identify balance issues through simulation
-  - [ ] Iterate on formulas and rates
-  - [ ] Document required adjustments
-  - [ ] Create balance reference document
+- [ ] **8.3** Full Game Loop Balance Testing
+  - [ ] Simulate progression through Arcane → first elemental tier
+  - [ ] Test deck composition strategies (pure vs hybrid, ratios)
+  - [ ] Validate progression curves (difficulty, packs, enemies across tiers)
+  - [ ] Identify balance issues and iterate
+  - [ ] Document adjustments and create balance reference
 
 ## Session 9+: Content Design & Expansion
 

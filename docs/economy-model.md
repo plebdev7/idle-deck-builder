@@ -1,9 +1,9 @@
 # Economy Model Reference
 
-**Document Version:** 1.2  
+**Document Version:** 1.3  
 **Created:** 2025-11-06 (Session 1.3)  
-**Updated:** 2025-11-06 (Part B Complete & Corrected for Stacking)  
-**Status:** Baseline Numbers FINAL (Stacking Corrected), Ready for Starter Cards (Part C)
+**Updated:** 2025-11-06 (Part C Complete)  
+**Status:** Task 1.3 Complete - First 30 Minutes, Baseline Numbers, and Starter Deck All Done
 
 ---
 
@@ -357,65 +357,57 @@ Natural slowing due to cost scaling, but not punishing.
 
 ---
 
-## Notes for Part C (Starter Cards)
+## Starter Deck (Part C - COMPLETE)
 
-### Starter Deck Requirements
+### The 8 Starter Cards
 
-**Must Include:**
-- 2-3 Generator cards (bootstrap economy)
-- 4-5 Combat cards (functional combat from minute 1)
-- 1 Utility card (introduce special abilities)
-- All cards Arcane tier
-- Simple stats (easy to understand)
-- Total deck size: 8 cards
+**Generator Cards (3):**
+1. **Arcane Conduit** - Rate Generator: +2 Essence/sec when drawn
+2. **Essence Burst** - Burst Generator: +150 Essence flat when drawn
+3. **Combat Siphon** - Hybrid Generator: +1 Essence/sec + 12 Attack / 6 Defense
 
-**Generator Examples:**
-- "Arcane Conduit" - +2 Essence/sec when drawn
-- "Essence Flow" - +3 Essence/sec when drawn
+**Combat Cards (5):**
+4. **Arcane Bolt** - Pure Offense: 20 Attack
+5. **Mystic Shield** - Pure Defense: 18 Defense
+6. **Balanced Strike** - Generalist: 10 Attack / 10 Defense
+7. **Power Strike** - Offense-Leaning: 15 Attack / 5 Defense
+8. **Stalwart Guard** - Defense-Leaning: 5 Attack / 15 Defense
 
-**Combat Examples:**
-- "Arcane Bolt" - +8 Attack, +2 Defense
-- "Mystic Shield" - +3 Attack, +8 Defense
+### Design Philosophy
 
-**Utility Example:**
-- "Arcane Insight" - Draw 1 extra card when drawn
+**All Flat Values:** No conditional effects or complex mechanics in starter deck.
 
-### Pack 1 Guaranteed Cards
+**Different, Not Better:** Three generator types (rate/burst/hybrid) and five combat distributions represent different strategies, not power levels.
 
-**2 Generators (Better than starter):**
-- +3-4 Essence/sec range
-- Introduce variety (different generation patterns?)
+**What Players Learn:**
+- Generator diversity (rate building, immediate payoff, hybrid approach)
+- Combat variety (specialists, generalists, various balance points)
+- Deck building foundation (different strategies)
 
-**2 Combat Cards:**
-- Higher stats than starter cards
-- One attack-focused, one defense-focused
+### Future Pack Progression
 
-**1 Utility Card:**
-- Introduce synergy concept
-- Simple ability ("If you have 3+ Arcane cards in deck, +X")
+**Pack 1:** Introduces conditional bonuses and simple synergies
+- Better generators: +3, +4 Essence/sec
+- Conditional effects: "If drawn in first 5 seconds..."
+- Synergy cards: "If you have 3+ Arcane cards..."
 
-### Pack 2 Guaranteed Cards
+**Pack 2:** Introduces sequencing and multiplier effects
+- **Multiplier generators:** +(Current rate × Y seconds) Essence
+- Order-dependent effects: "Next card gets +50%"
+- Combo starters: "If previous card was..."
 
-**1 Generator:**
-- +4-5 Essence/sec or conditional generator
-- More interesting than Pack 1
-
-**3 Combat Cards:**
-- Higher power level
-- One with special ability (combo starter)
-
-**1 Rare Synergy Card:**
-- First rare rarity card
-- Clear synergy mechanic
-- Exciting moment
+**Pack 3+:** Full complexity
+- Deck manipulation: "Draw extra card", "Shuffle deck"
+- State-based effects: "Lasts until reshuffle"
+- Advanced synergies and high power cards
 
 ---
 
-**Document Status:** Reference complete, awaiting Part B (Baseline Numbers) to fill in exact values
+**Document Status:** Complete - All three parts of Task 1.3 finished
 
 **Next Steps:**
-- Part B: Determine all exact values (rates, costs, timing)
-- Part C: Design actual cards with stats from Part B
-- Validate entire economy against first 30 minutes experience
+- Session 2: Full card system design (15-20 cards, rarities, interactions)
+- Build simulator to validate mathematical balance
+- Design guaranteed cards for Packs 1 & 2
 
 

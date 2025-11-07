@@ -1062,6 +1062,102 @@ Max Copies per Card: 3
 
 ---
 
+## Starter Deck Specification (Session 1.3 - Part C)
+
+### The 8 Starter Cards
+
+All players begin as "Arcane Student" with this pre-built 8-card deck. All cards are Arcane tier, Common rarity, with flat values and no complex abilities.
+
+#### Generator Cards (3 cards)
+
+**1. Arcane Conduit** - Rate Generator
+- **Generation:** +2 Essence/sec when drawn
+- **Attack:** —
+- **Defense:** —
+- **Flavor:** *"A stable channel of pure arcane energy. Draw upon it to fuel your magic."*
+- **Identity:** Pure rate-building. Increases ongoing income permanently (until death).
+
+**2. Essence Burst** - Burst Generator
+- **Generation:** +150 Essence when drawn (flat amount)
+- **Attack:** —
+- **Defense:** —
+- **Flavor:** *"A concentrated surge of magical energy, released all at once."*
+- **Identity:** Immediate payoff. Doesn't increase rate, but provides instant essence.
+
+**3. Combat Siphon** - Hybrid Generator
+- **Generation:** +1 Essence/sec when drawn
+- **Attack:** 12
+- **Defense:** 6
+- **Flavor:** *"Draw power from combat itself, channeling the clash into usable essence."*
+- **Identity:** Does both roles. Less efficient at generation, but contributes to combat.
+
+#### Combat Cards (5 cards)
+
+**4. Arcane Bolt** - Pure Offense
+- **Attack:** 20
+- **Defense:** —
+- **Flavor:** *"A focused blast of raw magical force."*
+- **Identity:** Glass cannon. Maximum offensive power, no defensive capability.
+
+**5. Mystic Shield** - Pure Defense
+- **Attack:** —
+- **Defense:** 18
+- **Flavor:** *"A shimmering barrier of protective magic."*
+- **Identity:** Pure survival. Maximum defensive power, no offensive capability.
+
+**6. Balanced Strike** - Generalist
+- **Attack:** 10
+- **Defense:** 10
+- **Flavor:** *"Harmonious magic balancing offense and defense."*
+- **Identity:** Versatile middle ground. Competent at both roles.
+
+**7. Power Strike** - Offense-Leaning
+- **Attack:** 15
+- **Defense:** 5
+- **Flavor:** *"Aggressive magic that prioritizes overwhelming force."*
+- **Identity:** Damage-focused but not reckless. Middle option between specialist and generalist.
+
+**8. Stalwart Guard** - Defense-Leaning
+- **Attack:** 5
+- **Defense:** 15
+- **Flavor:** *"Patient, enduring magic that outlasts threats."*
+- **Identity:** Survival-focused but not passive. Middle option between specialist and generalist.
+
+### Starter Deck Composition
+
+**Total:** 8 cards
+- **Generators:** 3 cards (37.5%) - mix of rate, burst, and hybrid
+- **Combat:** 5 cards (62.5%) - mix of specialists and generalists
+
+**Total Stats When All Cards Drawn:**
+- Attack: 72 total
+- Defense: 54 total
+- Rate Generation: +3 Essence/sec
+- Burst Generation: +150 Essence
+
+### Design Philosophy
+
+**All Flat Values:** No conditional effects, utilities, or complex mechanics. Complexity introduced progressively through packs.
+
+**Different, Not Better:** Each card has unique identity and purpose. No strictly superior options:
+- Rate vs Burst vs Hybrid generators (different strategies)
+- Pure specialist vs generalist vs leaning combat cards (different balance points)
+
+**What Players Learn:**
+- Generator diversity (rate building, immediate payoff, hybrid approach)
+- Combat variety (specialization, balance, various distributions)
+- Deck building foundation (different cards for different strategies)
+
+### Future Progression
+
+**Pack 1:** Introduces conditional bonuses and simple synergies
+**Pack 2:** Introduces sequencing effects and multiplier generators
+**Pack 3+:** Full complexity (deck manipulation, state-based effects, advanced synergies)
+
+**Future Card Type:** Multiplier generators (e.g., "+(Current rate × 5 seconds) Essence") - scales with accumulated rate, creates natural sequencing strategy.
+
+---
+
 ## Outstanding Design Questions (Remaining)
 
 ### Still To Be Determined
@@ -1082,6 +1178,18 @@ Max Copies per Card: 3
 ---
 
 ## Document Changelog
+
+**Version 1.6** (2025-11-06) - Session 1.3C: Starter Deck Design Complete
+- Added complete 8-card starter deck specification
+- 3 generator types: Rate (+2/sec), Burst (+150 flat), Hybrid (+1/sec + 12/6)
+- 5 combat cards: Pure specialists, generalists, and various balance points
+- All flat values, no complex mechanics in starter deck
+- Generator diversity: rate building, immediate payoff, hybrid approach
+- Combat variety: offense/defense specialists and various distributions
+- Design philosophy: Different strategies, not power levels
+- Future progression outlined (Pack 1: conditions, Pack 2: sequencing, Pack 3+: full complexity)
+- Identified future card type: Multiplier generators (rate × time)
+- Task 1.3 (High-Level Experience) fully complete
 
 **Version 1.5** (2025-11-06) - Session 1.3B: Baseline Numbers FINAL
 - **CORRECTED generator mechanic:** Stacking on every draw (including duplicates)
@@ -1145,7 +1253,7 @@ Max Copies per Card: 3
 
 ---
 
-**Document Version:** 1.5  
-**Last Updated:** 2025-11-06 20:20:00 (Session 1.3B - Baseline Numbers FINAL)  
-**Status:** First 30 Minutes + Baseline Numbers Complete (Corrected for Stacking), Ready for Starter Cards (Part C)
+**Document Version:** 1.6  
+**Last Updated:** 2025-11-06 23:01:16 (Session 1.3C - Starter Deck Complete)  
+**Status:** Task 1.3 Complete - First 30 Minutes Experience, Baseline Numbers, and Starter Deck All Done
 

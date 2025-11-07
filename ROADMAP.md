@@ -73,37 +73,95 @@ Document decisions in DESIGN.md with rationale and implications for other system
 ## Session 2: Card System Design & Specifications
 
 ### Goals
+- Build gameplay simulator to validate Session 1.3 designs
 - Design concrete card examples that demonstrate all mechanics
 - Define complete card data structure and stat systems
 - Create card interaction specifications
+- Test and balance cards using simulator
 
 ### Tasks
 
-#### 2.1 Card System Complete Specification
+#### 2.0 Gameplay Simulator (Foundation)
+- Build basic combat simulator
+  - Card draw system (1 card per second, deck cycling)
+  - Power/Defense accumulation
+  - Enemy arrival intervals (12 seconds)
+  - Combat resolution (instant when enemy arrives)
+- Implement generator mechanics
+  - Rate generators (accumulate Essence/sec)
+  - Burst generators (flat Essence)
+  - Hybrid generators (rate + combat stats)
+  - Stacking mechanic (every draw adds, including duplicates)
+- Implement combat mechanics
+  - Power accumulation from combat cards
+  - Enemy health scaling (20 × 1.15^n)
+  - Victory/defeat conditions
+- Validate Session 1.3 baseline numbers
+  - Test starter deck (8 cards) against first 30 minutes
+  - Verify pack timing (Packs at 8-9, 16-17, 26-27 minutes)
+  - Confirm essence accumulation rates (0 → 180 → 652 → 1,252 Essence/sec)
+- Create simulation output/visualization
+  - Timeline view (essence over time, enemies defeated, cards drawn)
+  - Deck analysis (power accumulation, generation rates)
+  - Balance metrics (time to packs, combat power vs enemy health)
+
+#### 2.1 Pack Card Design (15-20 cards for Packs 1-3)
 - Define card rarity levels (answer question 7) with stat differences
-- Design 15-20 example cards for Gray tier (covering all card types)
+- **Pack 1 Guaranteed Cards** (5 cards: 2 generators, 2 combat, 1 utility)
+  - Introduce conditional bonuses ("If drawn in first 5 seconds...")
+  - Simple synergies ("If you have 3+ Arcane cards...")
+  - Better generators (+3, +4 Essence/sec)
+  - Test in simulator to validate balance
+- **Pack 2 Guaranteed Cards** (5 cards: 1 generator, 3 combat, 1 rare synergy)
+  - Introduce multiplier generator (Current rate × Y seconds)
+  - Order-dependent effects ("Next card gets +50%")
+  - First Rare card with combo mechanics
+  - Test in simulator to validate sequencing mechanics
+- **Pack 3+ Random Pool** (5-10 cards for Arcane tier)
+  - Deck manipulation ("Draw extra card", "Shuffle deck")
+  - State-based effects ("Lasts until reshuffle")
+  - Higher power level cards (Rare/Epic)
+  - Test in simulator for balance and interactions
 - Create complete card template/stats structure (all fields, ranges, formulas)
 - Define card leveling progression curves (formulas, examples per level)
 - Specify card text format and ability descriptions
+- Validate card examples against visual-style-guide.md (layout, text length, stats fit)
 
 #### 2.2 Card Interaction Specifications
 - Define trigger chains: exact conditions and effects
 - Specify conditional abilities: "If X, then Y" mechanics
 - Design combo requirements: card combinations and their effects
 - Create interaction matrix showing which cards interact and how
+- Specify order-dependent mechanics (sequencing rules)
+- Define state management (what persists, what resets, when)
+- Implement interactions in simulator to test
 
-#### 2.3 Card Type Specifications
-- **Combat Cards:** damage formulas, defense mechanics, scaling
-- **Generator Cards:** generation formulas, scaling with level/deck composition
-- **Synergy Cards:** trigger conditions, effect magnitudes
-- **Utility Cards:** special effects, edge cases
+#### 2.3 Generator Card Pattern Specifications
+- **Rate Generators:** +X Essence/sec when drawn (scales with level)
+- **Burst Generators:** +X flat Essence when drawn (scales with level)
+- **Hybrid Generators:** +X Essence/sec + combat stats (balanced scaling)
+- **Multiplier Generators:** +(Current rate × Y seconds) Essence (scales with accumulated rate)
+- **Conditional Generators:** +X Essence/sec if condition met (higher rates, conditional)
+- Define generation formulas and scaling with card level
+- Test all patterns in simulator
+
+#### 2.4 Combat Card Pattern Specifications
+- **Pure Specialists:** High attack OR high defense, no other stats
+- **Generalists:** Balanced attack and defense
+- **Conditional Combat:** Bonus stats if conditions met ("If drawn early...", "If 3+ cards...")
+- **Order-Dependent Combat:** Modifies other cards ("Next card gets +X%", "Previous card triggers...")
+- **Combo Combat:** Requires multiple cards for full effect
+- Define combat formulas, defense mechanics, and scaling with card level
+- Test all patterns in simulator
 
 ### Deliverables
-- Complete card design document with 15-20 Gray tier examples
+- **Gameplay simulator** (playable, validates Session 1.3 designs)
+- Complete card design document with 15-20 Arcane tier pack cards
 - Card data structure specification (all fields, types, ranges)
 - Card leveling progression spreadsheet (show stat growth curves)
 - Card interaction specification document
-- Card type mechanics reference
+- Generator and combat pattern reference
+- Simulation results showing balance validation
 
 ---
 
@@ -295,39 +353,62 @@ Document decisions in DESIGN.md with rationale and implications for other system
 
 ---
 
-## Session 8: Gameplay Simulation & Integration Testing
+## Session 8: Integration Testing & Multi-Tier Validation
 
 ### Goals
-- Create integrated gameplay simulation
-- Test complete game loops
-- Validate system interactions and balance
+- Extend simulator to support multi-tier progression
+- Test complete game loops across tier transitions
+- Validate cross-tier interactions and balance
+- Test prestige and class switching mechanics
 
 ### Tasks
 
-#### 8.1 Integrated Gameplay Simulation
-- Create comprehensive gameplay simulator (spreadsheet or simple tool)
-- Model complete game loop: pack opening → deck building → combat → resource generation
-- Simulate progression through Gray tier and first colored tier
-- Test resource flow and economy balance
+#### 8.1 Multi-Tier Simulator Extension
+- Extend Session 2 simulator to support multiple tiers
+  - Arcane → Elemental tier transitions
+  - Cross-tier deck building (mixed Arcane + Elemental decks)
+  - Elemental essence conversion mechanics
+  - Class-specific deck limit profiles
+- Implement prestige reset mechanics
+  - Reset simulation state
+  - Apply prestige bonuses
+  - Class switching
 
-#### 8.2 System Interaction Validation
-- Test cross-tier interactions in simulation
-- Validate resource generation vs combat balance
+#### 8.2 Cross-Tier Interaction Validation
+- Test cross-tier synergies in simulation
+  - Arcane cards supporting elemental decks
+  - Cross-tier generator interactions
+  - Multi-tier combo effects
+- Validate resource conversion flows
+  - Arcane → Elemental essence conversion rates
+  - Balance between tier progression
+- Test class switching strategies
+  - Different class paths (Fire, Water, Earth, Air)
+  - Deck composition differences per class
+
+#### 8.3 Full Game Loop Balance Testing
+- Simulate progression through Arcane → first elemental tier
+  - Time to first prestige
+  - Resource accumulation rates across tiers
+  - Pack purchasing patterns
 - Test deck composition strategies
-- Validate progression curves (time to unlock tiers, classes)
-
-#### 8.3 Balance Testing & Iteration
-- Identify balance issues through simulation
-- Iterate on formulas and rates
-- Document required adjustments
-- Create balance reference document
+  - Pure Arcane vs hybrid decks
+  - Generator vs combat ratios at different stages
+- Validate progression curves
+  - Difficulty scaling across tiers
+  - Pack cost scaling across tiers
+  - Enemy scaling for elemental content
+- Identify balance issues and iterate
+  - Document required adjustments
+  - Test adjustments in simulator
+  - Create balance reference document
 
 ### Deliverables
-- Integrated gameplay simulation tool
-- System interaction validation report
+- Multi-tier gameplay simulator (extends Session 2 simulator)
+- Cross-tier interaction validation report
 - Balance testing results and adjustments
-- Complete gameplay loop documentation
-- Final design specifications document
+- Complete multi-tier gameplay loop documentation
+- Final design specifications document with validated numbers
 
 ---
 
