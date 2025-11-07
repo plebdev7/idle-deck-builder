@@ -24,19 +24,24 @@
   - [x] Answer Question 10: Combat Timing → Interval-based with continuous card draw
   - [x] Document decisions in DESIGN.md with rationale
 
-- [ ] **1.3** High-Level Experience
-  - [ ] Define exact first 30 minutes of gameplay (step-by-step, minute-by-minute narrative)
-  - [ ] Create gameplay flow diagram showing decision points and branches
-  - [ ] Identify key milestones and progression gates
+- [x] **1.3** High-Level Experience
+  - [x] Define exact first 30 minutes of gameplay (step-by-step, minute-by-minute narrative)
+  - [x] Create gameplay flow diagram showing decision points and branches
+  - [x] Identify key milestones and progression gates
+  - [x] Resolve 7 critical design questions (pack costs, guaranteed cards, defense, economy model, etc.)
+  - [ ] Define baseline numbers (Part B: generator rates, shard drops, pack costs, enemy stats)
+  - [ ] Design starter deck (Part C: 8 starter cards with concrete stats)
 
-- [ ] **1.3A** Baseline Numbers
-  - [ ] Establish resource generation baseline rates (rough numbers for balancing)
-  - [ ] Define pack pricing model with scaling formulas
-  - [ ] Create economy flow model (how resources move through systems)
+- [ ] **1.3B** Baseline Numbers
+  - [ ] Establish resource generation baseline rates (generator cards, shard drops)
+  - [ ] Define pack pricing model with scaling formulas (50 × 1.5^n)
+  - [ ] Create economy flow model (Essence from generators, Shards from victories)
+  - [ ] Calculate timing and pacing for first 30 minutes
 
-- [ ] **1.3B**: Starter Deck
-  - [ ] Design 5-8 simple starter cards (using baseline numbers from 1.3A)
+- [ ] **1.3C**: Starter Deck
+  - [ ] Design 8 simple starter cards (using baseline numbers from 1.3B)
   - [ ] Specify exact starter deck composition (cards, stats, costs)
+  - [ ] Design guaranteed cards for first 2 packs
   - [ ] Validate deck against first 30 minutes experience from 1.3
 
 ## Session 2: Card System Design & Specifications
