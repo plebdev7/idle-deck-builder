@@ -1,0 +1,75 @@
+[project]
+name = "idle-card-battler-simulator"
+version = "0.1.0"
+description = "Gameplay simulator and balance testing tool for Idle Card Battler"
+requires-python = ">=3.13"
+dependencies = [
+    "pydantic>=2.9",
+    "pandas>=2.2",
+    "plotly>=5.24",
+    "rich>=13.9",
+    "typer>=0.14",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "hypothesis>=6.115",
+    "ruff>=0.7",
+    "mypy>=1.13",
+]
+
+[project.scripts]
+sim = "simulator.cli:app"
+
+[tool.ruff]
+# Same as Black.
+line-length = 100
+indent-width = 4
+
+# Target Python 3.13
+target-version = "py313"
+
+[tool.ruff.lint]
+# Enable pycodestyle, pyflakes, isort
+select = ["E", "F", "I", "UP", "N", "B", "A", "C4", "PT"]
+# Ignore B008 for Typer (function calls in defaults are the standard pattern)
+ignore = ["B008"]
+
+[tool.ruff.format]
+# Use double quotes for strings.
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint.isort]
+known-first-party = ["simulator"]
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--verbose",
+    "--cov=simulator",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["simulator"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
