@@ -17,6 +17,11 @@ alwaysApply: true
 - Seek explicit user confirmation BEFORE making significant decisions
 - Significant decisions include:
   - Answering any "Outstanding Design Questions" from DESIGN.md
+  - Changing any formulas, numbers, or calculations in DESIGN.md
+  - Discovering DESIGN.md contains unworkable/broken design elements
+  - Changing baseline numbers or validation targets from design specs
+  - Substituting alternative mechanics when specified mechanics don't work
+  - Adding design concepts not present in DESIGN.md (e.g., new systems, boss types, mechanics)
   - Choosing between multiple valid implementation approaches
   - Making architectural or structural changes
   - Deviating from ROADMAP.md or CHECKLIST.md plans
@@ -53,3 +58,32 @@ When user input is needed:
 - Do not make decisions based on "typical" patterns if context is unclear
 - When in doubt, ask rather than assume
 - Challenge your own assumptions before proceeding
+
+## Design Document Change Protocol
+
+When implementation reveals problems in DESIGN.md:
+
+**STOP Immediately When:**
+- Formulas or numbers don't work mathematically
+- Design assumptions fail in practice
+- Critical design details are missing or contradictory
+- Specifications produce unworkable results
+
+**Present to User:**
+1. The Problem: What's broken and why
+2. The Evidence: Math/logic showing the issue
+3. The Options: 2-3 solutions with pros/cons
+4. The Recommendation: Suggested solution with rationale
+5. The Impact: What docs need updating, downstream effects
+
+**After Approval:**
+1. Update DESIGN.md FIRST (before implementation)
+2. Document decision in task log with full rationale
+3. Implement the approved solution
+4. Validate implementation matches updated docs
+
+**Never:**
+- Continue implementing with known design bugs
+- Change design without updating DESIGN.md
+- Assume "obvious" fixes don't need approval
+- Leave design docs out of sync with implementation

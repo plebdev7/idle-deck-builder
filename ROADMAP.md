@@ -94,16 +94,61 @@ Document decisions in DESIGN.md with rationale and implications for other system
   - Stacking mechanic (every draw adds, including duplicates)
 - Implement combat mechanics
   - Power accumulation from combat cards
-  - Enemy health scaling (20 × 1.15^n)
+  - Enemy health scaling (temporary linear scaling for testing)
   - Victory/defeat conditions
 - Validate Session 1.3 baseline numbers
   - Test starter deck (8 cards) against first 30 minutes
-  - Verify pack timing (Packs at 8-9, 16-17, 26-27 minutes)
-  - Confirm essence accumulation rates (0 → 180 → 652 → 1,252 Essence/sec)
+  - Establish "bad player" baseline (no pack purchases)
+  - Confirm core mechanics work correctly
 - Create simulation output/visualization
   - Timeline view (essence over time, enemies defeated, cards drawn)
   - Deck analysis (power accumulation, generation rates)
   - Balance metrics (time to packs, combat power vs enemy health)
+
+#### 2.0.1 Combat Progression Design ✅ COMPLETE
+**Purpose:** Resolve combat scaling questions revealed by Task 2.0 simulator
+
+**Completed Deliverables:**
+- ✅ Combat scaling formula finalized: Linear `20 + (n-1) × 65.8`
+- ✅ Boss encounter system designed:
+  - Mini-Boss #1 at Enemy 50 (1.3× HP multiplier, tutorial encounter)
+  - Mini-Boss #2 at Enemy 100 (1.5× HP multiplier, first real wall)
+  - Major Boss at Enemy 150 (≈2× HP multiplier, requires multiple loops)
+- ✅ Death loop mechanics specified (NOT prestige):
+  - Keep all resources between deaths
+  - Spend essence/shards to improve deck
+  - Expected 3-6 loops to beat first boss
+- ✅ Multi-loop progression targets defined
+- ✅ Death vs prestige distinction clarified (prestige deferred to Session 7)
+- ✅ Balance targets for Task 2.1 provided
+- ✅ DESIGN.md updated (Version 1.8)
+
+**Key Design Decisions:**
+- Linear enemy scaling for predictability and balance
+- Boss encounters every 50 enemies (50, 100, 150)
+- Death is core game loop, not punishment
+- "Rogue with the Dead" inspired death-as-progression model
+- Prestige is separate advanced mechanic for late game
+
+#### 2.0.2 Live Terminal Simulation View
+- Create live terminal visualization mode for simulator
+- **Display Features:**
+  - Real-time card draw display with effects
+  - Enemy HP bars and combat status
+  - Essence accumulation and rate tracking
+  - Event log (recent card draws, enemy spawns, victories)
+  - Pack affordability notifications
+- **Speed Controls:**
+  - Real-time (1x), 2x, 5x, 10x speed multipliers
+  - Keyboard shortcuts: 1-4 for speeds
+  - Pause/resume functionality (Space)
+  - Step-through mode (advance one event at a time)
+- **Interaction Features:**
+  - Auto-pause on pack milestones and boss encounters
+  - Quit early with summary stats
+  - Post-simulation summary screen
+  - Option to replay or generate charts
+- **Purpose:** Understand game flow, pacing, and card interactions during card design work (Tasks 2.1-2.4)
 
 #### 2.1 Pack Card Design (15-20 cards for Packs 1-3)
 - Define card rarity levels (answer question 7) with stat differences
@@ -155,7 +200,9 @@ Document decisions in DESIGN.md with rationale and implications for other system
 - Test all patterns in simulator
 
 ### Deliverables
-- **Gameplay simulator** (playable, validates Session 1.3 designs)
+- ✅ **Gameplay simulator** (playable, validates Session 1.3 designs)
+- ✅ **Combat progression design** (enemy scaling, bosses, death loops)
+- **Live simulation viewer** (terminal-based real-time visualization)
 - Complete card design document with 15-20 Arcane tier pack cards
 - Card data structure specification (all fields, types, ranges)
 - Card leveling progression spreadsheet (show stat growth curves)

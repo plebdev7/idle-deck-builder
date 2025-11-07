@@ -20,7 +20,7 @@ class GeneratorType(str, Enum):
     RATE = "rate"  # +X Essence/sec
     BURST = "burst"  # +X flat Essence
     HYBRID = "hybrid"  # +X Essence/sec + combat stats
-    MULTIPLIER = "multiplier"  # +(Current rate × Y seconds)
+    MULTIPLIER = "multiplier"  # +(Current rate * Y seconds)
     CONDITIONAL = "conditional"  # +X if condition met
 
 
@@ -89,30 +89,31 @@ class Card(BaseModel):
         return " | ".join(parts)
 
 
-# Starter deck cards from Session 1.3C
+# Starter deck cards from DESIGN.md Session 1.3C (lines 1067-1125)
 STARTER_DECK_CARDS = [
+    # Generator Cards (3 cards)
     Card(
-        id="gen_rate_basic",
-        name="Arcane Flow",
-        description="Steady essence generation",
+        id="starter_gen_rate",
+        name="Arcane Conduit",
+        description="A stable channel of pure arcane energy. Draw upon it to fuel your magic.",
         card_type=CardType.GENERATOR,
         generator_type=GeneratorType.RATE,
         essence_rate=2.0,
         tier="arcane",
     ),
     Card(
-        id="gen_burst_basic",
+        id="starter_gen_burst",
         name="Essence Burst",
-        description="Large instant essence gain",
+        description="A concentrated surge of magical energy, released all at once.",
         card_type=CardType.GENERATOR,
         generator_type=GeneratorType.BURST,
         essence_burst=150,
         tier="arcane",
     ),
     Card(
-        id="gen_hybrid_basic",
-        name="Battle Mage",
-        description="Generates essence while providing combat support",
+        id="starter_gen_hybrid",
+        name="Combat Siphon",
+        description="Draw power from combat itself, channeling the clash into usable essence.",
         card_type=CardType.HYBRID,
         generator_type=GeneratorType.HYBRID,
         essence_rate=1.0,
@@ -120,49 +121,50 @@ STARTER_DECK_CARDS = [
         defense=6,
         tier="arcane",
     ),
+    # Combat Cards (5 cards)
     Card(
-        id="combat_specialist_attack",
-        name="Arcane Blast",
-        description="Pure offensive power",
+        id="starter_combat_pure_attack",
+        name="Arcane Bolt",
+        description="A focused blast of raw magical force.",
         card_type=CardType.COMBAT,
-        attack=50,
+        attack=20,
         defense=0,
         tier="arcane",
     ),
     Card(
-        id="combat_specialist_defense",
+        id="starter_combat_pure_defense",
         name="Mystic Shield",
-        description="Pure defensive power",
+        description="A shimmering barrier of protective magic.",
         card_type=CardType.COMBAT,
         attack=0,
-        defense=50,
+        defense=18,
         tier="arcane",
     ),
     Card(
-        id="combat_balanced_high",
-        name="Arcane Guardian",
-        description="Balanced combat card",
+        id="starter_combat_balanced",
+        name="Balanced Strike",
+        description="Harmonious magic balancing offense and defense.",
         card_type=CardType.COMBAT,
-        attack=25,
-        defense=25,
-        tier="arcane",
-    ),
-    Card(
-        id="combat_balanced_mid",
-        name="Spellsword",
-        description="Balanced combat card",
-        card_type=CardType.COMBAT,
-        attack=20,
-        defense=20,
-        tier="arcane",
-    ),
-    Card(
-        id="combat_attack_focused",
-        name="Fire Bolt",
-        description="Attack-focused combat",
-        card_type=CardType.COMBAT,
-        attack=35,
+        attack=10,
         defense=10,
+        tier="arcane",
+    ),
+    Card(
+        id="starter_combat_offense_leaning",
+        name="Power Strike",
+        description="Aggressive magic that prioritizes overwhelming force.",
+        card_type=CardType.COMBAT,
+        attack=15,
+        defense=5,
+        tier="arcane",
+    ),
+    Card(
+        id="starter_combat_defense_leaning",
+        name="Stalwart Guard",
+        description="Patient, enduring magic that outlasts threats.",
+        card_type=CardType.COMBAT,
+        attack=5,
+        defense=15,
         tier="arcane",
     ),
 ]

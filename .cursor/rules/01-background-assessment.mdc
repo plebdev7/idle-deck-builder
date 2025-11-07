@@ -32,3 +32,25 @@ alwaysApply: true
 - Reference corresponding ROADMAP.md sessions and goals
 - Ensure alignment with DESIGN.md principles and decisions
 - Maintain traceability from task to outcome
+
+## Design Document Integrity Check
+
+Before implementation, verify design documents are internally consistent:
+
+**Check For:**
+- Mathematical correctness of formulas and calculations
+- Arithmetic accuracy of stated totals vs components
+- Contradictions between different sections
+- Examples matching specifications
+- Missing critical information needed for implementation
+
+**If You Find Errors:**
+- STOP before beginning implementation
+- Document all errors and contradictions
+- Present to user with proposed corrections
+- Wait for confirmation before proceeding
+
+**Never:**
+- Begin implementation knowing design docs contain errors
+- Work around design problems silently
+- Assume errors are intentional without confirmation

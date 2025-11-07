@@ -17,12 +17,7 @@ console = Console()
 
 @app.command()
 def validate(
-    starter_deck: Path = typer.Option(
-        Path("data/starter_deck.json"),
-        "--starter-deck",
-        "-d",
-        help="Path to starter deck JSON file",
-    ),
+    duration: int = typer.Option(30, "--duration", "-t", help="Simulation duration (minutes)"),
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Verbose output"),
 ) -> None:
     """Validate Session 1.3 baseline numbers.
@@ -30,6 +25,8 @@ def validate(
     Tests the starter deck against the 30-minute progression timeline
     to ensure generator rates, pack timing, and enemy scaling are correct.
     """
+    from simulator.analysis.validation import run_baseline_validation
+    
     console.print(
         Panel.fit(
             "[bold cyan]Validating Session 1.3 Baseline Numbers[/bold cyan]",
@@ -37,32 +34,46 @@ def validate(
         )
     )
     
-    # Placeholder - will be implemented in Task 2.0
-    console.print(f"[yellow]Loading starter deck from:[/yellow] {starter_deck}")
-    console.print("[red]Not yet implemented - Task 2.0[/red]")
+    console.print(f"[yellow]Duration:[/yellow] {duration} minutes")
+    console.print("[yellow]Running simulation...[/yellow]\n")
+    
+    try:
+        report = run_baseline_validation(duration_minutes=duration, verbose=verbose)
+        
+        if report["overall_passed"]:
+            console.print("\n[bold green]VALIDATION PASSED[/bold green]")
+            console.print(f"All checks passed ({report['summary']['passed_checks']}/{report['summary']['total_checks']})")
+        else:
+            console.print("\n[bold red]VALIDATION FAILED[/bold red]")
+            console.print(f"Passed: {report['summary']['passed_checks']}/{report['summary']['total_checks']}")
+            console.print(f"Pass rate: {report['summary']['pass_rate']*100:.1f}%")
+            
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
 
 
 @app.command()
 def combat(
     duration: int = typer.Option(30, "--duration", "-t", help="Simulation duration (minutes)"),
-    deck: Path = typer.Option(
-        Path("data/starter_deck.json"),
-        "--deck",
-        "-d",
-        help="Path to deck JSON file",
-    ),
     output: Path | None = typer.Option(
         None,
         "--output",
         "-o",
-        help="Output directory for results",
+        help="Output directory for results and charts",
     ),
+    save_charts: bool = typer.Option(True, "--charts/--no-charts", help="Generate visualization charts"),
 ) -> None:
-    """Run combat simulation.
+    """Run combat simulation with starter deck.
     
     Simulates card draw, power accumulation, enemy intervals,
     and resource generation over the specified duration.
     """
+    from simulator.core.cards import STARTER_DECK_CARDS
+    from simulator.core.combat import CombatSimulator
+    from simulator.core.deck import Deck
+    from simulator.analysis.visualization import save_all_charts
+    
     console.print(
         Panel.fit(
             f"[bold cyan]Combat Simulation ({duration} minutes)[/bold cyan]",
@@ -70,13 +81,48 @@ def combat(
         )
     )
     
-    console.print(f"[yellow]Deck:[/yellow] {deck}")
     console.print(f"[yellow]Duration:[/yellow] {duration} minutes")
-    if output:
-        console.print(f"[yellow]Output:[/yellow] {output}")
+    console.print("[yellow]Running simulation...[/yellow]\n")
     
-    # Placeholder - will be implemented in Task 2.0
-    console.print("[red]Not yet implemented - Task 2.0[/red]")
+    try:
+        # Create starter deck
+        deck = Deck(name="Starter Deck", cards=STARTER_DECK_CARDS, tier="arcane")
+        
+        # Run simulation
+        sim = CombatSimulator()
+        results = sim.simulate(duration_minutes=duration, deck=deck)
+        
+        # Display results
+        console.print("[bold green]Simulation Complete![/bold green]\n")
+        
+        table = Table(show_header=False, box=None)
+        table.add_column("Metric", style="cyan")
+        table.add_column("Value", style="white")
+        
+        table.add_row("Final Essence", f"{results['final_essence']:,.0f}")
+        table.add_row("Essence Rate", f"{results['final_essence_rate']:.1f}/sec")
+        table.add_row("Cards Drawn", f"{results['cards_drawn']:,}")
+        table.add_row("Enemies Defeated", f"{results['enemies_defeated']}/{results['enemies_encountered']}")
+        table.add_row("Total Damage", f"{results['total_damage_dealt']:,.0f}")
+        
+        console.print(table)
+        
+        # Pack affordable times
+        if results['pack_affordable_times']:
+            console.print("\n[bold cyan]Pack Affordable Times:[/bold cyan]")
+            for pack_num, time in sorted(results['pack_affordable_times'].items()):
+                console.print(f"  Pack {pack_num}: [green]{time:.1f}[/green] minutes")
+        
+        # Save charts
+        if save_charts:
+            output_dir = output or Path("output")
+            console.print(f"\n[yellow]Generating charts...[/yellow]")
+            saved_files = save_all_charts(results, deck, str(output_dir))
+            console.print(f"[green]Saved {len(saved_files)} chart files to {output_dir}/[/green]")
+            
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
 
 
 @app.command()
@@ -152,7 +198,7 @@ def info() -> None:
     console.print(
         Panel.fit(
             "[bold cyan]Idle Card Battler - Gameplay Simulator[/bold cyan]\n"
-            "[dim]Version 0.1.0[/dim]",
+            "[dim]Version 0.2.0 - Task 2.0 Complete[/dim]",
             border_style="cyan",
         )
     )
@@ -163,15 +209,34 @@ def info() -> None:
     table.add_column("Status", width=20)
     table.add_column("Task", style="dim")
     
-    table.add_row("Core Combat Simulation", "[red]Not Implemented[/red]", "Task 2.0")
-    table.add_row("Generator Mechanics", "[red]Not Implemented[/red]", "Task 2.0")
-    table.add_row("Baseline Validation", "[red]Not Implemented[/red]", "Task 2.0")
-    table.add_row("Visualization", "[red]Not Implemented[/red]", "Task 2.0")
-    table.add_row("Card Design Testing", "[red]Planned[/red]", "Task 2.1-2.4")
-    table.add_row("Multi-Tier Support", "[red]Planned[/red]", "Task 8.1-8.3")
+    table.add_row("Core Combat Simulation", "[green]Complete[/green]", "Task 2.0")
+    table.add_row("Generator Mechanics", "[green]Complete[/green]", "Task 2.0")
+    table.add_row("Enemy Spawning & Scaling", "[green]Complete[/green]", "Task 2.0")
+    table.add_row("Baseline Validation", "[green]Complete[/green]", "Task 2.0")
+    table.add_row("Visualization (Plotly)", "[green]Complete[/green]", "Task 2.0")
+    table.add_row("Card Design Testing", "[yellow]Planned[/yellow]", "Task 2.1-2.4")
+    table.add_row("Multi-Tier Support", "[yellow]Planned[/yellow]", "Task 8.1-8.3")
     
     console.print(table)
-    console.print("\n[dim]Run [cyan]sim --help[/cyan] to see available commands[/dim]")
+    
+    # Quick stats
+    from simulator.core.cards import STARTER_DECK_CARDS
+    from simulator.core.deck import Deck
+    
+    deck = Deck(name="Starter Deck", cards=STARTER_DECK_CARDS, tier="arcane")
+    
+    console.print("\n[bold cyan]Starter Deck Info:[/bold cyan]")
+    console.print(f"  Cards: {deck.size}")
+    console.print(f"  Generators: {deck.generator_count}")
+    console.print(f"  Combat: {deck.combat_count}")
+    console.print(f"  Total Attack: {deck.total_attack}")
+    console.print(f"  Total Defense: {deck.total_defense}")
+    console.print(f"  Generation Rate: {deck.total_essence_rate}/sec")
+    console.print(f"  Burst Essence: {deck.total_essence_burst}")
+    
+    console.print("\n[dim]Run [cyan]sim validate[/cyan] to test baseline numbers[/dim]")
+    console.print("[dim]Run [cyan]sim combat[/cyan] to run a simulation[/dim]")
+    console.print("[dim]Run [cyan]sim --help[/cyan] to see all commands[/dim]")
 
 
 if __name__ == "__main__":

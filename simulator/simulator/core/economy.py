@@ -1,7 +1,7 @@
 """Economy and resource generation logic.
 
 Handles:
-- Pack cost scaling (40,000 × 2.5^n)
+- Pack cost scaling (40,000 * 2.5^n)
 - Resource accumulation
 - Idle generation calculations
 - Economy balance modeling
@@ -13,7 +13,7 @@ Will be fully implemented in Task 2.0+.
 def pack_cost(pack_number: int, base_cost: int = 40_000, multiplier: float = 2.5) -> int:
     """Calculate pack cost using exponential scaling.
     
-    Formula: base_cost × multiplier^(pack_number - 1)
+    Formula: base_cost * multiplier^(pack_number - 1)
     
     Args:
         pack_number: Pack number (1-indexed)

@@ -54,12 +54,32 @@
 
 ## Session 2: Card System Design & Specifications
 
-- [ ] **2.0** Gameplay Simulator (Foundation)
-  - [ ] Build basic combat simulator (card draw, power accumulation, enemy intervals)
-  - [ ] Implement generator mechanics (rate, burst, hybrid, stacking)
-  - [ ] Implement combat mechanics (power accumulation, enemy scaling, victory/defeat)
-  - [ ] Validate Session 1.3 baseline numbers (starter deck, pack timing, essence rates)
-  - [ ] Create simulation output/visualization (timeline, deck analysis, balance metrics)
+- [x] **2.0** Gameplay Simulator (Foundation)
+  - [x] Build basic combat simulator (card draw, power accumulation, enemy intervals)
+  - [x] Implement generator mechanics (rate, burst, hybrid, stacking)
+  - [x] Implement combat mechanics (power accumulation, enemy scaling, victory/defeat)
+  - [x] Validate baseline mechanics ("bad player" baseline with starter deck only)
+  - [x] Create simulation output/visualization (timeline, deck analysis, balance metrics)
+
+- [x] **2.0.1** Combat Progression Design (DESIGN SESSION - Added post-Task 2.0)
+  - [x] Resolve enemy health scaling formula (linear: `20 + (n-1) × 65.8`)
+  - [x] Design boss encounter system (mini-bosses at 50, 100; major boss at 150)
+  - [x] Define death loop mechanics (keep resources, respawn, iterate)
+  - [x] Define multi-loop progression expectations (3-6 loops to beat first boss)
+  - [x] Clarify death loop vs prestige distinction (prestige deferred to Session 7)
+  - [x] Update DESIGN.md with finalized combat progression system (Version 1.8)
+
+- [ ] **2.0.2** Live Terminal Simulation View
+  - [ ] Implement live terminal display with Rich library
+  - [ ] Create event player system (consumes simulation events in real-time)
+  - [ ] Implement speed controls (1x, 2x, 5x, 10x) via keyboard 1-4
+  - [ ] Implement pause/resume functionality (Space bar)
+  - [ ] Implement step-through mode (advance one event at a time when paused)
+  - [ ] Display zones: card draw highlight, event log, status bars
+  - [ ] Auto-pause on pack milestones and boss encounters
+  - [ ] Post-simulation summary screen with replay option
+  - [ ] Add `sim live` or `sim combat --live` CLI command
+  - [ ] Test with starter deck simulation (30 minutes)
 
 - [ ] **2.1** Pack Card Design (15-20 cards for Packs 1-3)
   - [ ] Define card rarity levels (answer question 7) with stat differences

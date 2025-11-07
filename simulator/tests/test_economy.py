@@ -11,16 +11,16 @@ from simulator.core.economy import (
 
 def test_pack_cost_formula() -> None:
     """Test pack cost exponential scaling."""
-    # First pack: 40,000 × 2.5^0 = 40,000
+    # First pack: 40,000 * 2.5^0 = 40,000
     assert pack_cost(1) == 40_000
 
-    # Second pack: 40,000 × 2.5^1 = 100,000
+    # Second pack: 40,000 * 2.5^1 = 100,000
     assert pack_cost(2) == 100_000
 
-    # Third pack: 40,000 × 2.5^2 = 250,000
+    # Third pack: 40,000 * 2.5^2 = 250,000
     assert pack_cost(3) == 250_000
 
-    # Fourth pack: 40,000 × 2.5^3 = 625,000
+    # Fourth pack: 40,000 * 2.5^3 = 625,000
     assert pack_cost(4) == 625_000
 
 

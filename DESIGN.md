@@ -527,6 +527,272 @@ Resources Earned = Victories × Reward per Victory
 
 ---
 
+## Combat Progression & Enemy Scaling
+
+### Design Philosophy
+
+The combat progression system is built around a **death-and-retry loop** where players progressively build stronger decks to overcome increasingly difficult enemies and bosses. Death is not punishment but part of the core progression loop - players keep all resources and iterate on their deck between attempts.
+
+### Enemy Health Scaling Formula
+
+**Regular Enemies (Non-Boss):**
+```
+HP = 20 + (enemy_number - 1) × 65.8
+```
+
+**Rationale:**
+- Linear scaling provides predictable, consistent difficulty curve
+- Allows precise balance tuning for intended session length
+- Boss encounters provide exponential-feeling difficulty spikes
+- Works well with "how far can you reach?" progression framing
+- Bosses create the challenge; regular enemies provide steady progression
+
+**Examples:**
+- Enemy 1: 20 HP
+- Enemy 50: 3,246 HP (first mini-boss)
+- Enemy 100: 6,539 HP (second mini-boss)
+- Enemy 149: 9,758 HP (just before major boss)
+- Enemy 150: 17,438 HP (major boss with 2× multiplier)
+
+**Future Scaling (Post-Enemy 150):**
+- Enemies 151-299: Steeper slope (85 vs 65.8) creates "Act 2" difficulty
+- Enemy 300: Second major boss
+- Enemies 301+: To be designed with elemental tier progression
+
+### Boss Encounter System
+
+Bosses are **progression checkpoints** that require multiple death loops with deck improvements to overcome. They serve as clear milestones, motivation to purchase packs, and achievement moments.
+
+#### Enemy 50 - Mini-Boss #1 ("Lieutenant")
+
+**Stats:**
+- HP: 4,220 (1.3× regular Enemy 50)
+- Attack: 0 (1.2× regular, still safe)
+
+**Purpose:**
+- Introduces boss concept gently
+- First minor challenge but achievable
+- Most players beat on first loop
+- Teaches that special enemies are stronger
+
+**Rewards:**
+- 3× regular shard drops (~6-9 shards)
+- Achievement: "Defeated First Lieutenant"
+- Visual celebration
+
+#### Enemy 100 - Mini-Boss #2 ("Commander")
+
+**Stats:**
+- HP: 9,809 (1.5× regular Enemy 100)
+- Attack: ~20 (1.3× regular)
+
+**Purpose:**
+- **First real wall** - bad players fail here on first loop
+- Requires Pack 1 purchase OR excellent starter deck play
+- Teaches importance of pack purchases and deck optimization
+- Soft gate encouraging first death loop
+
+**Rewards:**
+- 3× regular shard drops (~12-18 shards)
+- Achievement: "Defeated First Commander"
+
+**Expected Outcomes:**
+- Bad player (starter deck only): **Fails** - Dies around Enemy 90-100
+- Average player (Pack 1): **Beats it** - Continues to ~120-140
+- Good player (Pack 1-2): **Beats it** - Continues toward Enemy 150
+
+#### Enemy 150 - Major Boss #1 ("Tower Guardian")
+
+**Stats:**
+- HP: 17,438 (≈2× regular Enemy 150)
+- Attack: 75 (1.5× regular)
+
+**Purpose:**
+- **Major milestone** - End of "Act 1" content
+- Requires 2-3 death loops with progressive improvements
+- Beating this is major achievement
+- May unlock prestige system (to be designed in Session 7)
+
+**Rewards:**
+- 5× regular shard drops (~40-60 shards)
+- Major achievement: "Defeated Tower Guardian"
+- Possible special currency or content unlock
+- Celebration sequence
+
+**Expected Outcomes:**
+- Loop 1 (starter deck): Fails at Enemy 90-100 (Commander)
+- Loop 2 (Packs 1-2): Fails at Enemy 130-140
+- Loop 3 (Packs 1-3): Fails at Enemy 150 boss
+- Loop 4-5 (optimized): **Beats boss**
+
+**Design Philosophy:**
+- Boss is clearly impossible on first 2 loops
+- Creates satisfying multi-loop progression arc
+- Beating it feels earned, not lucky
+- Not a "tutorial death" but a **progression wall** requiring iteration
+
+#### Future Bosses
+
+- **Enemy 300:** Major Boss #2, end of "Act 2"
+- **Enemy 450, 600, etc.:** Every 150 enemies
+- Elemental tier bosses with unique mechanics (future design)
+
+### Enemy Attack Scaling
+
+**Phase 1: Safe Learning (Enemies 1-50)**
+- Attack: 0
+- Purpose: Learn mechanics without defense pressure
+
+**Phase 2: Gradual Introduction (Enemies 51-100)**
+- Formula: `5 + (enemy_number - 51) × 0.2`
+- Enemy 51: 5 attack → Enemy 100: 15 attack
+- Purpose: Introduce defense mechanics gradually
+
+**Phase 3: Moderate Challenge (Enemies 101-149)**
+- Formula: `20 + (enemy_number - 101) × 0.6`
+- Enemy 101: 20 attack → Enemy 149: 49 attack
+- Purpose: Defense becomes strategic consideration
+
+**Boss Attack Multipliers:**
+- Mini-Boss #1 (Enemy 50): 1.2× regular (0 attack)
+- Mini-Boss #2 (Enemy 100): 1.3× regular (~20 attack)
+- Major Boss (Enemy 150): 1.5× regular (75 attack)
+
+### Death and Respawn System
+
+**CRITICAL DISTINCTION:** Death loop is **NOT prestige**. It's the normal gameplay loop.
+
+#### What Happens on Death
+
+1. **Death Trigger:** Player loses (insufficient defense, can't beat boss, etc.)
+
+2. **Death Screen Shows:**
+   - Enemies defeated: "You reached Enemy 94"
+   - Essence earned this run
+   - Shards earned this run
+   - Achievements unlocked
+   - Progress indicator: "94/150 to Tower Guardian"
+
+3. **Resources Kept (Everything Persists):**
+   - ✅ All cards in collection
+   - ✅ All essence (spend on packs)
+   - ✅ All shards (spend on upgrades)
+   - ✅ Current deck composition
+   - ✅ Card levels/upgrades purchased
+   - ✅ All progress and unlocks
+
+4. **Player Actions After Death:**
+   - Spend essence on new packs
+   - Spend shards on card upgrades, deck size increases
+   - Rebuild/optimize deck
+   - **Swap class** (if you own other class cards)
+   - Review achievements
+
+5. **Respawn:** Click "Continue" → Restart at Enemy 1 with improved deck
+
+**This Loop Is Core Gameplay:**
+- Fight → Die → Spend resources → Improve deck → Fight again
+- Like dying in Rogue Legacy and buying upgrades before next run
+- Expected to loop 3-6 times to beat first major boss
+- No penalty for death, just natural progression rhythm
+
+#### Death vs Prestige (Clarification)
+
+| Mechanic | Trigger | What Resets | What Persists | Rewards |
+|----------|---------|-------------|---------------|---------|
+| **Death Loop** | Die to enemy/boss | Enemy progress only | Everything (cards, essence, shards, deck) | None (just retry) |
+| **Prestige** | Manual choice (late game) | TBD (Session 7) | TBD (Session 7) | Permanent bonuses |
+
+**Prestige System (To Be Designed):**
+- Unlocked after beating first major boss (Enemy 150)?
+- Separate advanced mechanic from normal death loop
+- Provides permanent bonuses but involves real resets
+- Design deferred to Session 7
+
+### Multi-Loop Progression Expectations
+
+#### Loop 1 - Discovery
+- Starter deck only, no purchases during run
+- Reach: Enemy 90-100
+- Die to: Mini-Boss #2 (Commander)
+- Accumulate: ~40,000-60,000 essence, ~150 shards
+- **Action:** Purchase Pack 1
+
+#### Loop 2 - Improvement
+- Starter deck + Pack 1 cards
+- Reach: Enemy 110-130
+- Die to: Regular enemies or approaching boss
+- Accumulate: ~60,000-100,000 essence, ~250 shards
+- **Action:** Purchase Pack 2-3
+
+#### Loop 3 - Approach
+- Starter + Packs 1-2
+- Reach: Enemy 130-145
+- Die to: Major Boss approach or first attempt
+- Accumulate: More essence/shards
+- **Action:** Optimize deck, purchase Pack 3
+
+#### Loop 4-5 - Victory
+- Optimized deck with Packs 1-3
+- Reach: Enemy 150 (Major Boss)
+- Close attempts, eventually **BEAT BOSS**
+- **Milestone:** Major achievement unlocked
+
+**Total Time to First Boss Victory:**
+- Bad players: ~2-3 hours (5-6 loops)
+- Average players: ~1.5-2 hours (4 loops)
+- Good players: ~1-1.5 hours (3 loops)
+
+### Rewards Structure
+
+**Regular Enemy Victories:**
+- Shards: 2-3 (early) → 8-12 (late)
+- Formula: `base_shards + floor(enemy_number / 50) × 2`
+- Essence: From generator cards drawn during combat
+
+**Mini-Boss Victories (50, 100):**
+- 3× regular shard drops
+- Achievement unlocks
+- Visual celebration
+
+**Major Boss Victory (150):**
+- 5× regular shard drops
+- Major achievement
+- Possible special rewards (pack discount, currency, content unlock)
+- Narrative moment / celebration sequence
+
+### UI and Player Communication
+
+**Progress Indicators:**
+- Display: "Enemy 94 / 150"
+- Boss warning at Enemy 149: "Major Boss Ahead"
+- Visual milestone markers on progress bar
+
+**Death Screen Tone:**
+- Celebratory of progress made (not punishing)
+- Shows clear next steps ("Buy packs to grow stronger!")
+- Emphasizes iteration and improvement
+
+### Balance Targets for Pack Card Design (Task 2.1)
+
+**Combat Power Requirements:**
+- Enemy 100 Mini-Boss: 9,809 HP
+  - Pack 1 should provide +15-20% power over starter deck
+- Enemy 150 Major Boss: 17,438 HP
+  - Packs 1-3 should provide +30-40% total power
+
+**Generator Power Requirements:**
+- Pack 1: +4-5 Essence/sec per draw (vs starter +1-2)
+- Pack 2: +6-8 Essence/sec per draw
+- Pack 3: +10-12 Essence/sec per draw
+
+**Combat Card Stats:**
+- Pack 1: 25-35 total stats (vs starter 8-20)
+- Pack 2: 40-50 total stats
+- Pack 3: 60-80 total stats (Rare/Epic cards)
+
+---
+
 ## Progression Flow
 
 ### Starting Flow
@@ -995,17 +1261,21 @@ Max Copies per Card: 3
 
 ### Enemy Stats
 
-**Health Scaling:**
-- Formula: 20 × 1.15^(EnemyNumber)
-- Enemy 1: 20 HP
-- Enemy 30: ~300 HP
-- Enemy 100: ~3,500 HP
-- Enemy 150: ~30,000 HP
+**✅ FINALIZED (Session 2.0.1 - Combat Progression Design)**
 
-**Attack (Defense Requirement):**
-- Minutes 0-10: 0 Attack (safe learning)
-- Minutes 10-20: 5-15 Attack
-- Minutes 20-30: 20-50 Attack
+See **"Combat Progression & Enemy Scaling"** section for complete specifications.
+
+**Quick Reference:**
+- Regular enemies: `HP = 20 + (n-1) × 65.8`
+- Mini-Boss #1 (Enemy 50): 4,220 HP (1.3× multiplier)
+- Mini-Boss #2 (Enemy 100): 9,809 HP (1.5× multiplier)
+- Major Boss (Enemy 150): 17,438 HP (≈2× multiplier)
+
+**Attack Scaling:**
+- Enemies 1-50: 0 attack (safe learning)
+- Enemies 51-100: 5-15 attack (gradual introduction)
+- Enemies 101-149: 20-49 attack (moderate challenge)
+- Bosses: 1.2× to 1.5× attack multipliers
 
 ### Combat Card Stats
 
@@ -1047,18 +1317,26 @@ Max Copies per Card: 3
 - 12-13 Combat (60-65%)
 - 1-2 Utility (5-10%)
 
-### Validated Pacing
+### Validated Pacing (Starter Deck Only - "Bad Player" Baseline)
 
-✓ Pack 1 at minute 8-9 (40,000 Essence earned)
-✓ Pack 2 at minute 16-17 (100,000 Essence earned)
-✓ Pack 3 at minute 26-27 (250,000 Essence earned)
-✓ Generation rate scales: 0 → 180 → 652 → 1,252 → 1,500 Essence/sec
-✓ Shard accumulation: ~875 by minute 30
-✓ Combat power scales with enemy health
-✓ 3 packs opened in first 30 minutes (evenly distributed)
-✓ Long-term goal visible (Pack 4 at 625,000, achievable minute 32-35)
+**VALIDATED (Task 2.0 Simulator):**
+✓ Pack 1 affordable at ~7.0 minutes (40,000 Essence)
+✓ Pack 2 affordable at ~11.5 minutes (100,000 Essence)
+✓ Pack 3 affordable at ~18.5 minutes (250,000 Essence)
+✓ Generation rate scales: 0 → 180 → 382 → 607 Essence/sec (starter deck only)
+✓ Card draw rate: 60 cards/min
+✓ Enemy defeat rate: 5 enemies/min
+✓ 149 enemies defeated in 30 minutes (Enemy 150 boss: unbeatable on first run)
 
-**Design Note:** These baseline numbers create proper pacing for idle game feel - big numbers, aggressive scaling, exponential growth through stacking mechanic. Generators stack on every draw (including duplicates) for constant visible progress. More complex mechanics will build on this foundation.
+**STILL NEEDS DESIGN (Session 2.X):**
+- "Good player" progression with Pack 1-3 card improvements
+- Target essence rates with optimized decks
+- Enemy scaling formula (linear vs exponential vs hybrid)
+- Boss encounter design (Enemy 150 "tutorial death" concept evaluation)
+- Combat progression beyond first 30 minutes
+- Post-prestige enemy scaling
+
+**Design Note:** Current baseline establishes "do nothing" minimum progression (starter deck, no pack purchases). This validates core mechanics work but doesn't represent intended player experience. Pack card design (Task 2.1+) will establish "good player" targets with better generators and synergies.
 
 ---
 
@@ -1130,9 +1408,9 @@ All players begin as "Arcane Student" with this pre-built 8-card deck. All cards
 - **Combat:** 5 cards (62.5%) - mix of specialists and generalists
 
 **Total Stats When All Cards Drawn:**
-- Attack: 72 total
-- Defense: 54 total
-- Rate Generation: +3 Essence/sec
+- Attack: 62 total (20+10+15+5+12)
+- Defense: 54 total (18+10+5+15+6)
+- Rate Generation: +3 Essence/sec (2+1 from generators)
 - Burst Generation: +150 Essence
 
 ### Design Philosophy
@@ -1178,6 +1456,34 @@ All players begin as "Arcane Student" with this pre-built 8-card deck. All cards
 ---
 
 ## Document Changelog
+
+**Version 1.8** (2025-11-07) - Task 2.0.1: Combat Progression Design Complete
+- Added complete "Combat Progression & Enemy Scaling" section
+- Finalized enemy health scaling formula (linear: `20 + (n-1) × 65.8`)
+- Designed boss encounter system:
+  - Mini-Boss #1 at Enemy 50 (4,220 HP, 1.3× multiplier)
+  - Mini-Boss #2 at Enemy 100 (9,809 HP, 1.5× multiplier)
+  - Major Boss at Enemy 150 (17,438 HP, ≈2× multiplier)
+- Specified death-and-respawn loop (NOT prestige):
+  - Keep all resources (cards, essence, shards, deck)
+  - Spend resources between loops to grow stronger
+  - Can swap class on death (if have class cards)
+  - Expected 3-6 loops to beat first major boss
+- Clarified death loop vs prestige distinction (prestige to be designed in Session 7)
+- Defined multi-loop progression expectations (Loop 1-5 targets)
+- Specified rewards structure (regular, mini-boss, major boss)
+- Added balance targets for Task 2.1 (Pack card design)
+- Updated Baseline Numbers section with finalized enemy stats
+- Inspired by "Rogue with the Dead" death-as-progression design philosophy
+
+**Version 1.7** (2025-11-07) - Task 2.0 Corrections: Simulator Results Integrated
+- Corrected starter deck total attack (62 not 72)
+- Updated enemy scaling section (marked as needing design review)
+- Replaced "Validated Pacing" with actual Task 2.0 simulator results
+- Distinguished "bad player" baseline (validated) from "good player" targets (needs design)
+- Marked combat progression as needing design session (Session 2.X to be added)
+- Added note that linear scaling is temporary implementation, not final design decision
+- Clarified what's validated vs what still needs design work
 
 **Version 1.6** (2025-11-06) - Session 1.3C: Starter Deck Design Complete
 - Added complete 8-card starter deck specification
@@ -1253,7 +1559,7 @@ All players begin as "Arcane Student" with this pre-built 8-card deck. All cards
 
 ---
 
-**Document Version:** 1.6  
-**Last Updated:** 2025-11-06 23:01:16 (Session 1.3C - Starter Deck Complete)  
-**Status:** Task 1.3 Complete - First 30 Minutes Experience, Baseline Numbers, and Starter Deck All Done
+**Document Version:** 1.8  
+**Last Updated:** 2025-11-07 14:15:00 (Task 2.0.1 Complete - Combat Progression Design)  
+**Status:** Task 2.0.1 Complete - Combat progression system fully designed. Death loop mechanics finalized. Boss system specified. Ready for Task 2.1 (Pack Card Design).
 

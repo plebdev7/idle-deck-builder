@@ -48,3 +48,33 @@ Each log entry MUST include:
 - Create log file at task start, update throughout, finalize at completion
 - Never delete or significantly alter historical log entries
 - Add corrections or updates as new entries, preserving original context
+
+## Design Document Synchronization
+
+DESIGN.md is the source of truth. Implementation must match design documents.
+
+**Before Implementation:**
+- Read current DESIGN.md state
+- Confirm implementation will match specifications
+- Note any ambiguities or potential issues
+
+**During Implementation:**
+- If you must deviate from DESIGN.md: STOP and seek user approval
+- Document every deviation in task log
+
+**After Design Changes Approved:**
+1. Update DESIGN.md IMMEDIATELY (before or concurrent with implementation)
+2. Update ROADMAP.md if scope/goals changed
+3. Update CHECKLIST.md if task definitions changed
+4. Document synchronization in task log
+
+**Task Completion Checklist:**
+- [ ] Implementation matches DESIGN.md specifications
+- [ ] OR DESIGN.md updated to match approved changes
+- [ ] No known discrepancies between docs and implementation
+- [ ] Task log documents any design changes and rationale
+
+**Never:**
+- Leave implementation and DESIGN.md out of sync
+- Defer design doc updates to "later"
+- Complete task with known design/implementation mismatches
