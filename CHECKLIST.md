@@ -69,17 +69,19 @@
   - [x] Clarify death loop vs prestige distinction (prestige deferred to Session 7)
   - [x] Update DESIGN.md with finalized combat progression system (Version 1.8)
 
-- [ ] **2.0.2** Live Terminal Simulation View
-  - [ ] Implement live terminal display with Rich library
-  - [ ] Create event player system (consumes simulation events in real-time)
-  - [ ] Implement speed controls (1x, 2x, 5x, 10x) via keyboard 1-4
-  - [ ] Implement pause/resume functionality (Space bar)
-  - [ ] Implement step-through mode (advance one event at a time when paused)
-  - [ ] Display zones: card draw highlight, event log, status bars
-  - [ ] Auto-pause on pack milestones and boss encounters
-  - [ ] Post-simulation summary screen with replay option
-  - [ ] Add `sim live` or `sim combat --live` CLI command
-  - [ ] Test with starter deck simulation (30 minutes)
+- [x] **2.0.2** Live Terminal Simulation View
+  - [x] Implement live terminal display with Rich library
+  - [x] Create event player system (consumes simulation events in real-time)
+  - [x] Implement speed controls (1x, 2x, 5x, 10x) via keyboard 1-4
+  - [x] Implement pause/resume functionality (Space bar)
+  - [x] Implement step-through mode (advance one event at a time when paused)
+  - [x] Display zones: card draw highlight, event log, status bars
+  - [x] Auto-pause on pack milestones and boss encounters
+  - [x] Post-simulation summary screen with replay option
+  - [x] Add `sim live` CLI command
+  - [x] Test with starter deck simulation (validated with 1-min test)
+  - [x] Cross-platform support (Windows via msvcrt, Unix via termios)
+  - Note: Windows users need `$env:PYTHONIOENCODING='utf-8'` before running
 
 - [ ] **2.1** Pack Card Design (15-20 cards for Packs 1-3)
   - [ ] Define card rarity levels (answer question 7) with stat differences

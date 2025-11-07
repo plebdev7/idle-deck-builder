@@ -193,6 +193,52 @@ def report(
 
 
 @app.command()
+def live(
+    duration: int = typer.Option(30, "--duration", "-t", help="Simulation duration (minutes)"),
+    speed: int = typer.Option(1, "--speed", "-s", help="Initial speed multiplier (1, 2, 5, 10)"),
+    no_pause: bool = typer.Option(False, "--no-pause", help="Disable auto-pause on milestones"),
+) -> None:
+    """Run live terminal simulation with real-time visualization.
+    
+    Watch the simulation unfold in real-time with card draws, enemy spawns,
+    and combat resolution. Control playback speed and step through events.
+    
+    Controls:
+        1-4        Set speed (1x, 2x, 5x, 10x)
+        Space      Pause/Resume
+        N          Step forward (when paused)
+        Q or Esc   Quit to summary
+    """
+    from simulator.core.cards import STARTER_DECK_CARDS
+    from simulator.core.deck import Deck
+    from simulator.visualization import LiveViewer
+    
+    # Validate speed
+    if speed not in [1, 2, 5, 10]:
+        console.print(f"[red]Invalid speed: {speed}. Must be 1, 2, 5, or 10[/red]")
+        raise typer.Exit(code=1)
+    
+    try:
+        # Create starter deck
+        deck = Deck(name="Starter Deck", cards=STARTER_DECK_CARDS, tier="arcane")
+        
+        # Create and run live viewer
+        viewer = LiveViewer(
+            duration_minutes=duration,
+            initial_speed=speed,
+            auto_pause_milestones=not no_pause,
+        )
+        
+        viewer.run(deck)
+        
+    except KeyboardInterrupt:
+        console.print("\n[yellow]Simulation interrupted by user[/yellow]")
+    except Exception as e:
+        console.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+@app.command()
 def info() -> None:
     """Show simulator information and status."""
     console.print(
@@ -214,6 +260,7 @@ def info() -> None:
     table.add_row("Enemy Spawning & Scaling", "[green]Complete[/green]", "Task 2.0")
     table.add_row("Baseline Validation", "[green]Complete[/green]", "Task 2.0")
     table.add_row("Visualization (Plotly)", "[green]Complete[/green]", "Task 2.0")
+    table.add_row("Live Terminal View", "[green]Complete[/green]", "Task 2.0.2")
     table.add_row("Card Design Testing", "[yellow]Planned[/yellow]", "Task 2.1-2.4")
     table.add_row("Multi-Tier Support", "[yellow]Planned[/yellow]", "Task 8.1-8.3")
     
@@ -234,7 +281,8 @@ def info() -> None:
     console.print(f"  Generation Rate: {deck.total_essence_rate}/sec")
     console.print(f"  Burst Essence: {deck.total_essence_burst}")
     
-    console.print("\n[dim]Run [cyan]sim validate[/cyan] to test baseline numbers[/dim]")
+    console.print("\n[dim]Run [cyan]sim live[/cyan] for real-time simulation view[/dim]")
+    console.print("[dim]Run [cyan]sim validate[/cyan] to test baseline numbers[/dim]")
     console.print("[dim]Run [cyan]sim combat[/cyan] to run a simulation[/dim]")
     console.print("[dim]Run [cyan]sim --help[/cyan] to see all commands[/dim]")
 
