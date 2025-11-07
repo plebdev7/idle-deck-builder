@@ -800,5 +800,30 @@ Part B must now include:
 
 ---
 
-**Log Status:** Part A complete and documented, Parts B & C deferred to future sessions
+## Part B: Baseline Numbers (Moved to Separate File)
 
+**Part B has been moved to its own log file for better organization:**  
+→ **See:** `.cursor/log/sessions/session-1-3b-baseline-numbers.md`
+
+**Quick Summary:**
+- Generator rates (stacking): +1, +2, +3, +4, +5 Essence/sec per draw
+- Pack costs: 40,000 × 2.5^(n-1) = 40k, 100k, 250k, 625k
+- Validated pacing: Packs at minutes 8-9, 16-17, 26-27
+- Complete timeline validation with stacking accumulation
+- Status: COMPLETE
+
+**For full calculations, iterations, and detailed validation, see the Part B log file.**
+
+---
+
+### 2025-11-06 19:57:47 - Beginning Part B: Baseline Numbers (MOVED TO SEPARATE FILE)
+
+**Note:** Full Part B content (calculations, iterations, corrections) has been moved to:  
+`.cursor/log/sessions/session-1-3b-baseline-numbers.md`
+
+---
+
+**End of Part A Log**
+
+**Continue to Part B:** `.cursor/log/sessions/session-1-3b-baseline-numbers.md`  
+**Continue to Part C (when created):** `.cursor/log/sessions/session-1-3c-starter-cards.md`

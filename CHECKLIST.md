@@ -29,14 +29,18 @@
   - [x] Create gameplay flow diagram showing decision points and branches
   - [x] Identify key milestones and progression gates
   - [x] Resolve 7 critical design questions (pack costs, guaranteed cards, defense, economy model, etc.)
-  - [ ] Define baseline numbers (Part B: generator rates, shard drops, pack costs, enemy stats)
+  - [x] Define baseline numbers (Part B: generator rates, shard drops, pack costs, enemy stats) - CORRECTED for stacking
   - [ ] Design starter deck (Part C: 8 starter cards with concrete stats)
 
-- [ ] **1.3B** Baseline Numbers
-  - [ ] Establish resource generation baseline rates (generator cards, shard drops)
-  - [ ] Define pack pricing model with scaling formulas (50 × 1.5^n)
-  - [ ] Create economy flow model (Essence from generators, Shards from victories)
-  - [ ] Calculate timing and pacing for first 30 minutes
+- [x] **1.3B** Baseline Numbers (COMPLETE - Corrected for Stacking)
+  - [x] Establish resource generation baseline rates (generator cards, shard drops)
+  - [x] Define pack pricing model with scaling formulas (40,000 × 2.5^n)
+  - [x] Create economy flow model (Essence from generators, Shards from victories)
+  - [x] Calculate timing and pacing for first 30 minutes
+  - [x] Define enemy health scaling and attack values
+  - [x] Establish combat card stat ranges
+  - [x] CORRECTED: Generator stacking mechanic (every draw adds, including duplicates)
+  - [x] Validated complete 30-minute timeline with stacking accumulation
 
 - [ ] **1.3C**: Starter Deck
   - [ ] Design 8 simple starter cards (using baseline numbers from 1.3B)

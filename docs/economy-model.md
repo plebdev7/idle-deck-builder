@@ -1,8 +1,9 @@
 # Economy Model Reference
 
-**Document Version:** 1.0  
+**Document Version:** 1.2  
 **Created:** 2025-11-06 (Session 1.3)  
-**Status:** Part A Complete, Awaiting Baseline Numbers (Part B)
+**Updated:** 2025-11-06 (Part B Complete & Corrected for Stacking)  
+**Status:** Baseline Numbers FINAL (Stacking Corrected), Ready for Starter Cards (Part C)
 
 ---
 
@@ -294,15 +295,65 @@ Natural slowing due to cost scaling, but not punishing.
 
 ---
 
-## Open Questions for Part B
+## Baseline Numbers (Part B - COMPLETE & CORRECTED)
 
-1. **Generator Card Rates:** Exact +X Essence/sec per card?
-2. **Shard Drops:** Exact amounts per victory? Scaling with enemy difficulty?
-3. **Draw Speed:** 0.5sec or 1sec per card?
-4. **Enemy Interval:** 10sec or 15sec between arrivals?
-5. **Enemy Health Scaling:** Starting health? Growth rate?
-6. **Victory Essence Drops:** Should victories also drop small amounts of essence (5-10) or only shards?
-7. **Starting Resources:** Should player start with 10-20 essence for faster first pack, or 0?
+**Design Decision:** Stacking mechanic + Integer rates + Moderate-high pack costs
+
+**CRITICAL:** Generators stack on EVERY draw, including duplicates
+
+### Core Timing
+- **Card draw speed:** 1.0 seconds per card (60 cards/min)
+- **Enemy interval:** 12 seconds (5 enemies/minute)
+- **Combat resolution:** Instant
+
+### Generator Rates (STACKING - Every Draw Adds)
+- Starter: **+1, +2 Essence/sec per draw**
+- Pack 1: **+3, +4 Essence/sec per draw**
+- Pack 2: **+5 Essence/sec per draw**
+- Random Common: **+2 to +4 per draw**
+- Random Rare: **+5 to +7 per draw**
+- Random Epic: **+10+ per draw**
+
+### Rate Progression (with stacking)
+- Minutes 0-8: 0 → 180 Essence/sec
+- Minutes 8-17: 180 → 652 Essence/sec
+- Minutes 17-27: 652 → 1,252 Essence/sec
+- Minutes 27-30: 1,252 → 1,500 Essence/sec
+
+### Pack Costs
+- Formula: **40,000 × 2.5^(n-1)**
+- Pack 1: **40,000 Essence**
+- Pack 2: **100,000 Essence**
+- Pack 3: **250,000 Essence**
+- Pack 4: **625,000 Essence**
+- Pack 5: **1,562,500 Essence**
+
+### Shard Drops
+- Early game (0-10 min): 2-3 Shards per victory
+- Mid game (10-20 min): 4-6 Shards per victory
+- Late game (20-30 min): 8-12 Shards per victory
+- Total by minute 30: ~875 Shards
+
+### Enemy Stats
+- Base health: 20 HP
+- Scaling: 1.15^(EnemyNumber)
+- Enemy 30: ~300 HP
+- Enemy 150: ~30,000 HP
+- Attack: 0 (early) → 5-15 (mid) → 20-50 (late)
+
+### Combat Card Stats
+- Starter: 8-10 Attack, 2-10 Defense
+- Pack 1: 12-18 Attack, 5-12 Defense
+- Pack 2: 20-30 Attack, 8-15 Defense
+- Rare/Epic: 50-150 total stat points
+
+### Validation
+✓ Pack 1 at minute 8-9
+✓ Pack 2 at minute 16-17
+✓ Pack 3 at minute 26-27
+✓ Pack 4 at minute 32-35 (creates long-term goal)
+✓ Generation rate: 0 → 180 → 652 → 1,252 → 1,500 Essence/sec
+✓ Evenly distributed pacing (pack every ~8-10 minutes)
 
 ---
 

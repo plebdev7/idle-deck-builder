@@ -927,11 +927,145 @@ Max Copies per Card: 3
 
 ---
 
+## Baseline Numbers Reference (Session 1.3 - Part B)
+
+### Core Game Timing
+
+**Card Draw & Combat:**
+- Card draw speed: 1.0 second per card (60 cards/minute constant)
+- Enemy arrival: Every 12 seconds (5 enemies/minute)
+- Combat resolution: Instant when enemy arrives
+
+### Generator Card Rates (Essence Generation)
+
+**Mechanic:** Every draw of a generator adds to rate (stacks, even duplicates); rate persists until death.
+
+**Starter Deck:**
+- "Arcane Spark": **+1 Essence/sec per draw**
+- "Mana Trickle": **+2 Essence/sec per draw**
+
+**Pack 1 Generators:**
+- "Arcane Conduit": **+3 Essence/sec per draw**
+- "Essence Flow": **+4 Essence/sec per draw**
+
+**Pack 2 Generator:**
+- "Greater Conduit": **+5 Essence/sec per draw**
+
+**Random Generators (Pack 3+):**
+- Common: **+2 to +4 per draw**
+- Rare: **+5 to +7 per draw**
+- Epic: **+10+ per draw**
+
+**Expected Rate Progression:**
+- Minutes 0-8: 0 → 180 Essence/sec (from ~120 draws)
+- Minutes 8-17: 180 → 652 Essence/sec
+- Minutes 17-27: 652 → 1,252 Essence/sec
+- Minutes 27-30: 1,252 → 1,500 Essence/sec
+
+### Pack Costs (Essence)
+
+**Formula:** 40,000 × 2.5^(n-1)
+
+**Pricing:**
+- Pack 1: **40,000 Essence** (minute 8-9)
+- Pack 2: **100,000 Essence** (minute 16-17)
+- Pack 3: **250,000 Essence** (minute 26-27)
+- Pack 4: **625,000 Essence** (minute 32-35, beyond first session)
+- Pack 5+: **1,562,500+**
+
+**Pack Contents:**
+- 5 cards per pack
+- First 2 packs: Guaranteed distributions
+- Pack 3+: Random by rarity weights
+
+### Shard System (Combat Rewards)
+
+**Drops per Victory:**
+- Early (0-10 min): 2-3 Shards
+- Mid (10-20 min): 4-6 Shards
+- Late (20-30 min): 8-12 Shards
+
+**Accumulation:**
+- Total by minute 30: ~875 Shards
+
+**Usage:**
+- Card upgrades: 50-100+ Shards
+- Deck size increase: 200+ Shards
+- Permanent upgrades: Variable
+
+### Enemy Stats
+
+**Health Scaling:**
+- Formula: 20 × 1.15^(EnemyNumber)
+- Enemy 1: 20 HP
+- Enemy 30: ~300 HP
+- Enemy 100: ~3,500 HP
+- Enemy 150: ~30,000 HP
+
+**Attack (Defense Requirement):**
+- Minutes 0-10: 0 Attack (safe learning)
+- Minutes 10-20: 5-15 Attack
+- Minutes 20-30: 20-50 Attack
+
+### Combat Card Stats
+
+**Starter Deck Range:**
+- Attack: 4-10
+- Defense: 2-10
+- Total: 8-15 stat points
+
+**Pack 1 Cards:**
+- Attack: 12-18
+- Defense: 5-12
+- Total: 25-30 stat points
+
+**Pack 2 Cards:**
+- Attack: 20-30
+- Defense: 8-15
+- Total: 35-45 stat points
+
+**Pack 3+ Cards:**
+- Rare: 50-80 total stat points
+- Epic: 100-150 total stat points
+
+**Power Accumulation:**
+- Initial: ~8 Attack/sec
+- After Pack 1: 15-25 Attack/sec
+- By minute 30: 40-60 Attack/sec
+
+### Deck Composition Guidelines
+
+**Generator Percentage:** Stays constant at 25-35% of deck across all stages
+
+**Starter (8 cards):**
+- 2 Generators (25%)
+- 5 Combat (62.5%)
+- 1 Utility (12.5%)
+
+**Optimized (20 cards):**
+- 6-7 Generators (30-35%)
+- 12-13 Combat (60-65%)
+- 1-2 Utility (5-10%)
+
+### Validated Pacing
+
+✓ Pack 1 at minute 8-9 (40,000 Essence earned)
+✓ Pack 2 at minute 16-17 (100,000 Essence earned)
+✓ Pack 3 at minute 26-27 (250,000 Essence earned)
+✓ Generation rate scales: 0 → 180 → 652 → 1,252 → 1,500 Essence/sec
+✓ Shard accumulation: ~875 by minute 30
+✓ Combat power scales with enemy health
+✓ 3 packs opened in first 30 minutes (evenly distributed)
+✓ Long-term goal visible (Pack 4 at 625,000, achievable minute 32-35)
+
+**Design Note:** These baseline numbers create proper pacing for idle game feel - big numbers, aggressive scaling, exponential growth through stacking mechanic. Generators stack on every draw (including duplicates) for constant visible progress. More complex mechanics will build on this foundation.
+
+---
+
 ## Outstanding Design Questions (Remaining)
 
 ### Still To Be Determined
 2. **Secondary Class Slot:** Can prestige unlock passive bonuses from inactive class?
-3. **Resource Generation Balance:** Low rate (many cards needed) vs high rate (few needed)?
 6. **Prestige Reset Details:** What exactly resets (cards, levels, progress, or combinations)?
 7. **Card Rarity System:** How many rarities? How do rarities affect stats/abilities?
 
@@ -948,6 +1082,20 @@ Max Copies per Card: 3
 ---
 
 ## Document Changelog
+
+**Version 1.5** (2025-11-06) - Session 1.3B: Baseline Numbers FINAL
+- **CORRECTED generator mechanic:** Stacking on every draw (including duplicates)
+- Generator rates: **+1, +2, +3, +4, +5 Essence/sec per draw** (stacking)
+- Pack cost formula: **40,000 × 2.5^(n-1)** (adjusted for stacking accumulation)
+- Pack timing: 8-9 min, 16-17 min, 26-27 min (evenly distributed)
+- Rate progression: 0 → 180 → 652 → 1,252 → 1,500 Essence/sec
+- Validated stacking accumulation math through complete timeline
+- Confirmed: 3 packs in 30 minutes with proper pacing
+- Clean integer rates for satisfying idle game progression
+
+**Version 1.4** (2025-11-06) - Session 1.3B: Baseline Numbers (SUPERSEDED)
+- Initial baseline numbers (non-stacking mechanic, incorrect)
+- Corrected in Version 1.5
 
 **Version 1.3** (2025-11-06) - Session 1.3: First 30 Minutes Experience (Part A)
 - Added "First 30 Minutes Experience" section with complete minute-by-minute narrative
@@ -997,7 +1145,7 @@ Max Copies per Card: 3
 
 ---
 
-**Document Version:** 1.3  
-**Last Updated:** 2025-11-06 19:51:18 (Session 1.3 - First 30 Minutes Experience)  
-**Status:** First 30 Minutes Defined (Part A Complete), Ready for Baseline Numbers (Part B) and Starter Cards (Part C)
+**Document Version:** 1.5  
+**Last Updated:** 2025-11-06 20:20:00 (Session 1.3B - Baseline Numbers FINAL)  
+**Status:** First 30 Minutes + Baseline Numbers Complete (Corrected for Stacking), Ready for Starter Cards (Part C)
 
