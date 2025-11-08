@@ -112,9 +112,9 @@ See [progression.md](progression.md) for complete specifications.
 
 ### Boss HP
 
-- **Mini-Boss #1 (Enemy 50):** 9,768 HP (1.3× multiplier)
+- **Mini-Boss #1 (Enemy 50):** 7,670 HP (1.3× multiplier)
 - **Mini-Boss #2 (Enemy 100):** 18,555 HP (1.5× multiplier)
-- **Major Boss (Enemy 150):** 38,680 HP (2.0× multiplier)
+- **Major Boss (Enemy 150):** 38,720 HP (2.0× multiplier)
 
 ### Attack Scaling
 
@@ -197,7 +197,7 @@ Stays constant at 25-35% of deck across all stages
 ### ✅ FINALIZED (Session 2.0.3 Parts A-D)
 
 - ✓ Enemy HP scaling: Act-based step function (120/130/140 per enemy by Act)
-- ✓ Boss HP: 9,768 / 18,555 / 38,680 (Enemies 50/100/150)
+- ✓ Boss HP: 7,670 / 18,555 / 38,720 (Enemies 50/100/150)
 - ✓ Attack scaling: 0 until Enemy 50, then progressive (10/30/80 for bosses)
 - ✓ HP upgrade system: 50/75/100/125/150 shards for +10 HP (Tier 1)
 - ✓ Death loop progression: 4-6 loops to beat Enemy 150
@@ -246,9 +246,9 @@ Stays constant at 25-35% of deck across all stages
 Enemy 1 (20 HP):          ~2 seconds
 Enemy 10 (1,100 HP):      ~17 seconds
 Enemy 25 (2,900 HP):      ~29 seconds
-Enemy 50 (9,768 HP):      ~47 seconds (Mini-Boss #1)
+Enemy 50 (7,670 HP):      ~47 seconds (Mini-Boss #1)
 Enemy 100 (18,555 HP):    ~90 seconds (Mini-Boss #2, requires Pack 1)
-Enemy 150 (38,680 HP):    ~180+ seconds (Major Boss, requires Packs 1-3)
+Enemy 150 (38,720 HP):    ~180+ seconds (Major Boss, requires Packs 1-3)
 ```
 
 ---
@@ -261,7 +261,7 @@ Enemy 150 (38,680 HP):    ~180+ seconds (Major Boss, requires Packs 1-3)
 Act 1 (1-50):    HP = 20 + (n-1) × 120
 Act 2 (51-100):  HP = 6,000 + (n-51) × 130
 Act 3 (101-150): HP = 12,500 + (n-101) × 140
-Boss Multipliers: 1.3× (Enemy 50), 1.5× (Enemy 100), 2.0× (Enemy 150)
+Boss Multipliers: 1.3× (Enemy 50 = 7,670), 1.5× (Enemy 100 = 18,555), 2.0× (Enemy 150 = 38,720)
 ```
 
 ### Enemy Attack Scaling

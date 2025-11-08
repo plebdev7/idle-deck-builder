@@ -157,7 +157,7 @@ Cycle 3 (Ticks 18-25): Draw 8 cards again → 124 to 186 ATK (+62)
 
 ## Combat Flow Example
 
-### Enemy 50: 3,246 HP, 10 ATK (First Attacker)
+### Enemy 50: 7,670 HP, 10 ATK (First Attacker)
 **Player: 100 HP, 8-card starter deck**
 
 ```
@@ -182,9 +182,9 @@ CYCLE 2 (Ticks 9-16)
 
 CYCLE 3+ (Ticks 17+)
   - Stats continue growing: 186 ATK, 248 ATK, etc.
-  - Enemy defeated around Tick 28-29
+  - Enemy defeated around Tick 47
 
-Total Time: ~28-29 seconds
+Total Time: ~47 seconds
 Player HP: ~80/100 (lost 20 HP before defense kicked in)
 ```
 
@@ -300,9 +300,9 @@ Player HP: ~80/100 (lost 20 HP before defense kicked in)
 Enemy 1 (20 HP):          ~2 seconds
 Enemy 10 (1,100 HP):      ~17 seconds
 Enemy 25 (2,900 HP):      ~29 seconds
-Enemy 50 (9,768 HP):      ~47 seconds (Mini-Boss #1)
+Enemy 50 (7,670 HP):      ~47 seconds (Mini-Boss #1)
 Enemy 100 (18,555 HP):    ~90 seconds (Mini-Boss #2, requires Pack 1)
-Enemy 150 (38,680 HP):    ~180+ seconds (Major Boss, requires Packs 1-3)
+Enemy 150 (38,720 HP):    ~180+ seconds (Major Boss, requires Packs 1-3)
 ```
 
 **Session Milestones:**

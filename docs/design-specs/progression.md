@@ -23,7 +23,7 @@ The HP formula uses a **step function** that increases base HP after each boss, 
 ```
 Base HP = 20 + (enemy_number - 1) × 120
 Enemy 49:  5,780 HP (regular)
-Enemy 50:  9,768 HP (Mini-Boss #1, 1.3× multiplier)
+Enemy 50:  7,670 HP (Mini-Boss #1, 1.3× multiplier = 5,900 × 1.3)
 ```
 
 ### Act 2 (Enemies 51-100): Challenge Tier
@@ -41,7 +41,7 @@ Enemy 100: 18,555 HP (Mini-Boss #2, 1.5× multiplier)
 Base HP = 12,500 + (enemy_number - 101) × 140
 Enemy 101: 12,500 HP (step up from Act 2, but < boss)
 Enemy 149: 19,220 HP (regular)
-Enemy 150: 38,680 HP (Major Boss, 2.0× multiplier)
+Enemy 150: 38,720 HP (Major Boss, 2.0× multiplier = 19,360 × 2.0)
 ```
 
 ### Act 4+ (Enemies 151+): Future Content
@@ -62,9 +62,9 @@ Base HP = 38,880 + (enemy_number - 151) × 200
 ### Key Milestones
 
 - Enemy 1: 20 HP
-- Enemy 50: 9,768 HP (Mini-Boss #1 - First Attacker) ← ~23 minutes
+- Enemy 50: 7,670 HP (Mini-Boss #1 - First Attacker) ← ~23 minutes
 - Enemy 100: 18,555 HP (Mini-Boss #2 - First Real Wall) ← ~60-70 minutes
-- Enemy 150: 38,680 HP (Major Boss - End of "Act 1" content) ← ~120-180 minutes
+- Enemy 150: 38,720 HP (Major Boss - End of "Act 1" content) ← ~120-180 minutes
 
 ---
 
@@ -75,7 +75,7 @@ Bosses are **progression checkpoints** that require multiple death loops with de
 ### Enemy 50 - Mini-Boss #1 "Defense Tutorial" ("Lieutenant")
 
 **Stats:**
-- HP: 9,768 (1.3× regular Enemy 50 = 7,514 × 1.3)
+- HP: 7,670 (1.3× base HP = 5,900 × 1.3)
 - Attack: **10** (FIRST enemy with attack!)
 
 **Purpose:**
@@ -120,7 +120,7 @@ Bosses are **progression checkpoints** that require multiple death loops with de
 ### Enemy 150 - Major Boss #1 ("Tower Guardian")
 
 **Stats:**
-- HP: 38,680 (2.0× regular Enemy 150 = 19,340 × 2.0)
+- HP: 38,720 (2.0× base HP = 19,360 × 2.0)
 - Attack: 80
 
 **Purpose:**
@@ -348,9 +348,9 @@ Bosses are **progression checkpoints** that require multiple death loops with de
 
 ### Combat Power Requirements
 
-- Enemy 100 Mini-Boss: 9,809 HP
+- Enemy 100 Mini-Boss: 18,555 HP
   - Pack 1 should provide +15-20% power over starter deck
-- Enemy 150 Major Boss: 17,438 HP
+- Enemy 150 Major Boss: 38,720 HP
   - Packs 1-3 should provide +30-40% total power
 
 ### Generator Power Requirements

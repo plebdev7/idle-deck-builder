@@ -440,6 +440,13 @@ Multiple interconnected loops:
 
 ## Document History
 
+**Version 2.0.1** (2025-11-08) - Task 2.0.6: Arithmetic Corrections
+- Fixed Enemy 50 HP: 9,768 → 7,670 (correct per 120 HP/enemy formula)
+- Fixed Enemy 150 HP: 38,680 → 38,720 (correct per formula)
+- Validated all formulas for arithmetic consistency
+- All pack costs, attack scaling, and other values verified correct
+- Rationale: Design docs had arithmetic errors; implementation was correct all along
+
 **Version 2.0** (2025-11-08) - Documentation Restructure
 - Split monolithic DESIGN.md into modular topic files
 - Created lean hub document with summaries and links
@@ -462,8 +469,8 @@ Multiple interconnected loops:
 
 ---
 
-**Document Version:** 2.0  
+**Document Version:** 2.0.1  
 **Last Updated:** 2025-11-08  
-**Status:** Core systems complete, pack cards pending Task 2.1  
+**Status:** Core systems complete, arithmetic validated, pack cards pending Task 2.1  
 **Archive:** [DESIGN-v1.9-pre-split.md](.archive/DESIGN-v1.9-pre-split.md)
 

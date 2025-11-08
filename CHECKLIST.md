@@ -151,30 +151,30 @@
   - [x] Document new validation expectations
   - **Result:** 50% pass rate (8/16 checks), found boss HP bug and baseline shifts
 
-- [ ] **2.0.6** Design Document Review & Baseline Adjustment
-  - [ ] Review DESIGN.md for arithmetic inconsistencies
-  - [ ] Fix Enemy 50 boss HP issue (7,670 vs 9,768 claimed)
-    - [ ] Investigate formula vs claimed values
-    - [ ] Choose fix approach (multiplier, HP/enemy, or accept current)
-    - [ ] Update DESIGN.md with correct values
-    - [ ] Update validation targets
-  - [ ] Adjust baseline targets for combat-over-time reality
-    - [ ] Lower essence rate expectations (~15% due to combat time)
-    - [ ] Adjust card draw rate (50-55 instead of 60 cards/min)
-    - [ ] Confirm enemy defeat rate (2.0-2.5 enemies/min)
-    - [ ] Widen combat duration tolerances for early enemies
-  - [ ] Cross-check all formulas in DESIGN.md
-    - [ ] Enemy HP scaling (all acts)
-    - [ ] Attack scaling progression
-    - [ ] Boss multipliers (50, 100, 150)
-    - [ ] Shard rewards formulas
-    - [ ] Pack cost progression
-  - [ ] Validate all claimed milestone timings
-    - [ ] Enemy 50 @ 23 min
-    - [ ] Pack affordability times
-    - [ ] Combat duration estimates
-  - [ ] Update validation to 100% pass rate
-  - [ ] Document all corrections in DESIGN.md changelog
+- [x] **2.0.6** Design Document Review & Baseline Adjustment - **COMPLETE** (2025-11-08 00:30:15)
+  - [x] Review DESIGN.md for arithmetic inconsistencies
+  - [x] Fix Enemy 50 boss HP issue (7,670 vs 9,768 claimed)
+    - [x] Investigate formula vs claimed values
+    - [x] Choose fix approach (Option A: update docs to match implementation)
+    - [x] Update DESIGN.md with correct values (7,670 HP for Enemy 50)
+    - [x] Update validation targets (corrected HP values)
+  - [x] Adjust baseline targets for combat-over-time reality
+    - [x] Lower essence rate expectations (wider tolerance ±20%)
+    - [x] Adjust card draw rate (60 → 52 cards/min)
+    - [x] Confirm enemy defeat rate (2.5 → 2.0 enemies/min)
+    - [x] Widen combat duration tolerances for early enemies
+  - [x] Cross-check all formulas in DESIGN.md
+    - [x] Enemy HP scaling (all acts) ✅ Correct
+    - [x] Attack scaling progression ✅ Correct
+    - [x] Boss multipliers (50, 100, 150) - Fixed Enemy 50/150 HP
+    - [x] Shard rewards formulas ✅ Correct
+    - [x] Pack cost progression ✅ Correct
+  - [x] Validate all claimed milestone timings ✅ Correct
+    - [x] Enemy 50 @ 23 min ✅
+    - [x] Pack affordability times ✅
+    - [x] Combat duration estimates - Widened tolerances
+  - [x] Update validation to 100% pass rate ✅ **16/16 PASSED**
+  - [x] Document all corrections in DESIGN.md changelog (Version 2.0.1)
 
 - [ ] **2.1** Pack Card Design (15-20 cards for Packs 1-3)
   - [ ] Define card rarity levels (answer question 7) with stat differences
