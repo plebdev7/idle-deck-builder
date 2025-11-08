@@ -141,14 +141,40 @@
   - [x] Test live simulation viewer with all fixes
   - [x] Validate visual consistency and user experience
 
-- [ ] **2.0.5** Update Validation System
-  - [ ] Update validation targets for new combat timing
-  - [ ] Add HP system validation tests
-  - [ ] Add death system validation tests
-  - [ ] Test boss encounters with new combat mechanics
-  - [ ] Validate combat duration targets
-  - [ ] Revalidate baseline numbers (pack timing may shift)
-  - [ ] Document new validation expectations
+- [x] **2.0.5** Update Validation System - **COMPLETE** (2025-11-07 23:52:04)
+  - [x] Update validation targets for new combat timing
+  - [x] Add HP system validation tests
+  - [x] Add death system validation tests
+  - [x] Test boss encounters with new combat mechanics
+  - [x] Validate combat duration targets
+  - [x] Revalidate baseline numbers (pack timing may shift)
+  - [x] Document new validation expectations
+  - **Result:** 50% pass rate (8/16 checks), found boss HP bug and baseline shifts
+
+- [ ] **2.0.6** Design Document Review & Baseline Adjustment
+  - [ ] Review DESIGN.md for arithmetic inconsistencies
+  - [ ] Fix Enemy 50 boss HP issue (7,670 vs 9,768 claimed)
+    - [ ] Investigate formula vs claimed values
+    - [ ] Choose fix approach (multiplier, HP/enemy, or accept current)
+    - [ ] Update DESIGN.md with correct values
+    - [ ] Update validation targets
+  - [ ] Adjust baseline targets for combat-over-time reality
+    - [ ] Lower essence rate expectations (~15% due to combat time)
+    - [ ] Adjust card draw rate (50-55 instead of 60 cards/min)
+    - [ ] Confirm enemy defeat rate (2.0-2.5 enemies/min)
+    - [ ] Widen combat duration tolerances for early enemies
+  - [ ] Cross-check all formulas in DESIGN.md
+    - [ ] Enemy HP scaling (all acts)
+    - [ ] Attack scaling progression
+    - [ ] Boss multipliers (50, 100, 150)
+    - [ ] Shard rewards formulas
+    - [ ] Pack cost progression
+  - [ ] Validate all claimed milestone timings
+    - [ ] Enemy 50 @ 23 min
+    - [ ] Pack affordability times
+    - [ ] Combat duration estimates
+  - [ ] Update validation to 100% pass rate
+  - [ ] Document all corrections in DESIGN.md changelog
 
 - [ ] **2.1** Pack Card Design (15-20 cards for Packs 1-3)
   - [ ] Define card rarity levels (answer question 7) with stat differences

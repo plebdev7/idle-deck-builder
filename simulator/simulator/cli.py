@@ -247,7 +247,7 @@ def info() -> None:
     console.print(
         Panel.fit(
             "[bold cyan]Idle Card Battler - Gameplay Simulator[/bold cyan]\n"
-            "[dim]Version 0.2.0 - Task 2.0 Complete[/dim]",
+            "[dim]Version 0.3.0 - Task 2.0.5 Complete[/dim]",
             border_style="cyan",
         )
     )
@@ -261,7 +261,9 @@ def info() -> None:
     table.add_row("Core Combat Simulation", "[green]Complete[/green]", "Task 2.0")
     table.add_row("Generator Mechanics", "[green]Complete[/green]", "Task 2.0")
     table.add_row("Enemy Spawning & Scaling", "[green]Complete[/green]", "Task 2.0")
-    table.add_row("Baseline Validation", "[green]Complete[/green]", "Task 2.0")
+    table.add_row("Combat-Over-Time System", "[green]Complete[/green]", "Task 2.0.3-2.0.4")
+    table.add_row("HP & Death System", "[green]Complete[/green]", "Task 2.0.3-2.0.4")
+    table.add_row("Baseline Validation", "[green]Complete[/green]", "Task 2.0.5")
     table.add_row("Visualization (Plotly)", "[green]Complete[/green]", "Task 2.0")
     table.add_row("Live Terminal View", "[green]Complete[/green]", "Task 2.0.2")
     table.add_row("Card Design Testing", "[yellow]Planned[/yellow]", "Task 2.1-2.4")
@@ -284,7 +286,8 @@ def info() -> None:
     console.print(f"  Generation Rate: {deck.total_essence_rate}/sec")
     console.print(f"  Burst Essence: {deck.total_essence_burst}")
     
-    console.print("\n[dim]Run [cyan]sim live[/cyan] for real-time simulation view[/dim]")
+    console.print("\n[bold cyan]Available Commands:[/bold cyan]")
+    console.print("[dim]Run [cyan]sim live[/cyan] for real-time simulation view[/dim]")
     console.print("[dim]Run [cyan]sim validate[/cyan] to test baseline numbers[/dim]")
     console.print("[dim]Run [cyan]sim combat[/cyan] to run a simulation[/dim]")
     console.print("[dim]Run [cyan]sim --help[/cyan] to see all commands[/dim]")
