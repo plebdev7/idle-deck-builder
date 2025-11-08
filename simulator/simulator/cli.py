@@ -100,10 +100,13 @@ def combat(
         table.add_column("Value", style="white")
         
         table.add_row("Final Essence", f"{results['final_essence']:,.0f}")
-        table.add_row("Essence Rate", f"{results['final_essence_rate']:.1f}/sec")
+        table.add_row("Essence Rate", f"{results['player_essence_rate']:.1f}/sec")
         table.add_row("Cards Drawn", f"{results['cards_drawn']:,}")
         table.add_row("Enemies Defeated", f"{results['enemies_defeated']}/{results['enemies_encountered']}")
         table.add_row("Total Damage", f"{results['total_damage_dealt']:,.0f}")
+        table.add_row("Player HP", f"{results['player_hp']:.0f}/{results['player_max_hp']:.0f}")
+        table.add_row("Player Deaths", f"{results['player_deaths']}")
+        table.add_row("Furthest Enemy", f"{results['furthest_enemy']}")
         
         console.print(table)
         

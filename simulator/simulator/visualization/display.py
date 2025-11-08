@@ -40,6 +40,12 @@ class SimulationDisplay:
         self.attack = 0
         self.defense = 0
         
+        # Player state (new combat system)
+        self.player_hp = 100.0
+        self.player_max_hp = 100.0
+        self.player_deaths = 0
+        self.furthest_enemy = 0
+        
         # Enemy state
         self.enemy_number = 0
         self.enemy_hp = 0
@@ -48,7 +54,7 @@ class SimulationDisplay:
         self.enemy_defense = 0
         
         # Recent events
-        self.event_log: deque[dict[str, Any]] = deque(maxlen=8)
+        self.event_log: deque[dict[str, Any]] = deque(maxlen=20)
         
         # Last drawn card (for highlight)
         self.last_card: dict[str, Any] | None = None
@@ -73,6 +79,10 @@ class SimulationDisplay:
         enemy_max_hp: float,
         enemy_attack: int,
         enemy_defense: int,
+        player_hp: float = 100.0,
+        player_max_hp: float = 100.0,
+        player_deaths: int = 0,
+        furthest_enemy: int = 0,
     ) -> None:
         """Update current simulation state.
         
@@ -87,6 +97,10 @@ class SimulationDisplay:
             enemy_max_hp: Enemy max HP
             enemy_attack: Enemy attack
             enemy_defense: Enemy defense
+            player_hp: Current player HP
+            player_max_hp: Maximum player HP
+            player_deaths: Number of deaths
+            furthest_enemy: Furthest enemy reached
         """
         self.current_time = time
         self.essence = essence
@@ -98,6 +112,10 @@ class SimulationDisplay:
         self.enemy_max_hp = enemy_max_hp
         self.enemy_attack = enemy_attack
         self.enemy_defense = enemy_defense
+        self.player_hp = player_hp
+        self.player_max_hp = player_max_hp
+        self.player_deaths = player_deaths
+        self.furthest_enemy = furthest_enemy
         
     def add_event(self, event: dict) -> None:
         """Add event to log and handle card display.
@@ -112,6 +130,16 @@ class SimulationDisplay:
         # Update last card if this is a draw event
         if event_type == "draw":
             self.last_card = data
+            self.card_display_time = event_time
+        
+        # Show reshuffle in card display area
+        elif event_type == "reshuffle":
+            # Create a special "card" for reshuffle
+            self.last_card = {
+                "card_name": "🔄 DECK SHUFFLING...",
+                "card_id": "RESHUFFLE",
+                "is_reshuffle": True,
+            }
             self.card_display_time = event_time
             
         # Add to event log
@@ -145,7 +173,8 @@ class SimulationDisplay:
             Layout(name="header", size=5),
             Layout(name="main", ratio=1, minimum_size=8),
             Layout(name="packs", size=3),
-            Layout(name="controls", size=5),  
+            Layout(name="controls", size=5),
+        )
         
         # Render each section
         layout["header"].update(self._render_header())
@@ -171,9 +200,24 @@ class SimulationDisplay:
         
         # Player stats
         left_text.append("\n")
-        left_text.append(f"Attack: {self.attack:,}", style="red")
+        # Player HP bar (matching enemy format)
+        if self.player_max_hp > 0:
+            hp_pct = self.player_hp / self.player_max_hp
+            bar_width = 20
+            filled = int(hp_pct * bar_width)
+            bar = "█" * filled + "░" * (bar_width - filled)
+            hp_color = "green" if hp_pct > 0.5 else "yellow" if hp_pct > 0.25 else "red"
+            left_text.append(f"{bar} ", style=hp_color)
+            left_text.append(f"{self.player_hp:.0f}/{self.player_max_hp:.0f} HP", style="white")
+        else:
+            left_text.append(f"HP: {self.player_hp:.0f}/{self.player_max_hp:.0f}", style="green" if self.player_hp > 50 else "yellow" if self.player_hp > 20 else "red")
         left_text.append("  ")
-        left_text.append(f"Defense: {self.defense:,}", style="green")
+        left_text.append(f"ATK: {self.attack:,}", style="red")
+        left_text.append("  ")
+        left_text.append(f"DEF: {self.defense:,}", style="green")
+        if self.player_deaths > 0:
+            left_text.append("  ")
+            left_text.append(f"Deaths: {self.player_deaths}", style="dim red")
         
         # Enemy info
         right_text = Text()
@@ -187,10 +231,10 @@ class SimulationDisplay:
                 filled = int(hp_pct * bar_width)
                 bar = "█" * filled + "░" * (bar_width - filled)
                 right_text.append(f"{bar} ", style="red" if hp_pct > 0.5 else "yellow")
-                right_text.append(f"{self.enemy_hp:,.0f} / {self.enemy_max_hp:,.0f} HP\n", style="white")
+                right_text.append(f"{self.enemy_hp:,.0f} / {self.enemy_max_hp:,.0f} HP  ", style="white")
             
-            right_text.append(f"Attack: {self.enemy_attack}  ", style="red")
-            right_text.append(f"Defense: {self.enemy_defense}", style="green")
+            right_text.append(f"ATK: {self.enemy_attack}  ", style="red")
+            right_text.append(f"DEF: {self.enemy_defense}", style="green")
         else:
             right_text.append("No enemy\n", style="dim")
             
@@ -223,6 +267,15 @@ class SimulationDisplay:
         """Render recently drawn card highlight."""
         if not self.last_card:
             return Panel("", title="[dim]No card drawn yet[/dim]", border_style="dim")
+        
+        # Check if this is a reshuffle indicator
+        if self.last_card.get("is_reshuffle", False):
+            content = Text("Deck exhausted - Reshuffling...", style="yellow bold", justify="center")
+            return Panel(
+                Align.center(content, vertical="middle"),
+                title="[bold yellow]🔄 DECK SHUFFLE[/bold yellow]",
+                border_style="yellow",
+            )
             
         card_name = self.last_card.get("card_name", "Unknown Card")
         card_id = self.last_card.get("card_id", "")
@@ -297,18 +350,23 @@ class SimulationDisplay:
                 
             elif event_type == "enemy_spawn":
                 enemy_num = data.get("enemy_number", 0)
-                hp = data.get("health", 0)
+                hp = data.get("max_health", 0)  # Fixed: was "health", should be "max_health"
                 lines.append(Text(f"{time_str} - ", style="dim") + Text(f"Enemy #{enemy_num} spawned", style="red bold") + Text(f" ({hp:,.0f} HP)", style="dim"))
                 
             elif event_type == "victory":
                 enemy_num = data.get("enemy_number", 0)
+                # Show enemy HP from spawn event (need to track max_health)
                 lines.append(Text(f"{time_str} - ", style="dim") + Text(f"✓ Defeated Enemy #{enemy_num}", style="green bold"))
+                
+            elif event_type == "reshuffle":
+                deck_size = data.get("deck_size", 0)
+                lines.append(Text(f"{time_str} - ", style="dim") + Text(f"🔄 Deck shuffled", style="yellow") + Text(f" ({deck_size} cards)", style="dim"))
                 
             elif event_type == "pack_affordable":
                 pack_num = data.get("pack_number", 0)
                 lines.append(Text(f"{time_str} - ", style="dim") + Text(f"🎁 Pack {pack_num} affordable!", style="bright_green bold"))
                 
-        content = Group(*lines[:8])  # Show last 8 events
+        content = Group(*lines)  # Show all available events
         return Panel(content, title="Recent Activity", border_style="white")
         
     def _render_pack_status(self) -> RenderableType:
@@ -385,6 +443,10 @@ class SimulationDisplay:
         total_damage: float,
         pack_times: dict[int, float],
         death_enemy: int | None = None,
+        player_hp: float = 100.0,
+        player_max_hp: float = 100.0,
+        player_deaths: int = 0,
+        furthest_enemy: int = 0,
     ) -> RenderableType:
         """Render post-simulation summary screen.
         
@@ -398,6 +460,10 @@ class SimulationDisplay:
             total_damage: Total damage dealt
             pack_times: Pack affordable times (minutes)
             death_enemy: Enemy number that caused death (if any)
+            player_hp: Current player HP
+            player_max_hp: Maximum player HP
+            player_deaths: Number of deaths
+            furthest_enemy: Furthest enemy reached
             
         Returns:
             Rich renderable for summary screen
@@ -409,6 +475,14 @@ class SimulationDisplay:
         lines.append(Text(f"Duration: {duration:.1f} minutes", style="yellow"))
         lines.append(Text(f"Final Essence: {final_essence:,.0f} (+{final_rate:.0f}/sec)", style="cyan"))
         lines.append(Text(f"Enemies Defeated: {enemies_defeated} / {enemies_encountered}", style="white"))
+        
+        # New combat system stats
+        if furthest_enemy > 0:
+            lines.append(Text(f"Furthest Enemy: {furthest_enemy}", style="white"))
+        lines.append(Text(f"Player HP: {player_hp:.0f} / {player_max_hp:.0f}", style="green" if player_hp > 0 else "red"))
+        if player_deaths > 0:
+            lines.append(Text(f"Deaths: {player_deaths}", style="red"))
+        
         lines.append(Text(f"Cards Drawn: {cards_drawn:,}", style="white"))
         lines.append(Text(f"Total Damage: {total_damage:,.0f}", style="red"))
         lines.append(Text(""))

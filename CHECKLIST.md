@@ -115,14 +115,31 @@
     - [x] Document changelog (comprehensive Version 1.9 entry)
     - [x] Mark superseded sections
 
-- [ ] **2.0.4** Implement New Combat System
-  - [ ] Reimplement combat.py with combat-over-time mechanics
-  - [ ] Add Player class with HP system (current HP, max HP, scaling)
-  - [ ] Add death/respawn system (reset stats, keep essence)
-  - [ ] Update simulation loop for combat ticks
-  - [ ] Add combat duration tracking and metrics
-  - [ ] Test combat resolution with new mechanics
-  - [ ] Validate stat reset behavior (resets per enemy, essence persists)
+- [x] **2.0.4** Implement New Combat System - **COMPLETE** (2025-11-07 23:30:00)
+  - [x] Reimplement combat.py with combat-over-time mechanics
+  - [x] Add Player class with HP system (current HP, max HP, scaling)
+  - [x] Add death/respawn system (reset stats, keep essence)
+  - [x] Update simulation loop for combat ticks
+  - [x] Add combat duration tracking and metrics
+  - [x] Test combat resolution with new mechanics
+  - [x] Validate stat reset behavior (resets per enemy, essence persists)
+
+- [x] **2.0.4a** Fix CLI Bugs (sim combat, sim live) - **COMPLETE** (2025-11-07 23:02:47)
+  - [x] Document bugs found in sim combat and sim live
+  - [x] Fix display issues in live viewer
+  - [x] Fix error in sim combat command (chart generation KeyError)
+  - [x] Fix enemy HP always showing 0 in live viewer
+  - [x] Fix desynchronized card draw and combat ticks (combined into single 1s tick)
+  - [x] Test both commands thoroughly
+  - [x] Validate edge cases (death events, stat resets, HP display)
+
+- [x] **2.0.4b** Live Sim Bug Fixes and Improvements - **COMPLETE** (2025-11-07 23:15:39)
+  - [x] Fix enemy health in Recent Activity always showing 0 HP
+  - [x] Fix enemy health bar always showing out of 1
+  - [x] Add tower mage health bar to match enemy health bar
+  - [x] Add deck shuffle indicator in card display and recent activity
+  - [x] Test live simulation viewer with all fixes
+  - [x] Validate visual consistency and user experience
 
 - [ ] **2.0.5** Update Validation System
   - [ ] Update validation targets for new combat timing

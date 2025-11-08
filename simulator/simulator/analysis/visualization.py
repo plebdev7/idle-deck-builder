@@ -39,7 +39,7 @@ def create_progression_chart(results: dict, title: str = "Simulation Progression
     # Extract time series data
     times = [s["time_minutes"] for s in state_history]
     essence = [s["essence"] for s in state_history]
-    essence_rate = [s["essence_rate"] for s in state_history]
+    essence_rate = [s["player_essence_rate"] for s in state_history]
 
     # Create figure with dual y-axes
     fig = make_subplots(
@@ -136,8 +136,8 @@ def create_combat_stats_chart(results: dict) -> go.Figure:
         return fig
 
     times = [s["time_minutes"] for s in state_history]
-    attack = [s["attack"] for s in state_history]
-    defense = [s["defense"] for s in state_history]
+    attack = [s["player_attack"] for s in state_history]
+    defense = [s["player_defense"] for s in state_history]
     enemies = [s["enemies_defeated"] for s in state_history]
 
     fig = make_subplots(

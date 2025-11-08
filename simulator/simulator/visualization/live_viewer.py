@@ -237,6 +237,12 @@ class LiveViewer:
         attack = 0
         defense = 0
         
+        # Player state (new combat system)
+        player_hp = 100.0
+        player_max_hp = 100.0
+        player_deaths = 0
+        furthest_enemy = 0
+        
         # Track enemy state
         enemy_number = 0
         enemy_hp = 0.0
@@ -249,6 +255,7 @@ class LiveViewer:
         # Process all events up to current time
         last_enemy_spawn = None
         last_victory = None
+        last_combat_tick = None  # Track most recent combat tick for enemy HP
         
         for event in self.simulation_results.get("events", []):
             event_time = event.get("time", 0)
@@ -271,12 +278,35 @@ class LiveViewer:
             elif event_type == "enemy_spawn":
                 last_enemy_spawn = event
                 last_victory = None  # Clear previous victory
+                last_combat_tick = None  # Clear previous combat ticks
                 enemy_spawn_time = event_time
                 attack_at_spawn = attack  # Capture attack at spawn time
+                # Track player HP from spawn event
+                player_hp = data.get("player_hp", player_hp)
+                
+            elif event_type == "combat_tick":
+                # Track latest combat tick for enemy HP
+                last_combat_tick = event
+                # Update player HP from combat tick
+                player_hp = data.get("player_hp", player_hp)
                 
             elif event_type == "victory":
                 last_victory = event
                 # Keep last_enemy_spawn so we can access enemy stats
+                # Update player HP from victory event
+                player_hp = data.get("player_hp", player_hp)
+                # Reset attack/defense after victory (new combat system)
+                attack = 0
+                defense = 0
+                
+            elif event_type == "death":
+                # Player died - track death and reset state
+                player_deaths += 1
+                player_hp = player_max_hp
+                attack = 0
+                defense = 0
+                essence_rate = 0.0
+                furthest_enemy = data.get("furthest_enemy", furthest_enemy)
         
         # Calculate essence from rate over time
         # Essence accumulates continuously based on rate
@@ -317,29 +347,26 @@ class LiveViewer:
             # We have enemy spawn info (may be alive or defeated)
             data = last_enemy_spawn.get("data", {})
             enemy_number = data.get("enemy_number", 0)
-            enemy_max_hp = data.get("health", 0)
+            enemy_max_hp = data.get("max_health", 0)  # Fixed: was "health", should be "max_health"
             enemy_attack = data.get("attack", 0)
             enemy_defense = 0
             
-            # Visual delay: Show enemy at full HP for 0.3 seconds after spawn
-            # This gives viewers time to see the enemy before damage is applied
-            time_since_spawn = current_sim_time - enemy_spawn_time
-            visual_delay = 0.3  # seconds
-            
-            if time_since_spawn < visual_delay:
-                # Enemy just spawned - show at full HP for visual clarity
-                enemy_hp = enemy_max_hp
+            # Check if we have combat tick data for real-time HP
+            if last_combat_tick:
+                # Use actual enemy HP from most recent combat tick
+                tick_data = last_combat_tick.get("data", {})
+                enemy_hp = tick_data.get("enemy_hp", 0.0)
+            elif last_victory:
+                # Victory means enemy is defeated
+                victory_enemy = last_victory.get("data", {}).get("enemy_number", 0)
+                if victory_enemy == enemy_number:
+                    enemy_hp = 0.0
+                else:
+                    # Not yet in combat (shouldn't happen but fallback)
+                    enemy_hp = enemy_max_hp
             else:
-                # Apply damage after visual delay
-                # Enemy HP = Initial HP - Attack at spawn time
-                # (Combat resolves instantly when enemy spawns in simulation)
-                enemy_hp = max(0.0, enemy_max_hp - attack_at_spawn)
-                
-                # If there's a victory event for this enemy, HP is 0
-                if last_victory:
-                    victory_enemy = last_victory.get("data", {}).get("enemy_number", 0)
-                    if victory_enemy == enemy_number:
-                        enemy_hp = 0.0
+                # Enemy just spawned, no combat ticks yet - show at full HP
+                enemy_hp = enemy_max_hp
             
         self.display.update_state(
             time=current_sim_time,
@@ -352,6 +379,10 @@ class LiveViewer:
             enemy_max_hp=max(enemy_max_hp, 1.0),
             enemy_attack=enemy_attack,
             enemy_defense=enemy_defense,
+            player_hp=player_hp,
+            player_max_hp=player_max_hp,
+            player_deaths=player_deaths,
+            furthest_enemy=furthest_enemy,
         )
     
     def _handle_event(self, event: dict) -> None:
@@ -387,12 +418,18 @@ class LiveViewer:
         # Extract data
         duration = self.simulation_results.get("duration_minutes", 0)
         final_essence = self.simulation_results.get("final_essence", 0)
-        final_rate = self.simulation_results.get("final_essence_rate", 0)
+        final_rate = self.simulation_results.get("player_essence_rate", 0)
         enemies_defeated = self.simulation_results.get("enemies_defeated", 0)
         enemies_encountered = self.simulation_results.get("enemies_encountered", 0)
         cards_drawn = self.simulation_results.get("cards_drawn", 0)
         total_damage = self.simulation_results.get("total_damage_dealt", 0)
         pack_times = self.simulation_results.get("pack_affordable_times", {})
+        
+        # New combat system data
+        player_hp = self.simulation_results.get("player_hp", 0)
+        player_max_hp = self.simulation_results.get("player_max_hp", 100)
+        player_deaths = self.simulation_results.get("player_deaths", 0)
+        furthest_enemy = self.simulation_results.get("furthest_enemy", 0)
         
         # Check if died to a boss
         death_enemy = None
@@ -410,6 +447,10 @@ class LiveViewer:
             total_damage=total_damage,
             pack_times=pack_times,
             death_enemy=death_enemy,
+            player_hp=player_hp,
+            player_max_hp=player_max_hp,
+            player_deaths=player_deaths,
+            furthest_enemy=furthest_enemy,
         )
         
         self.console.print("\n")
