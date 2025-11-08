@@ -130,7 +130,7 @@ Document decisions in DESIGN.md with rationale and implications for other system
 - "Rogue with the Dead" inspired death-as-progression model
 - Prestige is separate advanced mechanic for late game
 
-#### 2.0.2 Live Terminal Simulation View
+#### 2.0.2 Live Terminal Simulation View ✅ COMPLETE
 - Create live terminal visualization mode for simulator
 - **Display Features:**
   - Real-time card draw display with effects
@@ -149,6 +149,175 @@ Document decisions in DESIGN.md with rationale and implications for other system
   - Post-simulation summary screen
   - Option to replay or generate charts
 - **Purpose:** Understand game flow, pacing, and card interactions during card design work (Tasks 2.1-2.4)
+
+#### 2.0.3 Combat System Redesign (DESIGN SESSION - CRITICAL)
+**Purpose:** Redesign combat from instant-resolution to Trimps-style combat-over-time model
+
+**Problem:** Current combat accumulates attack/defense indefinitely, resolving instantly. Every enemy dies in one tick. No actual "combat" occurs.
+
+**Solution:** Combat-over-time with player HP, death mechanics, and stat resets per enemy.
+
+**Part A: Combat Mechanics Specification (60-90 min)**
+- Design combat tick system
+  - Tick rate decision (0.1s, 1.0s, or other)
+  - Damage calculation per tick
+  - Defense mechanics (flat reduction, percentage, cap)
+- Design player HP system
+  - Starting HP value
+  - HP scaling with progression (per enemy, per pack, prestige)
+  - HP recovery timing (after enemy, after pack, never)
+  - Max HP vs Current HP mechanics
+- Specify stat reset mechanics
+  - Attack/Defense reset to 0 after each enemy
+  - Essence rate persists across enemies (only resets on death)
+  - Cards drawn during enemy fight add permanently until reset
+- Create combat flow examples
+  - Tick-by-tick walkthrough of enemy encounter
+  - Show stat changes during combat
+  - Demonstrate card draw effects mid-combat
+
+**Part B: Death & Respawn System (45-60 min)**
+- Define death conditions
+  - HP reaches 0 during combat
+  - Timeout against unkillable enemy (if applicable)
+- Specify death consequences
+  - Stats reset: Attack, Defense, Essence Rate, HP
+  - Resources retained: Accumulated essence, card collection, deck composition
+  - Respawn location: Enemy 1
+- Integrate with death loop system (Session 2.0.1)
+  - Death as progression mechanic (spend essence between attempts)
+  - Class switching on death (if owns class cards)
+  - 3-6 death loops expected to beat first boss
+- Design death screen feedback
+  - Progress indicators ("You reached Enemy 47")
+  - Essence/resources earned this run
+  - Encouragement to improve deck
+
+**Part C: Balance & Scaling (60-90 min)**
+- Establish combat duration targets
+  - Early enemies (1-50): Target seconds to defeat
+  - Mid enemies (51-100): Target seconds to defeat
+  - Late enemies (101-149): Target seconds to defeat
+  - Boss enemies (50, 100, 150): Target seconds to defeat
+- Design player HP scaling formulas
+  - Starting HP baseline
+  - Growth per enemy defeated
+  - Growth per pack purchased
+  - Prestige HP bonuses
+- Rebalance enemy HP and attack
+  - Current HP formulas still appropriate?
+  - Boss multipliers still correct?
+  - Attack scaling needs adjustment?
+  - New validation targets needed
+- Update card stat ranges
+  - Starter deck stat rebalancing
+  - Pack card stat ranges update
+  - Generator vs combat card ratios
+  - Combat duration vs essence generation tradeoff
+
+**Part D: Documentation (30-45 min)**
+- Update DESIGN.md combat system section
+  - Replace instant-resolution with combat-over-time
+  - Document stat reset mechanics
+  - Specify HP system and death mechanics
+  - Version 1.9
+- Update baseline numbers section
+  - New combat duration expectations
+  - Revised enemy scaling if needed
+  - Updated card stat ranges
+- Update first 30 minutes experience
+  - How death fits into first session
+  - Do players die in first 30 minutes?
+  - Tutorial death at Enemy 150 still valid?
+- Document changelog
+  - Mark superseded sections (old combat)
+  - Explain rationale for redesign
+  - Cross-reference to Session 2.0.3
+
+**Key Decision (Pre-Decided):**
+- Cards add to attack/defense permanently during enemy fight
+- Stats reset to 0 when enemy dies
+- Essence rate persists (only resets on death)
+
+**Deliverables:**
+- Complete combat tick system specification with formulas
+- Player HP system design (starting HP, scaling, recovery)
+- Death/respawn mechanics integrated with death loop system
+- Combat duration targets established
+- Enemy scaling validated against new combat model
+- Card stat ranges updated
+- DESIGN.md Version 1.9 with combat redesign
+
+**Blocks:** Task 2.1 (Pack Card Design) - Cannot design cards without knowing combat mechanics
+
+#### 2.0.4 Implement New Combat System
+**Purpose:** Reimplement simulator with new combat-over-time mechanics
+
+**Implementation Tasks:**
+- Reimplement `combat.py` with combat-over-time system
+  - Replace instant resolution with tick-based combat
+  - Add combat duration tracking
+  - Update damage calculation to per-tick model
+- Add `Player` class with HP system
+  - Current HP and Max HP attributes
+  - HP scaling mechanics
+  - HP recovery between enemies
+  - Death detection (HP = 0)
+- Add death/respawn system
+  - Reset combat stats (ATK/DEF) on death
+  - Reset essence rate on death
+  - Keep accumulated essence and collection
+  - Respawn at Enemy 1
+- Update simulation loop
+  - Add combat tick intervals
+  - Process combat ticks separately from card draws
+  - Handle death and respawn events
+- Add combat duration metrics
+  - Track time per enemy
+  - Track total combat time vs idle time
+  - Combat efficiency metrics
+
+**Testing:**
+- Validate combat tick mechanics work correctly
+- Test HP depletion and death conditions
+- Verify stat reset behavior (resets per enemy, essence persists)
+- Test boss encounters with new combat
+- Ensure death loop works as designed
+
+**Estimated Time:** 2-3 hours implementation
+
+#### 2.0.5 Update Validation System
+**Purpose:** Update validation to test new combat mechanics
+
+**Validation Updates:**
+- Update validation targets for new combat timing
+  - Pack affordability may shift due to combat duration
+  - Essence accumulation timing affected by combat
+  - Enemy defeat rate changes with combat duration
+- Add HP system validation
+  - Starting HP correct
+  - HP scaling formulas working
+  - HP recovery timing correct
+  - Death triggers at HP = 0
+- Add death system validation
+  - Stat reset on death working
+  - Essence rate reset on death
+  - Accumulated essence retained
+  - Respawn at Enemy 1 working
+- Test boss encounters with new combat
+  - Mini-bosses at 50, 100 defeatable with starter deck
+  - Major boss at 150 appropriately challenging
+  - Combat duration targets met
+- Validate combat duration targets
+  - Early enemies defeated in target time
+  - Boss enemies take longer as designed
+  - Combat feels appropriately paced
+- Revalidate baseline numbers
+  - All 8 validation checks re-run
+  - New tolerances if needed
+  - Document any shifts in timing
+
+**Estimated Time:** 1-2 hours
 
 #### 2.1 Pack Card Design (15-20 cards for Packs 1-3)
 - Define card rarity levels (answer question 7) with stat differences
@@ -202,7 +371,10 @@ Document decisions in DESIGN.md with rationale and implications for other system
 ### Deliverables
 - ✅ **Gameplay simulator** (playable, validates Session 1.3 designs)
 - ✅ **Combat progression design** (enemy scaling, bosses, death loops)
-- **Live simulation viewer** (terminal-based real-time visualization)
+- ✅ **Live simulation viewer** (terminal-based real-time visualization)
+- **Combat system redesign** (Trimps-style combat-over-time, HP system, death mechanics)
+- **Updated simulator** (implements new combat system with death/respawn)
+- **Updated validation** (tests new combat mechanics and timing)
 - Complete card design document with 15-20 Arcane tier pack cards
 - Card data structure specification (all fields, types, ranges)
 - Card leveling progression spreadsheet (show stat growth curves)

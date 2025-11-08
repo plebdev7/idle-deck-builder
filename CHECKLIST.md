@@ -81,7 +81,57 @@
   - [x] Add `sim live` CLI command
   - [x] Test with starter deck simulation (validated with 1-min test)
   - [x] Cross-platform support (Windows via msvcrt, Unix via termios)
-  - Note: Windows users need `$env:PYTHONIOENCODING='utf-8'` before running
+
+- [x] **2.0.3** Combat System Redesign (DESIGN SESSION - CRITICAL) - **COMPLETE** (2025-11-07 22:00:00)
+  - **Part A: Combat Mechanics Specification** ✅ COMPLETE
+    - [x] Design combat tick system (1.0 second per tick, ATK - DEF damage)
+    - [x] Design player HP system (100 HP start, shard upgrades only, no auto-heal)
+    - [x] Specify stat reset mechanics (ATK/DEF reset per enemy, essence rate persists)
+    - [x] Create combat flow examples (tick-by-tick Enemy 50 walkthrough)
+    - [x] Document damage formulas and defense mechanics (flat reduction)
+    - [x] Specify deck cycling (continuous with 1s reshuffle cooldown, 8-card minimum)
+  - **Part B: Death & Respawn System** ✅ COMPLETE
+    - [x] Define death conditions (HP = 0, no timeout)
+    - [x] Specify death consequences (stats reset, essence persists)
+    - [x] Integrate with death loop system (Session 2.0.1)
+    - [x] Design death screen and feedback (celebratory tone, resource display)
+    - [x] Document respawn mechanics (Enemy 1, full HP restore, keep resources)
+    - [x] Design class switching on death
+  - **Part C: Balance & Scaling** ✅ COMPLETE
+    - [x] Calculate actual combat durations with continuous cycling
+    - [x] Validate 30-minute target = Enemy 50 → ADJUSTED to Enemy 60 (Enemy 50 at ~23 min)
+    - [x] Design HP upgrade costs (50/75/100/125/150 shards for +10 HP, Tier 1)
+    - [x] Rebalance enemy HP → NEW: Act-based step function (120/130/140 per enemy by Act)
+    - [x] Update card stat ranges → Starter deck validated, Pack 1-3 ready for design
+    - [x] Validate pack affordability timing → UNCHANGED (essence independent of combat)
+    - [x] Create balance spreadsheet → Documented in `.cursor/log/balance/`
+  - **Part D: Documentation** ✅ COMPLETE
+    - [x] Update DESIGN.md combat system section (Version 1.9)
+    - [x] Update enemy attack scaling (Enemy 50 first attacker)
+    - [x] Update Mini-Boss #1 specification (defense tutorial)
+    - [x] Update baseline numbers section (new HP formula, combat durations)
+    - [x] Update first 30 minutes experience (new milestones)
+    - [x] Finalize DESIGN.md Version 1.9
+    - [x] Document changelog (comprehensive Version 1.9 entry)
+    - [x] Mark superseded sections
+
+- [ ] **2.0.4** Implement New Combat System
+  - [ ] Reimplement combat.py with combat-over-time mechanics
+  - [ ] Add Player class with HP system (current HP, max HP, scaling)
+  - [ ] Add death/respawn system (reset stats, keep essence)
+  - [ ] Update simulation loop for combat ticks
+  - [ ] Add combat duration tracking and metrics
+  - [ ] Test combat resolution with new mechanics
+  - [ ] Validate stat reset behavior (resets per enemy, essence persists)
+
+- [ ] **2.0.5** Update Validation System
+  - [ ] Update validation targets for new combat timing
+  - [ ] Add HP system validation tests
+  - [ ] Add death system validation tests
+  - [ ] Test boss encounters with new combat mechanics
+  - [ ] Validate combat duration targets
+  - [ ] Revalidate baseline numbers (pack timing may shift)
+  - [ ] Document new validation expectations
 
 - [ ] **2.1** Pack Card Design (15-20 cards for Packs 1-3)
   - [ ] Define card rarity levels (answer question 7) with stat differences

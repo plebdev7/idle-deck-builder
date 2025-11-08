@@ -427,103 +427,277 @@ Max Copies per Card:    3 copies
 
 ---
 
-## Combat System
+## Combat System (Session 2.0.3 - Combat-Over-Time Redesign)
 
-### Fully Passive Combat with Card Draw Mechanic
+**⚠️ DESIGN IN PROGRESS:** Parts A & B complete (mechanics & death system), Parts C & D pending (balance & documentation). See Session Log: `.cursor/log/sessions/session-2-0-3-combat-system-redesign.md`
 
-**Core Principle:** Combat is fully automated. Player strategy is in deck construction, not combat management.
+### Core Combat Mechanics (Trimps-Style Combat-Over-Time)
 
-#### Combat Loop (Session 1.2 Decision)
+**Design Philosophy:** Combat is fully automated with tick-based resolution. Player strategy is in deck construction. Combat happens over multiple seconds with HP depletion, creating strategic depth through timing and stat accumulation.
 
-**Two-Phase System: Charging + Combat**
+#### Combat Tick System
 
-**Phase 1: Charging (Continuous)**
-- Cards drawn from deck at fast intervals (e.g., every 0.5-1 second)
-- Each drawn card adds its stats to accumulated Power and Defense
-- Drawing continues constantly, building combat readiness
-- Deck cycles and reshuffles when exhausted
-- Power/Defense accumulate over time
+**Tick Rate:** 1.0 second per tick
+- Aligns with card draw rate (1 card/second)
+- Simple calculations and predictable pacing
+- Combat resolves tick-by-tick until victory or death
 
-**Phase 2: Combat (Interval-Based)**
-- Enemies arrive at regular intervals (e.g., every 10-15 seconds)
-- When enemy arrives:
-  - Accumulated Power becomes Attack value
-  - Player Defense vs Enemy Attack
-  - Player Attack vs Enemy Defense
-  - Victory/defeat determined
-  - Rewards granted on victory
-- Card drawing continues during combat
-- Brief recovery period after enemy defeat before next enemy
-
-**Combat Flow Example:**
+**Damage Formulas (Per Tick):**
 ```
-Time 0-10s:   [CHARGING] Draw cards continuously, Power/Defense build up
-Time 10s:     [ENEMY ARRIVES] Combat resolves with accumulated stats
-Time 10-25s:  [FIGHTING + CHARGING] Combat ongoing, cards still drawing
-Time 25s:     [ENEMY DEFEATED] Rewards granted
-Time 25-35s:  [CHARGING] Brief recovery, power accumulates
-Time 35s:     [NEXT ENEMY] Cycle repeats
+Player Damage Dealt = max(Player_Attack - Enemy_Defense, 0)
+Player Damage Taken = max(Enemy_Attack - Player_Defense, 0)
 ```
 
-#### Combat Mechanics
-- **Auto-Battles:** Fully automated, no player input during combat
-- **Card Draw Strategy:** Deck composition and draw order matter
-- **Stat Accumulation:** Cards drawn = power built
-- **Deck Cycling:** Fast draw means deck cycles multiple times per enemy
-- **Results:** Victories earn resources, unlock content, progress milestones
+**Key Mechanics:**
+- No minimum damage (perfect defense = 0 damage taken)
+- Cards drawn mid-fight break stalemates naturally
+- Flat damage reduction (Attack - Defense)
+- Simple, predictable calculations
 
-#### Combat Triggers
-- **Interval-Based Battles:** Enemies arrive at regular intervals
-- **Milestone Battles:** Special boss/challenge battles (different intervals/mechanics)
-- **Event Battles:** Periodic special encounters
-- **Wave System (Future):** Boss waves, escalating challenges
+#### Player HP System
 
-#### Combat Progression
-- **Difficulty Scaling:** Enemy stats scale with player progression
-- **Victory Rewards:** Resources (primarily Arcane Essence), pack unlocks, milestone progress
-- **Defeat Consequences:** May slow progression, but no permanent loss (light roguelike)
-- **Draw Speed Upgrades:** Potential progression path (draw cards faster)
-- **Interval Tuning:** Enemy arrival intervals may change with progression
+**Starting HP:** 100 HP (fixed baseline)
 
-#### Offline Calculation
-Offline progress calculated as:
+**HP Scaling:**
+- ❌ No automatic HP growth per enemy defeated
+- ❌ No automatic HP growth per pack purchased
+- ✅ Shard upgrades: Spend shards for permanent max HP increases (see HP Upgrade System below)
+- ✅ Card mechanics: Cards can temporarily boost max HP, heal, or add HP regen
+
+**HP Recovery:**
+- ❌ No automatic healing between enemies
+- ❌ No healing after victories
+- ✅ Full heal only on death/respawn
+- ✅ Healing via card mechanics during run (instant heal, HP regen)
+
+**HP Upgrade System (Shard Spending):**
+- **Tier 1 (HP 100 → 150):** 5 upgrades at 50/75/100/125/150 shards (+10 HP each, 500 total)
+- **Tier 2 (HP 150 → 200):** 5 upgrades at 175-300 shards (+10 HP each, ~1,200 total)
+- **Tier 3 (HP 200 → 300):** 10 upgrades at 325-750 shards (+10 HP each, ~5,000 total)
+- **Expected progression:** ~600-700 shards by Enemy 50, enough for 5-7 upgrades (+50-70 HP)
+- **Death Loop integration:** Spend shards on HP after Loop 1, start Loop 2 with 150-170 HP
+
+**Strategic Implications:**
+- HP is a precious, depleting resource
+- No healing between enemies = death spiral gameplay
+- Must manage HP across entire run
+- Healing cards become strategically valuable
+- Death is inevitable without healing strategy
+
+#### Continuous Deck Cycling
+
+**Card Draw Mechanic:**
+- Cards draw at 1 card/second continuously
+- When deck exhausts, **1-second reshuffle cooldown**
+- After cooldown, deck immediately reshuffles and drawing continues
+- Stats accumulate with each cycle (exponential growth)
+
+**Example: 8-Card Deck**
 ```
-Cards Drawn = (Draw Rate × Time Away)
-Power Accumulated = Sum of drawn card stats
-Battles Fought = (Time Away / Battle Interval)
-Estimated Victories = Battle Win Rate × Battles Fought
-Resources Earned = Victories × Reward per Victory
+Cycle 1 (Ticks 0-7):   Draw 8 cards → 0 to 62 ATK
+Tick 8:                Reshuffle cooldown (1 second)
+Cycle 2 (Ticks 9-16):  Draw 8 cards again → 62 to 124 ATK (+62)
+Tick 17:               Reshuffle cooldown
+Cycle 3 (Ticks 18-25): Draw 8 cards again → 124 to 186 ATK (+62)
+... continues until enemy dies or player dies
 ```
+
+**Reshuffle Cooldown Benefits:**
+- Small decks: 8 cards + 1s cooldown = 9s cycle (11% downtime)
+- Large decks: 15 cards + 1s cooldown = 16s cycle (6% downtime)
+- Slightly favors larger decks (less % downtime)
+
+**Deck Size Constraints:**
+- **Minimum:** 8 cards (prevents tiny deck exploit)
+- **Maximum:** Determined by active class (varies by rarity)
+
+#### Stat Accumulation and Reset
+
+**During Enemy Fight:**
+- Cards drawn add to Attack and Defense permanently
+- Stats continue accumulating with each deck cycle
+- Stats reset only when enemy dies or player dies
+
+**When Enemy Dies:**
+- ✅ Player Attack → **Reset to 0**
+- ✅ Player Defense → **Reset to 0**
+- ✅ Essence Rate → **PERSISTS** (carries forward)
+- ✅ HP → **NO HEAL** (damage carries forward to next enemy)
+- ✅ Accumulated Essence → **PERSISTS**
+- Next enemy spawns, stats start from 0 again
+
+**When Player Dies:**
+- ✅ Player Attack → Reset to 0
+- ✅ Player Defense → Reset to 0
+- ✅ Essence Rate → Reset to 0
+- ✅ Current HP → **Full heal to max HP**
+- ✅ Max HP → Based on permanent shard upgrades only
+- ✅ Accumulated Essence → **PERSISTS** (critical for death loop)
+- ✅ Enemy Progress → Reset to Enemy 1
+- ✅ Card Collection → **PERSISTS**
+- ✅ Deck Composition → **PERSISTS**
+
+#### Combat Flow Example
+
+**Enemy 50: 3,246 HP, 10 ATK (First Attacker)**
+**Player: 100 HP, 8-card starter deck**
+
+```
+CYCLE 1 (Ticks 0-7: Drawing cards)
+Tick 0: 0 ATK, 0 DEF
+  - Damage dealt: 0 | Damage taken: 10 | Player: 90 HP
+
+Tick 1: 20 ATK, 0 DEF (Arcane Bolt drawn)
+  - Damage dealt: 20 | Damage taken: 10 | Player: 80 HP
+
+Tick 2: 20 ATK, 18 DEF (Mystic Shield drawn)
+  - Damage dealt: 20 | Damage taken: 0 (defense working!)
+
+Ticks 3-7: Continue drawing, build to 62 ATK, 54 DEF
+
+Tick 8: [RESHUFFLE COOLDOWN - 1 second]
+  - Still dealing damage (62/tick), taking 0 damage (defense > attack)
+
+CYCLE 2 (Ticks 9-16)
+  - Stats grow: 62 → 124 ATK, 54 → 108 DEF
+  - Damage accelerates
+
+CYCLE 3+ (Ticks 17+)
+  - Stats continue growing: 186 ATK, 248 ATK, etc.
+  - Enemy defeated around Tick 28-29
+
+Total Time: ~28-29 seconds
+Player HP: ~80/100 (lost 20 HP before defense kicked in)
+```
+
+#### Death System
+
+**Death Condition:** HP reaches 0 during combat
+- Instant death, no "saving throw"
+- Can occur at any tick (during draw or reshuffle)
+
+**Death Screen:**
+```
+═══════════════════════════════════════
+         DEFEATED AT ENEMY 47
+═══════════════════════════════════════
+
+ Progress: 47/50 to Mini-Boss #1
+ 
+ This Run:
+   Essence Earned:     32,450
+   Shards Earned:      127
+   Time Alive:         14m 23s
+   
+ Total Resources:
+   Total Essence:      68,900
+   Total Shards:       283
+   
+═══════════════════════════════════════
+   Your deck grows stronger with
+   each attempt. Spend your resources
+   and try again!
+═══════════════════════════════════════
+
+ [View Collection]  [Spend Shards]  [Continue]
+```
+
+**Death Screen Tone:**
+- Celebratory of progress made (not punishing)
+- Shows what you earned this run
+- Shows total resources available
+- Encourages spending and improving
+
+**Class Switching on Death:**
+- Death screen offers class switch option (if you own other class cards)
+- Can switch class before respawning
+- Deck adjusts to new class's limits automatically
+
+**Respawn Mechanics:**
+- Stats reset (0 ATK, 0 DEF, 0 Essence/sec)
+- HP restored to full (based on permanent max HP)
+- Enemy counter resets to Enemy 1
+- Accumulated essence and shards persist
 
 #### Strategic Implications
-- **Deck Cycling Speed:** Smaller decks cycle faster, larger decks cycle slower
-- **Card Draw Order Matters:** For draw mechanic to be meaningful, order must affect outcomes
-- **Generator Cards in Draw:** Drawing generator cards may trigger generation effects
-- **Combat Power Curve:** Deck must accumulate power faster than enemy difficulty scales
-- **Balanced Deck Required:** Need both generators (economy) and combat cards (power)
 
-#### Order-Dependent Card Effects (To Be Designed in Session 5)
+**1. HP as Precious Resource**
+- No healing between enemies
+- Must survive entire run on starting HP (unless healing cards)
+- Death is inevitable without healing strategy
+- Creates "how far can you go?" gameplay
 
-**Critical Design Note:** Card draw order must create meaningful variance, otherwise draw mechanic is unnecessary.
+**2. Defense Becomes Critical**
+- Must draw defense cards FAST or take heavy damage
+- Defense > Enemy Attack = invulnerable
+- Defense < Enemy Attack = death spiral
+- Card draw order matters enormously
 
-**Potential Order-Dependent Mechanics:**
-- **Multipliers:** "Next 3 cards deal +50% damage"
-- **Modifiers:** "Next card's attack is doubled"
-- **Combo Chains:** Card A enhances Card B if drawn in sequence
-- **Temporary Buffs:** "For next 5 cards drawn, +10 power"
-- **Conditional Effects:** "If previous card was Fire, trigger X"
-- **Persistent State:** Some effects last until deck reshuffle
-- **Reset Triggers:** Effects may reset on enemy defeat, deck cycle, or time intervals
+**3. Combat Ramp-Up Dynamics**
+- Early fight: Vulnerable (low stats)
+- Mid fight: Ramping (stats accumulating)
+- Late fight: Overwhelming (massive stats from multiple cycles)
+- Longer fights = more cycles = godlike power eventually
 
-**State Management Considerations:**
-- What persists across enemy defeats?
-- What resets on deck reshuffle?
-- How do effects stack or override each other?
-- Timing of effect application vs resolution
+**4. Death Spirals Are Intentional**
+- Low HP → need to survive longer → need more defense
+- Creates tension and "oh no" moments
+- Death loop is expected progression mechanic
 
-**Design Goal:** Draw order creates strategic variance without making combat unpredictable or unbalanced.
+**5. Card Design Space Opens Up**
+- Instant heal cards (restore X HP)
+- HP regen cards (+Y HP per tick for Z seconds)
+- Max HP boost cards (temp +50 max HP this run)
+- Defense-focused strategies become viable
+- "Lifesteal" cards (deal damage, heal for %)
+- Shield/barrier cards (temporary defense boost)
 
-**To Be Specified:** Session 5 will design concrete card effect types, timing rules, and state management.
+**6. Shard Upgrades Gain Value**
+- Permanent max HP increases = run further each loop
+- Permanent attack/defense boosts = faster kills, less damage
+- Each death loop, spend shards to grow stronger
+
+#### Combat Duration (Session 2.0.3 Part C - FINALIZED)
+
+**Combat Times with Starter Deck (62 ATK, 54 DEF):**
+```
+Enemy 1 (20 HP):          ~2 seconds
+Enemy 10 (1,100 HP):      ~17 seconds
+Enemy 25 (2,900 HP):      ~29 seconds
+Enemy 50 (9,768 HP):      ~47 seconds (Mini-Boss #1)
+Enemy 100 (18,555 HP):    ~90 seconds (Mini-Boss #2, requires Pack 1)
+Enemy 150 (38,680 HP):    ~180+ seconds (Major Boss, requires Packs 1-3)
+```
+
+**Session Milestones:**
+- **~23 minutes:** Enemy 50 reached (Mini-Boss #1 - First Attacker)
+- **~30 minutes:** Enemy 60 reached (alternate milestone)
+- **~35 minutes:** Enemy 67 - Expected death with starter deck (HP depleted)
+
+#### Offline Calculation (To Be Specified)
+
+Needs redesign for combat-over-time system. Previous instant-resolution calculation obsolete.
+
+**To Be Designed in Part C:**
+- Average combat duration per enemy
+- Average essence generation rate with combat duration
+- Estimated progression distance for offline time
+
+---
+
+**⚠️ SUPERSEDED SECTIONS:**
+The following sections from Version 1.8 are superseded by this combat redesign:
+- Old "Combat Loop (Session 1.2 Decision)" - Replaced with tick-based combat
+- Old "Two-Phase System: Charging + Combat" - No longer instant resolution
+- Old "Offline Calculation" formula - Needs redesign for combat duration
+
+**⚠️ PENDING DESIGN WORK (Parts C & D):**
+- Combat duration validation and balance calculations
+- Enemy HP/Attack rebalancing for combat-over-time
+- Card stat range adjustments
+- Updated first 30 minutes experience
+- Pack affordability timing with combat duration
+- Complete offline calculation redesign
 
 ---
 
@@ -533,58 +707,87 @@ Resources Earned = Victories × Reward per Victory
 
 The combat progression system is built around a **death-and-retry loop** where players progressively build stronger decks to overcome increasingly difficult enemies and bosses. Death is not punishment but part of the core progression loop - players keep all resources and iterate on their deck between attempts.
 
-### Enemy Health Scaling Formula
+### Enemy Health Scaling Formula (Session 2.0.3 Part C - FINALIZED)
 
-**Regular Enemies (Non-Boss):**
+**Act-Based Step Function System:**
+
+The HP formula uses a **step function** that increases base HP after each boss, creating clear progression tiers while ensuring post-boss enemies are easier than the boss itself.
+
+**Act 1 (Enemies 1-50): Tutorial Tier**
 ```
-HP = 20 + (enemy_number - 1) × 65.8
+Base HP = 20 + (enemy_number - 1) × 120
+Enemy 49:  5,780 HP (regular)
+Enemy 50:  9,768 HP (Mini-Boss #1, 1.3× multiplier)
 ```
 
-**Rationale:**
-- Linear scaling provides predictable, consistent difficulty curve
-- Allows precise balance tuning for intended session length
-- Boss encounters provide exponential-feeling difficulty spikes
-- Works well with "how far can you reach?" progression framing
-- Bosses create the challenge; regular enemies provide steady progression
+**Act 2 (Enemies 51-100): Challenge Tier**
+```
+Base HP = 6,000 + (enemy_number - 51) × 130
+Enemy 51:  6,000 HP (step up from Act 1, but < boss)
+Enemy 99:  12,240 HP (regular)
+Enemy 100: 18,555 HP (Mini-Boss #2, 1.5× multiplier)
+```
 
-**Examples:**
+**Act 3 (Enemies 101-150): Master Tier**
+```
+Base HP = 12,500 + (enemy_number - 101) × 140
+Enemy 101: 12,500 HP (step up from Act 2, but < boss)
+Enemy 149: 19,220 HP (regular)
+Enemy 150: 38,680 HP (Major Boss, 2.0× multiplier)
+```
+
+**Act 4+ (Enemies 151+): Future Content**
+```
+Base HP = 38,880 + (enemy_number - 151) × 200
+(To be balanced with elemental tier progression)
+```
+
+**Design Rationale:**
+- **Step functions create clear Acts:** Each boss victory unlocks a new difficulty tier
+- **Post-boss breathing room:** Enemy 51 < Boss 50, giving players a moment to stabilize
+- **Continuous progression:** Enemy 51 > Enemy 49, ensuring forward momentum
+- **Escalating challenge:** HP per enemy increases (120 → 130 → 140) across Acts
+- **Boss victories feel rewarding:** Beating a boss unlocks easier content initially, then ramps back up
+
+**Key Milestones:**
 - Enemy 1: 20 HP
-- Enemy 50: 3,246 HP (first mini-boss)
-- Enemy 100: 6,539 HP (second mini-boss)
-- Enemy 149: 9,758 HP (just before major boss)
-- Enemy 150: 17,438 HP (major boss with 2× multiplier)
-
-**Future Scaling (Post-Enemy 150):**
-- Enemies 151-299: Steeper slope (85 vs 65.8) creates "Act 2" difficulty
-- Enemy 300: Second major boss
-- Enemies 301+: To be designed with elemental tier progression
+- Enemy 50: 9,768 HP (Mini-Boss #1 - First Attacker) ← ~23 minutes
+- Enemy 100: 18,555 HP (Mini-Boss #2 - First Real Wall) ← ~60-70 minutes
+- Enemy 150: 38,680 HP (Major Boss - End of "Act 1" content) ← ~120-180 minutes
 
 ### Boss Encounter System
 
 Bosses are **progression checkpoints** that require multiple death loops with deck improvements to overcome. They serve as clear milestones, motivation to purchase packs, and achievement moments.
 
-#### Enemy 50 - Mini-Boss #1 ("Lieutenant")
+#### Enemy 50 - Mini-Boss #1 "Defense Tutorial" ("Lieutenant")
 
 **Stats:**
-- HP: 4,220 (1.3× regular Enemy 50)
-- Attack: 0 (1.2× regular, still safe)
+- HP: 9,768 (1.3× regular Enemy 50 = 7,514 × 1.3)
+- Attack: **10** (FIRST enemy with attack!)
 
 **Purpose:**
-- Introduces boss concept gently
-- First minor challenge but achievable
-- Most players beat on first loop
-- Teaches that special enemies are stronger
+- **First damage dealer** - introduces defense mechanic
+- ~23-minute milestone with starter deck
+- "Oh no, I'm taking damage!" tutorial moment
+- Still survivable (100 HP vs 10 ATK/tick, defense cards block damage)
+- Teaches that special enemies are stronger AND more dangerous
+- Forces defensive card strategy for first time
 
 **Rewards:**
 - 3× regular shard drops (~6-9 shards)
-- Achievement: "Defeated First Lieutenant"
+- Achievement: "Survived First Assault"
 - Visual celebration
+
+**Expected Outcomes:**
+- Most players survive on first loop (if defense cards drawn early)
+- Some players die (if poor deck or unlucky draw order)
+- Either way: Learns that defense matters now
 
 #### Enemy 100 - Mini-Boss #2 ("Commander")
 
 **Stats:**
-- HP: 9,809 (1.5× regular Enemy 100)
-- Attack: ~20 (1.3× regular)
+- HP: 18,555 (1.5× regular Enemy 100 = 12,370 × 1.5)
+- Attack: 30
 
 **Purpose:**
 - **First real wall** - bad players fail here on first loop
@@ -604,8 +807,8 @@ Bosses are **progression checkpoints** that require multiple death loops with de
 #### Enemy 150 - Major Boss #1 ("Tower Guardian")
 
 **Stats:**
-- HP: 17,438 (≈2× regular Enemy 150)
-- Attack: 75 (1.5× regular)
+- HP: 38,680 (2.0× regular Enemy 150 = 19,340 × 2.0)
+- Attack: 80
 
 **Purpose:**
 - **Major milestone** - End of "Act 1" content
@@ -637,26 +840,53 @@ Bosses are **progression checkpoints** that require multiple death loops with de
 - **Enemy 450, 600, etc.:** Every 150 enemies
 - Elemental tier bosses with unique mechanics (future design)
 
-### Enemy Attack Scaling
+### Enemy Attack Scaling (Session 2.0.3 - Updated for Combat-Over-Time)
 
-**Phase 1: Safe Learning (Enemies 1-50)**
-- Attack: 0
-- Purpose: Learn mechanics without defense pressure
+**⚠️ DESIGN IN PROGRESS:** Attack scaling updated in Part A/B. Final values pending Part C balance validation.
 
-**Phase 2: Gradual Introduction (Enemies 51-100)**
-- Formula: `5 + (enemy_number - 51) × 0.2`
-- Enemy 51: 5 attack → Enemy 100: 15 attack
-- Purpose: Introduce defense mechanics gradually
+**Phase 1: Safe Learning (Enemies 1-49)**
+- Attack: **0**
+- Purpose: Learn mechanics without death pressure
+- HP never depletes
+- Pure offense optimization
+- 30 minutes of safe learning
 
-**Phase 3: Moderate Challenge (Enemies 101-149)**
-- Formula: `20 + (enemy_number - 101) × 0.6`
-- Enemy 101: 20 attack → Enemy 149: 49 attack
-- Purpose: Defense becomes strategic consideration
+**Phase 2: Mini-Boss #1 "Defense Tutorial" (Enemy 50)**
+- Attack: **10** (FIRST enemy with attack!)
+- Purpose:
+  - Teaches defense matters
+  - "Oh no, I'm taking damage!" moment
+  - Still survivable (100 HP vs 10 ATK/tick)
+  - Forces defensive card strategy
+  - Natural 30-minute milestone
 
-**Boss Attack Multipliers:**
-- Mini-Boss #1 (Enemy 50): 1.2× regular (0 attack)
-- Mini-Boss #2 (Enemy 100): 1.3× regular (~20 attack)
-- Major Boss (Enemy 150): 1.5× regular (75 attack)
+**Phase 3: Gradual Scaling (Enemies 51-99)**
+- Formula: `10 + (enemy_number - 51) × 0.3`
+- Enemy 51: 10 ATK → Enemy 99: 24.4 ATK
+- Purpose: Progressive difficulty introduction
+- Defense becomes increasingly important
+
+**Phase 4: Mini-Boss #2 "First Real Wall" (Enemy 100)**
+- Attack: **30** (1.3× regular Enemy 100)
+- Purpose: Significant threat, Pack 1 likely needed
+- Forces strategic deck building
+
+**Phase 5: Challenge Zone (Enemies 101-149)**
+- Formula: `25 + (enemy_number - 101) × 0.6`
+- Enemy 101: 25 ATK → Enemy 149: 54 ATK
+- Purpose: HP management becomes critical
+- Death highly likely without healing strategy
+
+**Phase 6: Major Boss (Enemy 150)**
+- Attack: **80** (1.5× regular Enemy 149)
+- Purpose: Major milestone, requires multiple death loops
+- Expected 3-6 loops to defeat
+
+**Design Rationale (Session 2.0.3):**
+- 30 minutes of safe play before first damage = perfect tutorial arc
+- Clear "before/after" moment at Mini-Boss #1
+- Boss encounters every ~50 enemies = consistent rhythm
+- Each boss teaches new lesson (defense, optimization, HP management)
 
 ### Death and Respawn System
 
@@ -712,36 +942,36 @@ Bosses are **progression checkpoints** that require multiple death loops with de
 ### Multi-Loop Progression Expectations
 
 #### Loop 1 - Discovery
-- Starter deck only, no purchases during run
-- Reach: Enemy 90-100
-- Die to: Mini-Boss #2 (Commander)
-- Accumulate: ~40,000-60,000 essence, ~150 shards
-- **Action:** Purchase Pack 1
+- Starter deck only, 100 HP
+- Reach: Enemy 100-120
+- Die to: HP depletion or stronger enemies
+- Accumulate: ~300,000 essence, ~600-700 shards
+- **Action:** Purchase Pack 1, save shards for HP upgrades
 
 #### Loop 2 - Improvement
-- Starter deck + Pack 1 cards
-- Reach: Enemy 110-130
-- Die to: Regular enemies or approaching boss
-- Accumulate: ~60,000-100,000 essence, ~250 shards
-- **Action:** Purchase Pack 2-3
+- Pack 1 cards + HP upgrades (150-170 HP)
+- Reach: Enemy 130-140
+- Die to: Approaching Enemy 150 boss or HP depletion
+- Accumulate: More essence and shards
+- **Action:** Purchase Packs 2-3, more HP upgrades
 
 #### Loop 3 - Approach
-- Starter + Packs 1-2
-- Reach: Enemy 130-145
-- Die to: Major Boss approach or first attempt
+- Packs 1-2-3 + HP upgrades (180-200 HP)
+- Reach: Enemy 145-150
+- Die to: Major Boss first attempts
 - Accumulate: More essence/shards
-- **Action:** Optimize deck, purchase Pack 3
+- **Action:** Optimize deck composition, final HP upgrades
 
-#### Loop 4-5 - Victory
-- Optimized deck with Packs 1-3
+#### Loop 4-6 - Victory
+- Fully optimized deck with Packs 1-3 + 200+ HP
 - Reach: Enemy 150 (Major Boss)
 - Close attempts, eventually **BEAT BOSS**
 - **Milestone:** Major achievement unlocked
 
 **Total Time to First Boss Victory:**
-- Bad players: ~2-3 hours (5-6 loops)
-- Average players: ~1.5-2 hours (4 loops)
-- Good players: ~1-1.5 hours (3 loops)
+- Bad players: ~3-4 hours (6-7 loops)
+- Average players: ~2-3 hours (4-5 loops)
+- Good players: ~1.5-2 hours (3-4 loops)
 
 ### Rewards Structure
 
@@ -1251,31 +1481,39 @@ Max Copies per Card: 3
 - Mid (10-20 min): 4-6 Shards
 - Late (20-30 min): 8-12 Shards
 
-**Accumulation:**
-- Total by minute 30: ~875 Shards
+**Accumulation (Session 2.0.3 Part C - Adjusted for Combat Duration):**
+- Total by Enemy 50 (~23 min): ~600-700 Shards
+- Total by Enemy 60 (~30 min): ~700-800 Shards
 
 **Usage:**
+- **HP upgrades:** 50/75/100/125/150 shards per +10 HP (Tier 1)
 - Card upgrades: 50-100+ Shards
 - Deck size increase: 200+ Shards
 - Permanent upgrades: Variable
 
 ### Enemy Stats
 
-**✅ FINALIZED (Session 2.0.1 - Combat Progression Design)**
+**✅ FINALIZED (Session 2.0.3 Part C - Act-Based Scaling)**
 
 See **"Combat Progression & Enemy Scaling"** section for complete specifications.
 
-**Quick Reference:**
-- Regular enemies: `HP = 20 + (n-1) × 65.8`
-- Mini-Boss #1 (Enemy 50): 4,220 HP (1.3× multiplier)
-- Mini-Boss #2 (Enemy 100): 9,809 HP (1.5× multiplier)
-- Major Boss (Enemy 150): 17,438 HP (≈2× multiplier)
+**Quick Reference - HP Scaling:**
+- **Act 1 (1-50):** `HP = 20 + (n-1) × 120`
+- **Act 2 (51-100):** `HP = 6,000 + (n-51) × 130`
+- **Act 3 (101-150):** `HP = 12,500 + (n-101) × 140`
+
+**Boss HP:**
+- Mini-Boss #1 (Enemy 50): 9,768 HP (1.3× multiplier)
+- Mini-Boss #2 (Enemy 100): 18,555 HP (1.5× multiplier)
+- Major Boss (Enemy 150): 38,680 HP (2.0× multiplier)
 
 **Attack Scaling:**
-- Enemies 1-50: 0 attack (safe learning)
-- Enemies 51-100: 5-15 attack (gradual introduction)
-- Enemies 101-149: 20-49 attack (moderate challenge)
-- Bosses: 1.2× to 1.5× attack multipliers
+- Enemies 1-49: 0 attack (safe learning)
+- Enemy 50: 10 attack (first attacker)
+- Enemies 51-99: 10 + (n-51) × 0.3
+- Enemy 100: 30 attack
+- Enemies 101-149: 25 + (n-101) × 0.6
+- Enemy 150: 80 attack
 
 ### Combat Card Stats
 
@@ -1319,24 +1557,30 @@ See **"Combat Progression & Enemy Scaling"** section for complete specifications
 
 ### Validated Pacing (Starter Deck Only - "Bad Player" Baseline)
 
-**VALIDATED (Task 2.0 Simulator):**
-✓ Pack 1 affordable at ~7.0 minutes (40,000 Essence)
-✓ Pack 2 affordable at ~11.5 minutes (100,000 Essence)
-✓ Pack 3 affordable at ~18.5 minutes (250,000 Essence)
-✓ Generation rate scales: 0 → 180 → 382 → 607 Essence/sec (starter deck only)
-✓ Card draw rate: 60 cards/min
-✓ Enemy defeat rate: 5 enemies/min
-✓ 149 enemies defeated in 30 minutes (Enemy 150 boss: unbeatable on first run)
+**✅ VALIDATED (Task 2.0 + Session 2.0.3 Part C):**
+- ✓ Pack 1 affordable at ~7.0 minutes (40,000 Essence)
+- ✓ Pack 2 affordable at ~11.5 minutes (100,000 Essence)
+- ✓ Pack 3 affordable at ~18.5 minutes (250,000 Essence)
+- ✓ Generation rate scales: 0 → 180 → 382 → 607 Essence/sec (starter deck only)
+- ✓ Card draw rate: 60 cards/min (1 card/sec)
+- ✓ Enemy 50 reached at ~23 minutes (Mini-Boss #1 - First Attacker)
+- ✓ Enemy 60 reached at ~30 minutes (alternate milestone)
+- ✓ Player death at Enemy 67 (~35 minutes with starter deck, 100 HP)
+- ✓ Combat durations: 2s → 17s → 47s (Enemies 1/10/50)
 
-**STILL NEEDS DESIGN (Session 2.X):**
+**✅ FINALIZED (Session 2.0.3 Parts A-D):**
+- ✓ Enemy HP scaling: Act-based step function (120/130/140 per enemy by Act)
+- ✓ Boss HP: 9,768 / 18,555 / 38,680 (Enemies 50/100/150)
+- ✓ Attack scaling: 0 until Enemy 50, then progressive (10/30/80 for bosses)
+- ✓ HP upgrade system: 50/75/100/125/150 shards for +10 HP (Tier 1)
+- ✓ Death loop progression: 4-6 loops to beat Enemy 150
+
+**STILL NEEDS DESIGN (Task 2.1+):**
 - "Good player" progression with Pack 1-3 card improvements
 - Target essence rates with optimized decks
-- Enemy scaling formula (linear vs exponential vs hybrid)
-- Boss encounter design (Enemy 150 "tutorial death" concept evaluation)
-- Combat progression beyond first 30 minutes
-- Post-prestige enemy scaling
-
-**Design Note:** Current baseline establishes "do nothing" minimum progression (starter deck, no pack purchases). This validates core mechanics work but doesn't represent intended player experience. Pack card design (Task 2.1+) will establish "good player" targets with better generators and synergies.
+- Card stat ranges for Packs 1-3
+- Combat card design (healing, HP regen, shields)
+- Post-Enemy 150 content and prestige system
 
 ---
 
@@ -1457,6 +1701,64 @@ All players begin as "Arcane Student" with this pre-built 8-card deck. All cards
 
 ## Document Changelog
 
+**Version 1.9** (2025-11-07 22:00:00) - Session 2.0.3: Combat System Redesign COMPLETE (Parts A-D)
+- **MAJOR REDESIGN:** Combat changed from instant-resolution to Trimps-style combat-over-time
+- **ALL PARTS COMPLETE:** Combat mechanics, death system, balance calculations, and documentation finalized
+- **Part A - Combat Mechanics:**
+  - Combat tick system: 1.0 second per tick
+  - Damage formulas: ATK - DEF per tick (no minimum damage)
+  - Player HP system: 100 HP starting, shard upgrades only, no auto-healing
+  - Continuous deck cycling with 1-second reshuffle cooldown
+  - Stat accumulation and reset mechanics (ATK/DEF reset per enemy, essence rate persists)
+  - Deck minimum size: 8 cards (prevents tiny deck exploit)
+- **Part B - Death & Respawn System:**
+  - Death condition: HP = 0 triggers death
+  - Respawn: Enemy 1 with full HP, keep all resources (essence, shards, cards, deck)
+  - Death screen: Celebratory tone showing progress and resources earned
+  - Class switching: Can switch class on death (if own multiple class cards)
+  - Death loop is core gameplay, NOT prestige (prestige deferred to Session 7)
+- **Part C - Balance & Scaling (FINALIZED):**
+  - **NEW Enemy HP Formula: Act-based step function**
+    - Act 1 (1-50): `HP = 20 + (n-1) × 120`
+    - Act 2 (51-100): `HP = 6,000 + (n-51) × 130`
+    - Act 3 (101-150): `HP = 12,500 + (n-101) × 140`
+  - **Boss HP values:**
+    - Enemy 50: 9,768 HP (1.3× multiplier, ~23-minute milestone)
+    - Enemy 100: 18,555 HP (1.5× multiplier)
+    - Enemy 150: 38,680 HP (2.0× multiplier)
+  - **Step function design:** Post-boss enemies easier than boss but harder than pre-boss
+    - Enemy 51 (6,000 HP) < Boss 50 (9,768 HP) but > Enemy 49 (5,780 HP)
+    - Creates "breathing room" after boss victories
+    - Escalating challenge: HP per enemy increases across Acts (120→130→140)
+  - **HP Upgrade System designed:**
+    - Tier 1: 50/75/100/125/150 shards for +10 HP each (500 shards for +50 HP)
+    - ~600-700 shards earned by Enemy 50
+    - Death loop: Upgrade HP between loops for longer runs
+  - **Combat duration validation:**
+    - Enemy 1: ~2s, Enemy 10: ~17s, Enemy 50: ~47s
+    - Enemy 50 at ~23 min (close to 30-min target)
+    - Enemy 60 at ~30 min (alternate milestone)
+    - Player death at Enemy 67 (~35 min with 100 HP starter deck)
+  - **Pack affordability: UNCHANGED** (essence generation independent of combat duration)
+- **Part D - Documentation:**
+  - Updated "Combat Progression & Enemy Scaling" with act-based formula
+  - Updated "Baseline Numbers Reference" with new combat durations
+  - Updated multi-loop progression expectations (4-6 loops to beat Enemy 150)
+  - Updated "Validated Pacing" with finalized milestones
+  - All boss HP values updated throughout document
+  - Attack scaling finalized (0 until Enemy 50, progressive scaling after)
+- **Strategic implications:**
+  - HP management critical (no healing between enemies)
+  - Defense essential (first attack at Enemy 50)
+  - Combat ramp-up dynamics (exponential stat growth during fight)
+  - Death spirals intentional (creates tension)
+  - Opens card design space (healing, HP regen, shields, max HP boosts)
+  - Shard upgrades provide meaningful progression (HP, attack, defense)
+  - Act structure creates clear progression tiers
+- **Session Log:** `.cursor/log/sessions/session-2-0-3-combat-system-redesign.md`
+- **Balance Calculations:** `.cursor/log/balance/` (part-c-findings.md, part-c-summary.md, final-hp-formula.md)
+- **Status:** COMPLETE - Ready for Task 2.0.4 (implementation) and Task 2.1 (pack card design)
+
 **Version 1.8** (2025-11-07) - Task 2.0.1: Combat Progression Design Complete
 - Added complete "Combat Progression & Enemy Scaling" section
 - Finalized enemy health scaling formula (linear: `20 + (n-1) × 65.8`)
@@ -1559,7 +1861,7 @@ All players begin as "Arcane Student" with this pre-built 8-card deck. All cards
 
 ---
 
-**Document Version:** 1.8  
-**Last Updated:** 2025-11-07 14:15:00 (Task 2.0.1 Complete - Combat Progression Design)  
-**Status:** Task 2.0.1 Complete - Combat progression system fully designed. Death loop mechanics finalized. Boss system specified. Ready for Task 2.1 (Pack Card Design).
+**Document Version:** 1.9  
+**Last Updated:** 2025-11-07 22:00:00 (Session 2.0.3 Complete - Combat System Redesign)  
+**Status:** Combat system redesign COMPLETE. All parts finalized (A: mechanics, B: death system, C: balance, D: documentation). Ready for Task 2.0.4 (implementation) and Task 2.1 (pack card design). See session log: `.cursor/log/sessions/session-2-0-3-combat-system-redesign.md` and balance calculations: `.cursor/log/balance/`
 
