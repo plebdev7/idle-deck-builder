@@ -154,42 +154,88 @@ Full complexity (deck manipulation, state-based effects, advanced synergies)
 **Common** - Foundation cards
 - **Stat Budget:** 20-30 stat points (Level 1)
 - **Complexity:** Flat values, no conditions
-- **Scaling:** 20% per level (multiplicative)
-- **Leveling Cost:** Linear (cheap to max)
 - **Drop Rates:** 70% (Arcane packs), 50% (Elemental packs)
+- **Leveling:** Same as all rarities (45 duplicates to Level 10)
+- **Awakening:** Easier to achieve (high drop rates)
 
 **Rare** - Enhanced cards
 - **Stat Budget:** 30-50 stat points (Level 1)
 - **Complexity:** Simple conditionals ("If X, then bonus Y")
-- **Scaling:** 25% per level
-- **Leveling Cost:** Level^1.2 (moderate)
 - **Drop Rates:** 20% (Arcane packs), 30% (Elemental packs)
+- **Leveling:** Same as all rarities (45 duplicates to Level 10)
+- **Awakening:** Moderate difficulty
 
 **Epic** - Build-around cards
 - **Stat Budget:** 50-90 stat points (Level 1)
 - **Complexity:** Multi-effects, combos, sequencing
-- **Scaling:** 30% per level
-- **Leveling Cost:** Level^1.4 (expensive)
 - **Drop Rates:** 8% (Arcane packs), 15% (Elemental packs)
+- **Leveling:** Same as all rarities (45 duplicates to Level 10)
+- **Awakening:** Long-term goal (low drop rates)
 
 **Legendary** - Deck-defining cards
 - **Stat Budget:** 90-180 stat points (Level 1)
 - **Complexity:** 3-4 effects, transformative mechanics
-- **Scaling:** 35% per level
-- **Leveling Cost:** Level^1.6 (very expensive)
 - **Drop Rates:** 2% (Arcane packs), 5% (Elemental packs)
+- **Leveling:** Same as all rarities (45 duplicates to Level 10)
+- **Awakening:** Prestige-spanning goal (very low drop rates)
 
-### Leveling System
+### Leveling System (Session 2.1.3 - COMPLETE)
 
-**No Level Caps:** All cards can level indefinitely with exponential cost scaling
+**Universal Mechanics:** All cards use identical leveling formulas regardless of rarity
 
-**XP-Based System:** Duplicates grant XP toward next level
-- Common duplicate: 1 XP
-- Rare duplicate: 2 XP
-- Epic duplicate: 5 XP
-- Legendary duplicate: 10 XP
+**Duplicate-Based System:** Direct duplicate counting, no XP middleman
+- **Duplicates needed for Level N:** `N - 1`
+  - Level 1 → 2: 1 duplicate
+  - Level 2 → 3: 2 duplicates
+  - Level 3 → 4: 3 duplicates
+  - Level 10: Total of 45 duplicates (1+2+3+...+9)
 
-**Level Requirements:** (N-1) × rarity_cost_multiplier XP to reach level N
+**Stat Scaling:** 20% multiplicative growth per level (all rarities)
+- Formula: Base stats × (1.20)^(level-1)
+- Level 1: 100% base stats
+- Level 5: 207% base stats (2.07× multiplier)
+- Level 10: 516% base stats (5.16× multiplier)
+
+**Level Cap:** Level 10 (base leveling system)
+- Opens awakening system at Level 10
+- All cards follow same progression
+- Natural difficulty from drop rate frequency
+
+### Awakening System (Session 2.1.3 - COMPLETE)
+
+**Individual Card Prestige:** Post-Level-10 progression layer for maxed cards
+
+#### Scrap Generation
+- **Maxed card duplicates (Level 10)** convert to scraps
+- 1 duplicate = 1 scrap (rarity-specific)
+- Common duplicate → Common Scrap
+- Rare duplicate → Rare Scrap
+- Epic duplicate → Epic Scrap
+- Legendary duplicate → Legendary Scrap
+- **No cross-conversion** between scrap rarities
+
+#### Awakening Progression
+**Level 11-20:** Extended progression with increasing scrap costs
+- **Levels 11-14:** Stat increases (10/20/30/40 scraps)
+- **Level 15:** Secondary effect unlocked (50 scraps) + stat increase
+- **Levels 16-19:** Stat increases (60/70/80/90 scraps)
+- **Level 20:** Transformative effect unlocked (100 scraps) + stat increase
+
+**Total Cost:** 550 scraps to reach Level 20
+**Stat Multiplier at Level 20:** 13.74× base stats
+
+#### Awakening Effect Types
+
+**Secondary Effects (Level 15):** Card-specific utility or synergy
+- Examples: "+5% ATK to next card", "+1 HP regen per tick", "Draw +1 card on reshuffle"
+- Adds build-around potential without overwhelming power
+- Designed per-card during content creation
+
+**Transformative Effects (Level 20):** Deck-defining mechanical changes
+- Examples: "Triggers twice per draw", "Affects all cards in hand", "Permanent effect until death"
+- Major strategic decisions
+- Ultra-late-game goals (prestige-spanning)
+- Designed per-card during content creation
 
 ### Design Philosophy
 
@@ -197,15 +243,23 @@ Full complexity (deck manipulation, state-based effects, advanced synergies)
 
 **Lower rarities remain useful through:**
 - Simplicity and consistency (no setup required)
-- Cheaper leveling costs (easier to max out)
+- **Higher drop rates** (easier to max out and awaken)
 - Reliable baseline power
 - Deck filler and foundations
+- First cards to reach awakening levels
 
 **Higher rarities excel through:**
 - Raw power (higher base stats)
-- Better scaling rates (more growth per level)
 - Mechanical complexity (conditional bonuses, combos)
 - Deck-defining effects (transform strategies)
+- **Harder to max** (scarcity creates prestige goals)
+
+**Leveling creates long-term goals:**
+- First 30 min: No duplicates (Packs 1-3 deterministic)
+- Enemy 50-100: Early leveling begins (Pack 4+)
+- Enemy 100-150: Commons reach Level 5-7
+- Multiple loops: First Level 10 cards, scraps accumulate
+- Post-prestige: Awakening progression begins
 
 ---
 
@@ -257,6 +311,18 @@ All starter deck cards fall within the Common rarity range (20-30 stat points). 
 ---
 
 ## Document History
+
+**Version 1.2** (2025-11-09) - Task 2.1.3 Complete
+- **Added complete leveling and awakening system**
+- Universal leveling formula: N-1 duplicates for Level N (all rarities)
+- Level 10 cap for base leveling (45 total duplicates)
+- 20% multiplicative stat scaling per level (all rarities)
+- Awakening system: Levels 11-20 using scrap currency
+- Scrap generation from maxed card duplicates (rarity-specific)
+- Secondary effects at Level 15, transformative effects at Level 20
+- Total 550 scraps needed for Level 20 awakening
+- Removed rarity-specific leveling multipliers (simplified)
+- Updated design philosophy with awakening progression timeline
 
 **Version 1.1** (2025-11-08) - Task 2.1.2 Updates
 - Added Card Rarity System (Session 2.1.1)

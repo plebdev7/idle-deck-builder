@@ -139,18 +139,18 @@
       - [x] Decide: Power + Complexity hybrid (higher rarity = stronger + more complex)
       - [x] Quick leveling outline (XP-based, duplicates = XP)
 
-    - [x] **2.1.2** Finalize pack card power curve 
+    - [x] **2.1.2** Finalize pack card power curve - ✅ COMPLETE (2025-11-09)
       - [x] Create stat point system and card data structure (12-card deck limit)
       - [x] Define conversion rates (ATK/DEF/Essence/Healing)
       - [x] Update Essence Burst (150 → 250) and Mystic Shield (18 → 20)
       - [x] Create JSON schema for cards and balance config
 
-    - [x] **2.1.2A** 
+    - [x] **2.1.2A** - ✅ COMPLETE 
       - [x] Identify Enemy that should start dealing damage (Enemy 20 - 4 minute tutorial)
       - [x] Implement card data in simulator (JSON-based)
       - [x] Validate stat ranges per pack and rarity
 
-    - [x] **2.1.2B** 
+    - [x] **2.1.2B** - ✅ COMPLETE
       - [x] Evaluate balance issues with enemy ATK value vs. Player DEF value scaling
       - [x] Consider enemy getting ATK/DEF per tick rather than static values
       - [x] Design per-tick scaling formulas (graduated by Act, bosses 2× multiplier)
@@ -169,17 +169,11 @@
       - [x] Document validation approach for future balance changes
       - [x] Fixed enemy ATK/DEF per-tick scaling display in live viewer
 
-    - [ ] **2.1.2D** 
-      - [ ] Create Pack 1+2 Cards
-      - [ ] Model essence generation with Pack 1+2 cards
-      - [ ] Model combat effectiveness (Enemy 100 feasibility with Pack 1+2)
-      - [ ] Validate 4-6 death loop progression expectation
-
-    - [ ] **2.1.3** Design card leveling concept
-      - [ ] Define duplicate card handling (XP? Fusion? Scrapping?)
-      - [ ] Specify level-up mechanics and requirements
-      - [ ] Design stat scaling formulas per level
-      - [ ] Define max level caps and progression curve
+    - [x] **2.1.3** Design card leveling concept - ✅ COMPLETE (2025-11-09)
+      - [x] Define duplicate card handling (direct duplicate counting, no XP middleman)
+      - [x] Specify level-up mechanics and requirements (N-1 duplicates for Level N)
+      - [x] Design stat scaling formulas per level (20% multiplicative, all rarities)
+      - [x] Define max level caps and progression curve (Level 10 cap, awakening to 20)
   - **Phase 2: Mechanic Design Research (DESIGN SESSION)**
     - [ ] **2.1.4** Research conditional mechanics
       - [ ] Evaluate condition types (timing, composition, state-based)

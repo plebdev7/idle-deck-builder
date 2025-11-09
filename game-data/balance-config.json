@@ -96,27 +96,47 @@
   },
 
   "leveling_system": {
-    "xp_per_duplicate": {
-      "Common": 1,
-      "Rare": 2,
-      "Epic": 5,
-      "Legendary": 10
+    "description": "Universal leveling system - all cards use identical mechanics, difficulty comes from drop rate frequency",
+    
+    "base_leveling": {
+      "duplicates_to_next_level_formula": "level - 1",
+      "description": "Linear progression: Level 2 needs 1 dup, Level 3 needs 2 more, Level 4 needs 3 more, etc.",
+      "total_duplicates_to_level_10": 45,
+      "level_cap": 10,
+      "stat_scaling_per_level": 0.20,
+      "stat_multiplier_at_level_10": 5.1598,
+      "note": "All rarities use same formula - Commons level faster due to higher drop rates"
     },
-    "xp_to_next_level_formula": "(level - 1) * rarity_cost_multiplier",
-    "rarity_cost_multipliers": {
-      "Common": 1.0,
-      "Rare": 1.5,
-      "Epic": 3.0,
-      "Legendary": 6.0
-    },
-    "stat_scaling_per_level": {
-      "Common": 0.20,
-      "Rare": 0.25,
-      "Epic": 0.30,
-      "Legendary": 0.35
-    },
-    "level_cap": null,
-    "description": "No level caps, infinite leveling with exponential costs"
+    
+    "awakening_system": {
+      "description": "Post-Level-10 progression using scrap currency from maxed card duplicates",
+      "scrap_generation": "1 scrap per duplicate of maxed (Level 10) card, scrap rarity matches card rarity",
+      "max_awakening_level": 20,
+      
+      "awakening_costs": {
+        "11": {"scraps": 10, "type": "stat_increase"},
+        "12": {"scraps": 20, "type": "stat_increase"},
+        "13": {"scraps": 30, "type": "stat_increase"},
+        "14": {"scraps": 40, "type": "stat_increase"},
+        "15": {"scraps": 50, "type": "secondary_effect"},
+        "16": {"scraps": 60, "type": "stat_increase"},
+        "17": {"scraps": 70, "type": "stat_increase"},
+        "18": {"scraps": 80, "type": "stat_increase"},
+        "19": {"scraps": 90, "type": "stat_increase"},
+        "20": {"scraps": 100, "type": "transformative_effect"}
+      },
+      
+      "total_scraps_to_level_20": 550,
+      "stat_multiplier_at_level_20": 13.7435,
+      
+      "awakening_effects": {
+        "secondary_effect": "Adds utility or synergy effect at Level 15 (card-specific design)",
+        "transformative_effect": "Deck-defining mechanical transformation at Level 20 (card-specific design)"
+      },
+      
+      "scrap_cross_conversion": false,
+      "note": "Awakening is late-game individual card prestige layer, requires significant duplicate accumulation"
+    }
   },
 
   "pack_costs": {
