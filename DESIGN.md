@@ -70,7 +70,11 @@ Multiple interconnected loops:
 **Trimps-Style Combat-Over-Time:**
 - Tick-based combat (1.0 second per tick)
 - Player HP system (100 HP start, upgradeable with shards)
-- Cards drawn continuously (1 card/sec) add to attack and defense
+- **Cards drawn continuously (1 card/sec) and deck CYCLES INDEFINITELY**
+  - **CRITICAL:** Stats accumulate through repeated deck cycling, not just one draw
+  - 8-card deck cycles every 9 seconds (8 draws + 1s reshuffle cooldown)
+  - Each cycle adds stats again: Cycle 1 = 62 ATK, Cycle 2 = 124 ATK, Cycle 3 = 186 ATK, etc.
+  - This exponential growth is why enemies must scale per-tick
 - Stats reset after each enemy (but essence rate persists)
 - Death resets enemy progress but keeps all resources
 
@@ -97,7 +101,10 @@ Multiple interconnected loops:
 - Used for card upgrades, deck size increases, HP upgrades, permanent buffs
 - Separate from essence generation
 
-**Critical Mechanic:** Generators work **when drawn**, not passively in deck. Deck cycling speed matters!
+**Critical Mechanics:** 
+- Generators work **when drawn**, not passively in deck. Deck cycling speed matters!
+- **Deck cycles continuously** - stats accumulate through repeated cycles, not just first draw
+- Small decks cycle faster (8 cards = 9s/cycle) vs large decks (15 cards = 16s/cycle)
 
 → **[Full Resource Economy Specification](docs/design-specs/resource-economy.md)**
 
@@ -155,38 +162,53 @@ Multiple interconnected loops:
 
 **Act 1 (Enemies 1-50):** Tutorial Tier
 - Formula: `HP = 20 + (n-1) × 120`
-- Enemy 50 (Mini-Boss #1): 9,768 HP, 10 ATK (first attacker!)
+- **Per-Tick Attack/Defense:** All enemies attack from tick 0, scaling continuously
+  - ATK per tick: `1.0 + (n-1) × 0.05`
+  - DEF per tick: `0.5 + (n-1) × 0.025`
+  - Example: Enemy 1 gains 1.0 ATK and 0.5 DEF each combat tick
+- Enemy 50 (Mini-Boss #1): 7,670 HP, 3.45 ATK/tick (6.9 ATK/tick as boss with 2× multiplier)
 
 **Act 2 (Enemies 51-100):** Challenge Tier
 - Formula: `HP = 6,000 + (n-51) × 130`
-- Enemy 100 (Mini-Boss #2): 18,555 HP, 30 ATK (first real wall)
+- **Per-Tick Attack/Defense:** Faster scaling to match improved decks
+  - ATK per tick: `3.5 + (n-51) × 0.08`
+  - DEF per tick: `1.75 + (n-51) × 0.04`
+- Enemy 100 (Mini-Boss #2): 18,555 HP, 7.42 ATK/tick (14.84 ATK/tick as boss)
 
 **Act 3 (Enemies 101-150):** Master Tier
 - Formula: `HP = 12,500 + (n-101) × 140`
-- Enemy 150 (Major Boss): 38,680 HP, 80 ATK (requires 4-6 loops)
+- **Per-Tick Attack/Defense:** Aggressive scaling requires optimized decks
+  - ATK per tick: `7.5 + (n-101) × 0.12`
+  - DEF per tick: `3.75 + (n-101) × 0.06`
+- Enemy 150 (Major Boss): 38,720 HP, 13.38 ATK/tick (26.76 ATK/tick as boss)
 
 **Design Rationale:**
 - Step functions create clear progression acts
 - Post-boss enemies easier than boss (breathing room)
 - Continuous forward momentum
 - Boss victories unlock new difficulty tiers
+- **Per-tick scaling prevents "default invulnerability"** - enemies grow stronger throughout fights to counter player deck cycling
+- Bosses scale 2× faster per tick, making long fights extremely dangerous
 
 → **[Full Progression Specification](docs/design-specs/progression.md)**
 
 ### Boss Encounters
 
 **Enemy 50 - "Defense Tutorial" (Lieutenant):**
-- First enemy with attack (10 ATK)
-- Teaches defense matters
+- 7,670 HP, 6.9 ATK/tick (2× multiplier from base 3.45)
+- ATK matches player DEF growth rate - very dangerous!
 - ~23 minutes with starter deck
+- Teaches importance of defense and speed
 
 **Enemy 100 - "First Real Wall" (Commander):**
-- 30 ATK, requires Pack 1
+- 18,555 HP, 14.84 ATK/tick (2× multiplier)
+- Requires Pack 1 for improved deck
 - Soft gate encouraging death loop
 - Bad players fail here
 
 **Enemy 150 - "Major Milestone" (Tower Guardian):**
-- 80 ATK, requires multiple loops
+- 38,720 HP, 26.76 ATK/tick (2× multiplier)
+- Much faster scaling than player - requires fast kills or serious defensive investment
 - End of "Act 1" content
 - Expected 2-3 hours, 4-6 loops to defeat
 
@@ -207,17 +229,18 @@ Multiple interconnected loops:
 
 **Generators (3):**
 - Arcane Conduit (+2 Essence/sec)
-- Essence Burst (+150 flat)
+- Essence Burst (+250 flat Essence)
 - Combat Siphon (+1 Essence/sec + 12/6 stats)
 
 **Combat (5):**
 - Arcane Bolt (20 ATK pure offense)
-- Mystic Shield (18 DEF pure defense)
+- Mystic Shield (20 DEF pure defense)
 - Balanced Strike (10/10)
 - Power Strike (15/5)
 - Stalwart Guard (5/15)
 
-**Total When Drawn:** 62 ATK, 54 DEF, +3 Essence/sec
+**Total Per Cycle:** 62 ATK, 56 DEF, +3 Essence/sec
+- **Note:** These stats accumulate with each deck cycle (9 seconds for 8-card deck)
 
 → **[Full Card System Specification](docs/design-specs/card-system.md)**
 
@@ -290,11 +313,12 @@ Multiple interconnected loops:
 - Class cards pre-owned but locked until prestige
 
 **Key Milestones:**
-- **Minute 3:** First enemy defeated
-- **Minute 7:** Pack 1 affordable
+- **Minute 0:** Combat begins immediately - Enemy 1 attacks from tick 0 (1.0 ATK/tick)
+- **Minute 3:** First few enemies defeated, learning deck cycling
+- **Minute 7:** Pack 1 affordable (40,000 Essence)
 - **Minute 13:** Deck building unlocked
 - **Minute 16:** Passive income established
-- **Minute 23:** Enemy 50 reached (Mini-Boss #1 - First Attacker)
+- **Minute 23:** Enemy 50 reached (Mini-Boss #1 - First Major Challenge)
 - **Minute 30:** Enemy 60 reached, 3 packs purchased, optimized deck
 
 **End State:**
@@ -440,6 +464,16 @@ Multiple interconnected loops:
 
 ## Document History
 
+**Version 2.0.2** (2025-11-09) - Task 2.1: Combat System Synchronization
+- **Per-tick enemy scaling system** - All enemies attack from tick 0, scale every combat tick
+- Updated enemy attack/defense formulas to per-tick system (Acts 1-3)
+- Boss multipliers now apply to per-tick rates (2× faster scaling)
+- **Added critical deck cycling clarification** - Stats accumulate through repeated cycles
+- Fixed starter deck stats: Essence Burst (250), Mystic Shield (20)
+- Updated first 30 minutes milestones (combat starts immediately)
+- Synchronized with Session 2.1.2B design decisions
+- Rationale: Close alignment gap between design sessions and documentation
+
 **Version 2.0.1** (2025-11-08) - Task 2.0.6: Arithmetic Corrections
 - Fixed Enemy 50 HP: 9,768 → 7,670 (correct per 120 HP/enemy formula)
 - Fixed Enemy 150 HP: 38,680 → 38,720 (correct per formula)
@@ -469,8 +503,8 @@ Multiple interconnected loops:
 
 ---
 
-**Document Version:** 2.0.1  
-**Last Updated:** 2025-11-08  
-**Status:** Core systems complete, arithmetic validated, pack cards pending Task 2.1  
+**Document Version:** 2.0.2  
+**Last Updated:** 2025-11-09  
+**Status:** Core systems complete, per-tick scaling synchronized, pack cards pending Task 2.1  
 **Archive:** [DESIGN-v1.9-pre-split.md](.archive/DESIGN-v1.9-pre-split.md)
 

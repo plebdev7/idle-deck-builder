@@ -25,6 +25,12 @@ The combat system uses **Trimps-style combat-over-time** mechanics where player 
 ```
 Player Damage Dealt = max(Player_Attack - Enemy_Defense, 0)
 Player Damage Taken = max(Enemy_Attack - Player_Defense, 0)
+
+Enemy_Attack = ATK_per_tick × ticks_elapsed
+Enemy_Defense = DEF_per_tick × ticks_elapsed
+
+Where ATK_per_tick and DEF_per_tick scale with enemy number
+(See progression.md for complete per-tick scaling formulas)
 ```
 
 **Key Mechanics:**

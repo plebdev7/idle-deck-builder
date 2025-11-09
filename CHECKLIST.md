@@ -177,23 +177,98 @@
   - [x] Document all corrections in DESIGN.md changelog (Version 2.0.1)
 
 - [ ] **2.1** Pack Card Design (15-20 cards for Packs 1-3)
-  - [ ] Define card rarity levels (answer question 7) with stat differences
-  - [ ] Design Pack 1 guaranteed cards (5 cards: 2 generators, 2 combat, 1 utility)
-    - [ ] Introduce conditional bonuses ("If drawn in first 5 seconds...")
-    - [ ] Simple synergies ("If you have 3+ Arcane cards...")
-    - [ ] Better generators (+3, +4 Essence/sec)
-  - [ ] Design Pack 2 guaranteed cards (5 cards: 1 generator, 3 combat, 1 rare synergy)
-    - [ ] Introduce multiplier generator (Current rate × Y seconds)
-    - [ ] Order-dependent effects ("Next card gets +50%")
-    - [ ] First Rare card with combo mechanics
-  - [ ] Design 5-10 Pack 3+ random pool cards for Arcane tier
-    - [ ] Deck manipulation ("Draw extra card", "Shuffle deck")
-    - [ ] State-based effects ("Lasts until reshuffle")
-    - [ ] Higher power level cards (Rare/Epic)
-  - [ ] Create complete card template/stats structure
-  - [ ] Define card leveling progression curves
-  - [ ] Specify card text format and ability descriptions
-  - [ ] Validate card examples against visual-style-guide.md (layout, text length, stats fit)
+  - **Phase 1: Foundation Research (DESIGN SESSION)**
+    - [x] **2.1.1** Define card rarity system (4-tier: Common/Rare/Epic/Legendary) - ✅ COMPLETE
+      - [x] Specify rarity stat multipliers and ranges (20%/25%/30%/35% scaling)
+      - [x] Define rarity drop rates from packs (Arcane 70/20/8/2, Elemental 50/30/15/5)
+      - [x] Document ultra-rare/unique card philosophy (future expansion)
+      - [x] Decide: No level caps (infinite leveling with exponential costs)
+      - [x] Decide: Power + Complexity hybrid (higher rarity = stronger + more complex)
+      - [x] Quick leveling outline (XP-based, duplicates = XP)
+
+    - [x] **2.1.2** Finalize pack card power curve 
+      - [x] Create stat point system and card data structure (12-card deck limit)
+      - [x] Define conversion rates (ATK/DEF/Essence/Healing)
+      - [x] Update Essence Burst (150 → 250) and Mystic Shield (18 → 20)
+      - [x] Create JSON schema for cards and balance config
+
+    - [x] **2.1.2A** 
+      - [x] Identify Enemy that should start dealing damage (Enemy 20 - 4 minute tutorial)
+      - [x] Implement card data in simulator (JSON-based)
+      - [x] Validate stat ranges per pack and rarity
+
+    - [x] **2.1.2B** 
+      - [x] Evaluate balance issues with enemy ATK value vs. Player DEF value scaling
+      - [x] Consider enemy getting ATK/DEF per tick rather than static values
+      - [x] Design per-tick scaling formulas (graduated by Act, bosses 2× multiplier)
+      - [x] Add enemy_scaling config to balance-config.json
+      - [x] Update progression.md with per-tick scaling system
+      - [x] Update combat-system.md with per-tick damage formulas
+
+    - [ ] **2.1.2C** 
+      - [ ] Create Pack 1+2 Cards
+      - [ ] Model essence generation with Pack 1+2 cards
+      - [ ] Model combat effectiveness (Enemy 100 feasibility with Pack 1+2)
+      - [ ] Validate 4-6 death loop progression expectation
+
+    - [ ] **2.1.3** Design card leveling concept
+      - [ ] Define duplicate card handling (XP? Fusion? Scrapping?)
+      - [ ] Specify level-up mechanics and requirements
+      - [ ] Design stat scaling formulas per level
+      - [ ] Define max level caps and progression curve
+  - **Phase 2: Mechanic Design Research (DESIGN SESSION)**
+    - [ ] **2.1.4** Research conditional mechanics
+      - [ ] Evaluate condition types (timing, composition, state-based)
+      - [ ] Identify "fun to build around" vs "too random/confusing"
+      - [ ] Define testable conditions for Pack 1-3
+      - [ ] Create conditional ability templates
+    - [ ] **2.1.5** Research sequencing & order-dependent mechanics
+      - [ ] Design "next card" and "previous card" tracking
+      - [ ] Specify combo trigger chains
+      - [ ] Define state persistence rules (reshuffle, enemy, death)
+    - [ ] **2.1.6** Create card data structure & text format
+      - [ ] Define complete card template (all fields)
+      - [ ] Specify stat notation format
+      - [ ] Create ability description templates with keywords
+      - [ ] Validate text fits card layout (3 lines max, 12px font)
+  - **Phase 3: Card Content Design (DESIGN SESSION)**
+    - [ ] **2.1.7** Design Pack 1 guaranteed cards (5 deterministic cards)
+      - [ ] 2 generator cards (+3, +4 Essence/sec range)
+      - [ ] 2 combat cards (25-30 total stats)
+      - [ ] 1 utility card (introduce first simple conditional)
+      - [ ] Document design rationale for each card
+    - [ ] **2.1.8** Design Pack 2 guaranteed cards (5 deterministic cards)
+      - [ ] 1 multiplier generator (Current rate × Y seconds)
+      - [ ] 3 combat cards (35-45 total stats, introduce sequencing)
+      - [ ] 1 Rare synergy card (first combo mechanic)
+      - [ ] Document design rationale for each card
+    - [ ] **2.1.9** Design Pack 3+ random pool (5-10 cards for Arcane tier)
+      - [ ] Mix of Common/Rare/Epic cards
+      - [ ] Deck manipulation cards ("Draw extra card", "Shuffle deck")
+      - [ ] State-based effects ("Lasts until reshuffle")
+      - [ ] Higher power level cards (Rare 50-80 stats, Epic 100-150 stats)
+      - [ ] Document design rationale for each card
+  - **Phase 4: Validation & Documentation**
+    - [ ] **2.1.10** Validate all cards against design constraints
+      - [ ] Check against visual-style-guide.md (layout, text length, stats fit)
+      - [ ] Verify power curve progression (Pack 1 < Pack 2 < Pack 3)
+      - [ ] Confirm mechanical complexity curve (simple → moderate → complex)
+      - [ ] Validate deterministic packs teach core mechanics
+    - [ ] **2.1.11** Update DESIGN.md and card-system.md
+      - [ ] Add rarity system specification
+      - [ ] Add card leveling system design
+      - [ ] Document all 15-20 pack cards with full stats
+      - [ ] Update pack contents and guaranteed card lists
+      - [ ] Add card data structure specification
+      - [ ] Update Outstanding Questions (Question 7 resolved)
+  - **Phase 5: Implementation (if needed)**
+    - [ ] **2.1.12** Implement new card mechanics in simulator (if required)
+      - [ ] Add conditional trigger system
+      - [ ] Add sequencing/order-dependent effect tracking
+      - [ ] Add state persistence management
+      - [ ] Add deck manipulation mechanics
+      - [ ] Test all new pack cards in simulator
+      - [ ] Validate balance and progression targets
 
 - [ ] **2.2** Card Interaction Specifications
   - [ ] Define trigger chains (exact conditions and effects)

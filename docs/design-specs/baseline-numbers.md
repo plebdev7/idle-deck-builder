@@ -116,14 +116,25 @@ See [progression.md](progression.md) for complete specifications.
 - **Mini-Boss #2 (Enemy 100):** 18,555 HP (1.5× multiplier)
 - **Major Boss (Enemy 150):** 38,720 HP (2.0× multiplier)
 
-### Attack Scaling
+### Attack/Defense Scaling (Per-Tick System)
 
-- **Enemies 1-49:** 0 attack (safe learning)
-- **Enemy 50:** 10 attack (first attacker)
-- **Enemies 51-99:** `10 + (n-51) × 0.3`
-- **Enemy 100:** 30 attack
-- **Enemies 101-149:** `25 + (n-101) × 0.6`
-- **Enemy 150:** 80 attack
+**Design Philosophy:** Enemies scale per-tick to counter player deck cycling
+
+**Act 1 (Enemies 1-50):**
+- ATK per tick: `1.0 + (n-1) × 0.05`
+- DEF per tick: `0.5 + (n-1) × 0.025`
+- Example: Enemy 1 = 1.0 ATK/tick, Enemy 50 = 3.45 ATK/tick
+
+**Act 2 (Enemies 51-100):**
+- ATK per tick: `3.5 + (n-51) × 0.08`
+- DEF per tick: `1.75 + (n-51) × 0.04`
+
+**Act 3 (Enemies 101-150):**
+- ATK per tick: `7.5 + (n-101) × 0.12`
+- DEF per tick: `3.75 + (n-101) × 0.06`
+
+**Bosses:**
+- 2× multiplier on per-tick rates
 
 ---
 

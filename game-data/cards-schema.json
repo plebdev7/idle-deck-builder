@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Card Data Schema",
+  "description": "Schema for all card definitions in the Idle Deck Builder game",
+  "type": "object",
+  "required": ["version", "cards"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Data version for compatibility checking"
+    },
+    "last_updated": {
+      "type": "string",
+      "description": "ISO date of last update"
+    },
+    "cards": {
+      "type": "array",
+      "description": "Array of all card definitions",
+      "items": {
+        "$ref": "#/definitions/card"
+      }
+    }
+  },
+  "definitions": {
+    "card": {
+      "type": "object",
+      "required": ["id", "name", "tier", "rarity", "type", "effects"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier (e.g., 'arcane_conduit')"
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name (e.g., 'Arcane Conduit')"
+        },
+        "tier": {
+          "type": "string",
+          "enum": ["Arcane", "Fire", "Water", "Earth", "Air"],
+          "description": "Which elemental tier this card belongs to"
+        },
+        "rarity": {
+          "type": "string",
+          "enum": ["Common", "Rare", "Epic", "Legendary"],
+          "description": "Card rarity"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["Generator", "Combat", "Hybrid", "Utility", "Synergy"],
+          "description": "Primary card type"
+        },
+        "stat_point_budget": {
+          "type": "number",
+          "description": "Total stat points spent on this card (for balance validation)"
+        },
+        "effects": {
+          "type": "array",
+          "description": "List of effects this card provides",
+          "items": {
+            "$ref": "#/definitions/effect"
+          }
+        },
+        "flavor_text": {
+          "type": "string",
+          "description": "Flavor text for the card"
+        },
+        "acquisition": {
+          "type": "object",
+          "description": "How this card can be obtained",
+          "properties": {
+            "source": {
+              "type": "string",
+              "enum": ["starter", "pack1_guaranteed", "pack2_guaranteed", "pack3_guaranteed", "random_pool"],
+              "description": "Where this card comes from"
+            },
+            "pack_type": {
+              "type": "string",
+              "enum": ["Arcane", "Fire", "Water", "Earth", "Air"],
+              "description": "Which pack type contains this card (if from packs)"
+            }
+          }
+        }
+      }
+    },
+    "effect": {
+      "type": "object",
+      "required": ["effect_type"],
+      "properties": {
+        "effect_type": {
+          "type": "string",
+          "enum": [
+            "add_attack",
+            "add_defense",
+            "essence_flat",
+            "essence_per_sec",
+            "heal_flat",
+            "heal_regen",
+            "conditional",
+            "draw_card",
+            "modify_next_card",
+            "modify_previous_card",
+            "deck_manipulation"
+          ],
+          "description": "Type of effect"
+        },
+        "value": {
+          "type": "number",
+          "description": "Numeric value for the effect"
+        },
+        "condition": {
+          "type": "object",
+          "description": "Optional condition for conditional effects",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["timing", "card_count", "state", "sequence"],
+              "description": "Type of condition"
+            },
+            "parameters": {
+              "type": "object",
+              "description": "Parameters for the condition"
+            }
+          }
+        },
+        "duration": {
+          "type": "string",
+          "enum": ["instant", "until_enemy_defeated", "until_death", "until_reshuffle", "permanent"],
+          "description": "How long the effect lasts"
+        }
+      }
+    }
+  }
+}
+

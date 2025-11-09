@@ -30,10 +30,12 @@
 **Goal:** Understand basic combat loop through observation
 
 **What Players See:**
-- Cards drawing one by one from deck
-- Attack and Defense stats building up
+- Cards drawing one by one from deck (1 card/second)
+- Attack and Defense stats building up with each card
+- **Deck reshuffles and cycles continuously** - stats keep accumulating
 - Enemies spawning every 12 seconds
-- Instant victories against early enemies
+- Combat resolves tick-by-tick (not instant) - enemies take damage gradually
+- Enemies attack back immediately from tick 0 (player HP decreases)
 - Essence counter increasing
 - Generator cards adding to Essence/sec rate
 
@@ -206,7 +208,8 @@
 
 ### Player Understanding
 
-- **Combat loop mastery:** Cards draw → stats accumulate → enemies defeated
+- **Combat loop mastery:** Cards draw → stats accumulate → **deck cycles continuously** → exponential power growth
+- **Continuous cycling:** Deck reshuffles every 9 seconds (8 cards + 1s cooldown), stats stack indefinitely
 - **Resource economy:** Essence from generators, shards from victories
 - **Deck building strategy:** Generator/combat balance matters
 - **Progression path:** Packs → cards → deck → power
@@ -240,15 +243,16 @@
 **Why:** Ensures consistent experience and teaches card variety  
 **Effect:** All players see generator types and combat variety
 
-### Defense Mechanics (Session 1.3)
+### Defense Mechanics (Session 1.3, Updated 2.1.2B)
 
 - Defense stat exists on cards
-- Early enemies have weak/zero attack
-- No failure state during learning phase
-- Becomes strategic later (Enemy 50+)
+- **All enemies attack from tick 0** (immediate combat threat)
+- Defense reduces damage taken each tick
+- No safe tutorial phase - learning through death is acceptable
+- Strategy critical from first enemy
 
-**Why:** Learn systems without death pressure  
-**Effect:** Comfortable learning environment
+**Why:** Death is part of the core loop, no penalty for dying early  
+**Effect:** Players learn combat mechanics through experience
 
 ### Class Cards (Session 1.3)
 
@@ -303,6 +307,12 @@ See [baseline-numbers.md](baseline-numbers.md) for detailed timing validation.
 ---
 
 ## Document History
+
+**Version 1.1** (2025-11-09) - Synchronization Update
+- Updated defense mechanics to reflect per-tick enemy attack system (all enemies attack from tick 0)
+- Added continuous deck cycling clarifications
+- Updated combat description (tick-by-tick resolution)
+- Aligned with Session 2.1.2B design decisions
 
 **Version 1.0** (2025-11-08) - Split from DESIGN.md Version 1.9  
 - Extracted First 30 Minutes Experience section (Session 1.3A)

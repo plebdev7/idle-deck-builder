@@ -155,58 +155,128 @@ Bosses are **progression checkpoints** that require multiple death loops with de
 
 ---
 
-## Enemy Attack Scaling
+## Enemy Attack/Defense Scaling (Per-Tick System)
 
-### Phase 1: Safe Learning (Enemies 1-49)
+### Design Philosophy
 
-- Attack: **0**
-- Purpose: Learn mechanics without death pressure
-- HP never depletes
-- Pure offense optimization
-- 30 minutes of safe learning
+**Dynamic Per-Tick Scaling:** Enemies gain ATK and DEF each combat tick to counter the player's exponential stat growth from deck cycling. This prevents defensive builds from achieving "default invulnerability" and creates strategic tension throughout long fights.
 
-### Phase 2: Mini-Boss #1 "Defense Tutorial" (Enemy 50)
+**Key Principle:** Player deck cycling provides ~6.9 ATK/tick and ~6.2 DEF/tick (starter deck). Enemy per-tick rates must scale comparably or faster to remain threatening.
 
-- Attack: **10** (FIRST enemy with attack!)
-- Purpose:
-  - Teaches defense matters
-  - "Oh no, I'm taking damage!" moment
-  - Still survivable (100 HP vs 10 ATK/tick)
-  - Forces defensive card strategy
-  - Natural 30-minute milestone
+### Per-Tick Scaling Formulas
 
-### Phase 3: Gradual Scaling (Enemies 51-99)
+**Act 1 (Enemies 1-50): Learning Phase**
+```
+ATK_per_tick = 1.0 + (enemy_number - 1) × 0.05
+DEF_per_tick = 0.5 + (enemy_number - 1) × 0.025
 
-- Formula: `10 + (enemy_number - 51) × 0.3`
-- Enemy 51: 10 ATK → Enemy 99: 24.4 ATK
-- Purpose: Progressive difficulty introduction
-- Defense becomes increasingly important
+Enemy 1:  1.0 ATK/tick, 0.5 DEF/tick
+Enemy 25: 2.2 ATK/tick, 1.1 DEF/tick
+Enemy 50: 3.45 ATK/tick, 1.73 DEF/tick
 
-### Phase 4: Mini-Boss #2 "First Real Wall" (Enemy 100)
+Design: Slower than player growth = manageable, teaches mechanics
+```
 
-- Attack: **30** (1.3× regular Enemy 100)
-- Purpose: Significant threat, Pack 1 likely needed
-- Forces strategic deck building
+**Act 2 (Enemies 51-100): Challenge Phase**
+```
+ATK_per_tick = 3.5 + (enemy_number - 51) × 0.08
+DEF_per_tick = 1.75 + (enemy_number - 51) × 0.04
 
-### Phase 5: Challenge Zone (Enemies 101-149)
+Enemy 51:  3.5 ATK/tick, 1.75 DEF/tick
+Enemy 75:  5.42 ATK/tick, 2.71 DEF/tick
+Enemy 100: 7.42 ATK/tick, 3.71 DEF/tick
 
-- Formula: `25 + (enemy_number - 101) × 0.6`
-- Enemy 101: 25 ATK → Enemy 149: 54 ATK
-- Purpose: HP management becomes critical
-- Death highly likely without healing strategy
+Design: Approaches player growth = tense, requires good decks
+```
 
-### Phase 6: Major Boss (Enemy 150)
+**Act 3 (Enemies 101-150): Master Phase**
+```
+ATK_per_tick = 7.5 + (enemy_number - 101) × 0.12
+DEF_per_tick = 3.75 + (enemy_number - 101) × 0.06
 
-- Attack: **80** (1.5× regular Enemy 149)
-- Purpose: Major milestone, requires multiple death loops
-- Expected 3-6 loops to defeat
+Enemy 101: 7.5 ATK/tick, 3.75 DEF/tick
+Enemy 125: 10.38 ATK/tick, 5.19 DEF/tick
+Enemy 150: 13.38 ATK/tick, 6.69 DEF/tick
+
+Design: Faster than player growth = intense, requires optimized decks
+```
+
+**Bosses (All):**
+```
+ATK_per_tick = regular_rate × 2.0
+DEF_per_tick = regular_rate × 2.0
+
+Enemy 50 Boss:  6.9 ATK/tick, 3.46 DEF/tick (matches player DEF growth!)
+Enemy 100 Boss: 14.84 ATK/tick, 7.42 DEF/tick (exceeds player growth!)
+Enemy 150 Boss: 26.76 ATK/tick, 13.38 DEF/tick (way exceeds player growth!)
+
+Design: Long boss fights become extremely dangerous
+```
+
+### Combat Tick Examples
+
+**Enemy 1 (500 HP suggested, 1.0 ATK/tick, 0.5 DEF/tick):**
+```
+Tick 0:  1.0 ATK, 0.5 DEF
+Tick 5:  6.0 ATK, 3.0 DEF
+Tick 10: 11.0 ATK, 5.5 DEF
+Tick 15: 16.0 ATK, 8.0 DEF
+
+Fight lasts ~12-15 ticks with starter deck
+Player loses ~10-15 HP before defense exceeds enemy ATK
+```
+
+**Enemy 50 Regular (7,670 HP, 3.45 ATK/tick, 1.73 DEF/tick):**
+```
+Tick 0:  3.45 ATK, 1.73 DEF
+Tick 10: 37.95 ATK, 19.03 DEF
+Tick 20: 72.45 ATK, 36.33 DEF
+Tick 47: 165.6 ATK, 82.8 DEF
+
+Starter deck (56 DEF after 8 ticks) can survive
+Player DEF outpaces enemy ATK growth = winnable
+```
+
+**Enemy 50 Boss (7,670 HP, 6.9 ATK/tick × 2.0, 3.46 DEF/tick):**
+```
+Tick 0:  6.9 ATK, 3.46 DEF
+Tick 10: 75.9 ATK, 38.06 DEF
+Tick 20: 144.9 ATK, 72.66 DEF
+Tick 47: 331.2 ATK, 165.6 DEF
+
+Enemy ATK growth matches player DEF growth!
+Very dangerous, requires excellent defensive play or fast kill
+```
+
+**Enemy 150 Boss (38,720 HP, 26.76 ATK/tick, 13.38 DEF/tick):**
+```
+Tick 0:   26.76 ATK, 13.38 DEF
+Tick 30:  830.56 ATK, 415.28 DEF
+Tick 60:  1,634.36 ATK, 817.18 DEF
+Tick 100: 2,702.76 ATK, 1,351.38 DEF
+
+Starter deck cannot survive this
+Requires Packs 1-3 with serious defensive investment OR fast kill strategy
+```
 
 ### Design Rationale
 
-- 30 minutes of safe play before first damage = perfect tutorial arc
-- Clear "before/after" moment at Mini-Boss #1
-- Boss encounters every ~50 enemies = consistent rhythm
-- Each boss teaches new lesson (defense, optimization, HP management)
+**No "Safe Tutorial" Phase:** 
+- All enemies deal damage from tick 0
+- Death has no penalty, players learn by dying
+- Removed 30-minute safe period (was artificial)
+
+**No Default Invulnerability:**
+- Defense builds require serious investment
+- Offensive builds win by killing quickly
+- Healing becomes critical for long runs
+- Every fight maintains threat
+
+**Strategic Build Diversity:**
+- **Glass Cannon:** High ATK, kill before enemy ramps (risky but efficient)
+- **Tank:** High DEF investment, survive the ramp (safer, slower)
+- **Balanced:** Some of each (middle ground)
+- **Healing Focus:** HP regen/healing to sustain (enables long runs)
 
 ---
 

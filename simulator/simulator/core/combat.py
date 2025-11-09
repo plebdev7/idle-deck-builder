@@ -1,15 +1,18 @@
 """Combat simulation logic with combat-over-time mechanics.
 
-Implements Session 2.0.3 combat system redesign (DESIGN.md Version 1.9):
+Implements Session 2.0.3 + 2.1.2B combat system (DESIGN.md Version 2.0.2):
 - Tick-based combat (1.0 second per tick)
 - Player HP system with death mechanics
 - Continuous deck cycling with reshuffle cooldown
 - Stat accumulation and reset per enemy
 - Death and respawn system
+- Per-tick enemy scaling (ATK/DEF grow each tick)
 
 Key Mechanics:
 - Cards drawn at 1/sec continuously
-- Combat resolves tick-by-tick (ATK - DEF damage per tick)
+- Deck cycles indefinitely (stats accumulate exponentially)
+- Combat resolves tick-by-tick
+- Enemy ATK/DEF scale per combat tick (counters player cycling)
 - Stats accumulate during enemy fight, reset when enemy dies
 - HP depletes across enemies, no healing between fights
 - Death at HP = 0, respawn at Enemy 1 with full HP
@@ -71,42 +74,62 @@ class Player:
 
 @dataclass
 class Enemy:
-    """Enemy entity with scaling stats."""
+    """Enemy entity with per-tick scaling stats.
+    
+    Per-Tick Scaling System (Session 2.1.2B):
+    - Enemies gain ATK and DEF each combat tick
+    - Prevents "default invulnerability" from player deck cycling
+    - Bosses scale 2× faster than regular enemies
+    """
 
     number: int  # Enemy sequence number (1-indexed)
     max_health: float  # Maximum health
     current_health: float  # Current health (for combat)
-    attack: int
-    defense: int = 0
+    atk_per_tick: float  # ATK gained per combat tick
+    def_per_tick: float  # DEF gained per combat tick
+    is_boss: bool = False  # Boss multiplier flag
+    combat_ticks_elapsed: int = 0  # Ticks since combat started
 
     @classmethod
     def spawn(cls, enemy_number: int) -> "Enemy":
         """Spawn enemy with scaled stats.
         
-        NEW SCALING SYSTEM (Session 2.0.3 - Act-Based Step Function):
+        PER-TICK SCALING SYSTEM (Session 2.1.2B):
+        
+        All enemies attack from tick 0. ATK/DEF grow each combat tick.
+        
+        Act 1 (Enemies 1-50): Learning Phase
+        - ATK/tick: 1.0 + (n-1) × 0.05
+        - DEF/tick: 0.5 + (n-1) × 0.025
+        
+        Act 2 (Enemies 51-100): Challenge Phase
+        - ATK/tick: 3.5 + (n-51) × 0.08
+        - DEF/tick: 1.75 + (n-51) × 0.04
+        
+        Act 3 (Enemies 101-150): Master Phase
+        - ATK/tick: 7.5 + (n-101) × 0.12
+        - DEF/tick: 3.75 + (n-101) × 0.06
+        
+        Bosses (50, 100, 150):
+        - 2× multiplier on per-tick rates
+        - Makes long fights extremely dangerous
+        
+        HP SCALING (Act-Based Step Function):
         
         Act 1 (Enemies 1-50): Tutorial Tier
         - Formula: HP = 20 + (n-1) × 120
-        - Enemy 50: 9,768 HP (Mini-Boss #1, 1.3× multiplier)
-        - Attack: 0 until Enemy 50, then 10 (first attacker)
+        - Enemy 50 Boss: 7,670 HP (1.3× multiplier)
         
         Act 2 (Enemies 51-100): Challenge Tier
         - Formula: HP = 6,000 + (n-51) × 130
-        - Enemy 100: 18,555 HP (Mini-Boss #2, 1.5× multiplier)
-        - Attack: 10 + (n-51) × 0.3, boss: 30
+        - Enemy 100 Boss: 18,555 HP (1.5× multiplier)
         
         Act 3 (Enemies 101-150): Master Tier
         - Formula: HP = 12,500 + (n-101) × 140
-        - Enemy 150: 38,680 HP (Major Boss, 2.0× multiplier)
-        - Attack: 25 + (n-101) × 0.6, boss: 80
+        - Enemy 150 Boss: 38,720 HP (2.0× multiplier)
         
         Act 4+ (Enemies 151+): Future Content
         - Formula: HP = 38,880 + (n-151) × 200
-        
-        Design Philosophy:
-        - Step function creates clear Acts with breathing room after bosses
-        - Post-boss enemies easier than boss but harder than pre-boss
-        - Escalating challenge (120 → 130 → 140 HP per enemy by Act)
         
         Args:
             enemy_number: Enemy sequence number (1-indexed)
@@ -122,7 +145,7 @@ class Enemy:
             # Act 1: Tutorial Tier
             base_hp = 20 + (enemy_number - 1) * 120
             if is_boss:  # Enemy 50 - Mini-Boss #1
-                health = base_hp * 1.3  # 9,768 HP
+                health = base_hp * 1.3  # 7,670 HP
             else:
                 health = base_hp
                 
@@ -138,7 +161,7 @@ class Enemy:
             # Act 3: Master Tier
             base_hp = 12_500 + (enemy_number - 101) * 140
             if is_boss:  # Enemy 150 - Major Boss
-                health = base_hp * 2.0  # 38,680 HP
+                health = base_hp * 2.0  # 38,720 HP
             else:
                 health = base_hp
                 
@@ -148,38 +171,58 @@ class Enemy:
             if is_boss:
                 health *= 2.0  # Future bosses
 
-        # Attack scaling
-        if enemy_number < 50:
-            # Phase 1: Safe learning (no attack)
-            attack = 0
-        elif enemy_number == 50:
-            # Phase 2: Mini-Boss #1 "Defense Tutorial"
-            attack = 10  # FIRST enemy with attack
+        # Per-tick ATK/DEF scaling (Session 2.1.2B)
+        if enemy_number <= 50:
+            # Act 1: Learning Phase
+            atk_per_tick = 1.0 + (enemy_number - 1) * 0.05
+            def_per_tick = 0.5 + (enemy_number - 1) * 0.025
         elif enemy_number <= 100:
-            # Phase 3: Gradual scaling
-            if enemy_number == 100:
-                attack = 30  # Mini-Boss #2
-            else:
-                attack = int(10 + (enemy_number - 51) * 0.3)
+            # Act 2: Challenge Phase
+            atk_per_tick = 3.5 + (enemy_number - 51) * 0.08
+            def_per_tick = 1.75 + (enemy_number - 51) * 0.04
         elif enemy_number <= 150:
-            # Phase 4: Challenge zone
-            if enemy_number == 150:
-                attack = 80  # Major Boss
-            else:
-                attack = int(25 + (enemy_number - 101) * 0.6)
+            # Act 3: Master Phase
+            atk_per_tick = 7.5 + (enemy_number - 101) * 0.12
+            def_per_tick = 3.75 + (enemy_number - 101) * 0.06
         else:
-            # Phase 5: Future content
-            if is_boss:
-                attack = 100 + (enemy_number - 150) // 50 * 20
-            else:
-                attack = int(80 + (enemy_number - 151) * 1.0)
+            # Act 4+: Future content
+            atk_per_tick = 13.5 + (enemy_number - 151) * 0.15
+            def_per_tick = 6.75 + (enemy_number - 151) * 0.075
+        
+        # Boss multiplier (2× faster scaling)
+        if is_boss:
+            atk_per_tick *= 2.0
+            def_per_tick *= 2.0
 
         return cls(
             number=enemy_number, 
             max_health=health,
             current_health=health,
-            attack=attack
+            atk_per_tick=atk_per_tick,
+            def_per_tick=def_per_tick,
+            is_boss=is_boss,
+            combat_ticks_elapsed=0
         )
+    
+    def current_attack(self) -> float:
+        """Calculate current ATK based on ticks elapsed.
+        
+        Returns:
+            Current ATK value (atk_per_tick × ticks_elapsed)
+        """
+        return self.atk_per_tick * self.combat_ticks_elapsed
+    
+    def current_defense(self) -> float:
+        """Calculate current DEF based on ticks elapsed.
+        
+        Returns:
+            Current DEF value (def_per_tick × ticks_elapsed)
+        """
+        return self.def_per_tick * self.combat_ticks_elapsed
+    
+    def tick(self) -> None:
+        """Increment combat tick counter (called each combat tick)."""
+        self.combat_ticks_elapsed += 1
     
     def is_alive(self) -> bool:
         """Check if enemy is alive."""
@@ -454,7 +497,9 @@ class CombatSimulator:
                 data={
                     "enemy_number": self.enemy_number,
                     "max_health": self.current_enemy.max_health,
-                    "attack": self.current_enemy.attack,
+                    "atk_per_tick": self.current_enemy.atk_per_tick,
+                    "def_per_tick": self.current_enemy.def_per_tick,
+                    "is_boss": self.current_enemy.is_boss,
                     "player_hp": self.player.current_hp,
                     "player_attack": self.player.attack,
                     "player_defense": self.player.defense,
@@ -465,9 +510,10 @@ class CombatSimulator:
     def _combat_tick(self) -> None:
         """Process one combat tick (1 second).
         
-        Combat tick mechanics (DESIGN.md Session 2.0.3):
-        - Player deals damage: max(player_attack - enemy_defense, 0)
-        - Enemy deals damage: max(enemy_attack - player_defense, 0)
+        Combat tick mechanics (DESIGN.md Session 2.0.3 + 2.1.2B):
+        - Enemy gains ATK/DEF each tick (per-tick scaling)
+        - Player deals damage: max(player_attack - enemy_current_defense, 0)
+        - Enemy deals damage: max(enemy_current_attack - player_defense, 0)
         - No minimum damage (perfect defense = 0 damage)
         - Cards continue to draw during combat
         """
@@ -476,9 +522,16 @@ class CombatSimulator:
         
         self.combat_ticks += 1
         
+        # Enemy gains ATK/DEF this tick (per-tick scaling)
+        self.current_enemy.tick()
+        
+        # Calculate current enemy stats
+        enemy_attack = self.current_enemy.current_attack()
+        enemy_defense = self.current_enemy.current_defense()
+        
         # Calculate damage (ATK - DEF, no minimum)
-        player_damage = max(self.player.attack - self.current_enemy.defense, 0)
-        enemy_damage = max(self.current_enemy.attack - self.player.defense, 0)
+        player_damage = max(self.player.attack - enemy_defense, 0)
+        enemy_damage = max(enemy_attack - self.player.defense, 0)
         
         # Apply damage
         if player_damage > 0:
@@ -500,9 +553,12 @@ class CombatSimulator:
                     "player_damage": player_damage,
                     "enemy_damage": enemy_damage,
                     "enemy_hp": self.current_enemy.current_health,
+                    "enemy_attack": enemy_attack,
+                    "enemy_defense": enemy_defense,
                     "player_hp": self.player.current_hp,
                     "player_attack": self.player.attack,
                     "player_defense": self.player.defense,
+                    "ticks_elapsed": self.current_enemy.combat_ticks_elapsed,
                 },
             )
         )

@@ -6,8 +6,33 @@ Handles:
 - Idle generation calculations
 - Economy balance modeling
 
-Will be fully implemented in Task 2.0+.
+Updated in Session 2.1.2A to load from balance-config.json.
 """
+
+from typing import Any
+
+
+def load_pack_costs_from_config(config: dict[str, Any]) -> dict[int, int]:
+    """Extract pack costs from balance config.
+    
+    Args:
+        config: Balance configuration dictionary
+        
+    Returns:
+        Dictionary mapping pack number to cost
+    """
+    if "pack_costs" in config and "Arcane_Pack" in config["pack_costs"]:
+        pack_costs_str = config["pack_costs"]["Arcane_Pack"]
+        # Convert string keys to integers
+        return {int(k): v for k, v in pack_costs_str.items() if k != "note"}
+    else:
+        # Fallback to default values
+        return {
+            1: 40_000,
+            2: 100_000,
+            3: 250_000,
+            4: 625_000,
+        }
 
 
 def pack_cost(pack_number: int, base_cost: int = 40_000, multiplier: float = 2.5) -> int:

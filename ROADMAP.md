@@ -320,26 +320,88 @@ Document decisions in DESIGN.md with rationale and implications for other system
 **Estimated Time:** 1-2 hours
 
 #### 2.1 Pack Card Design (15-20 cards for Packs 1-3)
-- Define card rarity levels (answer question 7) with stat differences
-- **Pack 1 Guaranteed Cards** (5 cards: 2 generators, 2 combat, 1 utility)
-  - Introduce conditional bonuses ("If drawn in first 5 seconds...")
-  - Simple synergies ("If you have 3+ Arcane cards...")
-  - Better generators (+3, +4 Essence/sec)
-  - Test in simulator to validate balance
-- **Pack 2 Guaranteed Cards** (5 cards: 1 generator, 3 combat, 1 rare synergy)
-  - Introduce multiplier generator (Current rate × Y seconds)
-  - Order-dependent effects ("Next card gets +50%")
-  - First Rare card with combo mechanics
-  - Test in simulator to validate sequencing mechanics
-- **Pack 3+ Random Pool** (5-10 cards for Arcane tier)
+
+**Approach:** Research → Design → Implementation (5-phase structured process)
+
+**Phase 1: Foundation Research (DESIGN SESSION, 2-3 hours)**
+- **2.1.1 - Card Rarity System**
+  - Define 4-tier system (Common/Rare/Epic/Legendary)
+  - Specify stat multipliers and ranges per rarity
+  - Define drop rates from packs
+  - Document ultra-rare/unique card philosophy (future expansion)
+- **2.1.2 - Power Curve Analysis**
+  - Validate stat ranges per pack and rarity
+  - Model essence generation with Pack 1 cards
+  - Model combat effectiveness (Enemy 100 feasibility)
+  - Validate 4-6 death loop progression expectation
+- **2.1.3 - Card Leveling Concept**
+  - Define duplicate card handling (XP? Fusion? Scrapping?)
+  - Specify level-up mechanics and requirements
+  - Design stat scaling formulas per level
+  - Define max level caps and progression curve
+
+**Phase 2: Mechanic Design Research (DESIGN SESSION, 2-3 hours)**
+- **2.1.4 - Conditional Mechanics Research**
+  - Evaluate condition types (timing, composition, state-based)
+  - Identify "fun to build around" vs "too random/confusing"
+  - Define testable conditions for Pack 1-3
+  - Create conditional ability templates
+- **2.1.5 - Sequencing & Order-Dependent Mechanics**
+  - Design "next card" and "previous card" tracking
+  - Specify combo trigger chains
+  - Define state persistence rules (reshuffle, enemy, death)
+- **2.1.6 - Card Data Structure & Text Format**
+  - Define complete card template (all fields)
+  - Specify stat notation format
+  - Create ability description templates with keywords
+  - Validate text fits card layout (3 lines max, 12px font)
+
+**Phase 3: Card Content Design (DESIGN SESSION, 3-4 hours)**
+- **2.1.7 - Pack 1 Guaranteed Cards** (5 deterministic cards)
+  - 2 generator cards (+3, +4 Essence/sec range)
+  - 2 combat cards (25-30 total stats)
+  - 1 utility card (introduce first simple conditional)
+  - Document design rationale for each card
+- **2.1.8 - Pack 2 Guaranteed Cards** (5 deterministic cards)
+  - 1 multiplier generator (Current rate × Y seconds)
+  - 3 combat cards (35-45 total stats, introduce sequencing)
+  - 1 Rare synergy card (first combo mechanic)
+  - Document design rationale for each card
+- **2.1.9 - Pack 3+ Random Pool** (5-10 cards for Arcane tier)
+  - Mix of Common/Rare/Epic cards
   - Deck manipulation ("Draw extra card", "Shuffle deck")
   - State-based effects ("Lasts until reshuffle")
-  - Higher power level cards (Rare/Epic)
-  - Test in simulator for balance and interactions
-- Create complete card template/stats structure (all fields, ranges, formulas)
-- Define card leveling progression curves (formulas, examples per level)
-- Specify card text format and ability descriptions
-- Validate card examples against visual-style-guide.md (layout, text length, stats fit)
+  - Higher power level cards (Rare 50-80, Epic 100-150 stats)
+  - Document design rationale for each card
+
+**Phase 4: Validation & Documentation (1-2 hours)**
+- **2.1.10 - Validate Cards Against Constraints**
+  - Check against visual-style-guide.md
+  - Verify power curve progression
+  - Confirm mechanical complexity curve
+  - Validate deterministic packs teach mechanics
+- **2.1.11 - Update Design Documents**
+  - Add rarity system to DESIGN.md
+  - Add card leveling system design
+  - Document all 15-20 pack cards with full stats
+  - Update pack contents and guaranteed lists
+  - Add card data structure specification
+  - Resolve Outstanding Question 7
+
+**Phase 5: Implementation (if needed, 2-4 hours)**
+- **2.1.12 - Implement New Mechanics in Simulator**
+  - Add conditional trigger system
+  - Add sequencing/order-dependent tracking
+  - Add state persistence management
+  - Add deck manipulation mechanics
+  - Test all new pack cards in simulator
+  - Validate balance and progression targets
+
+**Key Decisions (Pre-Made):**
+- First 2-3 packs are fully deterministic (same cards every time)
+- 4-tier rarity system with room for ultra-rare/unique in future
+- Conditionals allowed but must be "fun to build around" not "confusing"
+- Design first, implementation after (but docs must sync)
 
 #### 2.2 Card Interaction Specifications
 - Define trigger chains: exact conditions and effects

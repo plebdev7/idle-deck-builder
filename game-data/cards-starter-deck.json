@@ -1,0 +1,185 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-11-08",
+  "description": "Starter deck for all players (Arcane Student class)",
+  "cards": [
+    {
+      "id": "arcane_conduit",
+      "name": "Arcane Conduit",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Generator",
+      "stat_point_budget": 20,
+      "effects": [
+        {
+          "effect_type": "essence_per_sec",
+          "value": 2.0,
+          "duration": "until_death"
+        }
+      ],
+      "flavor_text": "A stable channel of pure arcane energy. Draw upon it to fuel your magic.",
+      "acquisition": {
+        "source": "starter"
+      }
+    },
+    {
+      "id": "essence_burst",
+      "name": "Essence Burst",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Generator",
+      "stat_point_budget": 25,
+      "effects": [
+        {
+          "effect_type": "essence_flat",
+          "value": 250,
+          "duration": "instant"
+        }
+      ],
+      "flavor_text": "A concentrated surge of magical energy, released all at once.",
+      "acquisition": {
+        "source": "starter"
+      }
+    },
+    {
+      "id": "combat_siphon",
+      "name": "Combat Siphon",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Hybrid",
+      "stat_point_budget": 28,
+      "effects": [
+        {
+          "effect_type": "essence_per_sec",
+          "value": 1.0,
+          "duration": "until_death"
+        },
+        {
+          "effect_type": "add_attack",
+          "value": 12,
+          "duration": "until_enemy_defeated"
+        },
+        {
+          "effect_type": "add_defense",
+          "value": 6,
+          "duration": "until_enemy_defeated"
+        }
+      ],
+      "flavor_text": "Draw power from combat itself, channeling the clash into usable essence.",
+      "acquisition": {
+        "source": "starter"
+      }
+    },
+    {
+      "id": "arcane_bolt",
+      "name": "Arcane Bolt",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Combat",
+      "stat_point_budget": 20,
+      "effects": [
+        {
+          "effect_type": "add_attack",
+          "value": 20,
+          "duration": "until_enemy_defeated"
+        }
+      ],
+      "flavor_text": "A focused blast of raw magical force.",
+      "acquisition": {
+        "source": "starter"
+      }
+    },
+    {
+      "id": "mystic_shield",
+      "name": "Mystic Shield",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Combat",
+      "stat_point_budget": 20,
+      "effects": [
+        {
+          "effect_type": "add_defense",
+          "value": 20,
+          "duration": "until_enemy_defeated"
+        }
+      ],
+      "flavor_text": "A shimmering barrier of protective magic.",
+      "acquisition": {
+        "source": "starter"
+      }
+    },
+    {
+      "id": "balanced_strike",
+      "name": "Balanced Strike",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Combat",
+      "stat_point_budget": 20,
+      "effects": [
+        {
+          "effect_type": "add_attack",
+          "value": 10,
+          "duration": "until_enemy_defeated"
+        },
+        {
+          "effect_type": "add_defense",
+          "value": 10,
+          "duration": "until_enemy_defeated"
+        }
+      ],
+      "flavor_text": "Harmonious magic balancing offense and defense.",
+      "acquisition": {
+        "source": "starter"
+      }
+    },
+    {
+      "id": "power_strike",
+      "name": "Power Strike",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Combat",
+      "stat_point_budget": 20,
+      "effects": [
+        {
+          "effect_type": "add_attack",
+          "value": 15,
+          "duration": "until_enemy_defeated"
+        },
+        {
+          "effect_type": "add_defense",
+          "value": 5,
+          "duration": "until_enemy_defeated"
+        }
+      ],
+      "flavor_text": "Aggressive magic that prioritizes overwhelming force.",
+      "acquisition": {
+        "source": "starter"
+      }
+    },
+    {
+      "id": "stalwart_guard",
+      "name": "Stalwart Guard",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Combat",
+      "stat_point_budget": 20,
+      "effects": [
+        {
+          "effect_type": "add_attack",
+          "value": 5,
+          "duration": "until_enemy_defeated"
+        },
+        {
+          "effect_type": "add_defense",
+          "value": 15,
+          "duration": "until_enemy_defeated"
+        }
+      ],
+      "flavor_text": "Patient, enduring magic that outlasts threats.",
+      "acquisition": {
+        "source": "starter"
+      }
+    }
+  ]
+}
+

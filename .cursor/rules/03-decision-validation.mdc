@@ -87,3 +87,13 @@ When implementation reveals problems in DESIGN.md:
 - Change design without updating DESIGN.md
 - Assume "obvious" fixes don't need approval
 - Leave design docs out of sync with implementation
+- Defer doc synchronization to "next session"
+
+## Document Synchronization (Same Session Rule)
+
+When design decisions are made:
+1. Update DESIGN.md and related spec files IMMEDIATELY (same session)
+2. Check for conflicts across all related documents before marking complete
+3. Mark critical mechanics with **CRITICAL** or **IMPORTANT** markers
+4. Explain foundational concepts in multiple locations (agents miss single mentions)
+5. Implementation can be deferred; documentation updates cannot
