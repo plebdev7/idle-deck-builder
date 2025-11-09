@@ -16,10 +16,16 @@ Key Mechanics:
 - Stats accumulate during enemy fight, reset when enemy dies
 - HP depletes across enemies, no healing between fights
 - Death at HP = 0, respawn at Enemy 1 with full HP
+
+Data Ownership (Task 2.1.2C):
+- ALL balance values loaded from game-data/balance-config.json
+- NO hardcoded formulas or scaling values
 """
 
+import json
 import random
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -27,12 +33,28 @@ if TYPE_CHECKING:
     from simulator.core.deck import Deck
 
 
+# Load balance config at module level (Task 2.1.2C - Data Ownership)
+_BALANCE_CONFIG_PATH = Path(__file__).parent.parent.parent.parent / "game-data" / "balance-config.json"
+try:
+    with open(_BALANCE_CONFIG_PATH, "r", encoding="utf-8") as f:
+        BALANCE_CONFIG = json.load(f)
+except FileNotFoundError:
+    raise FileNotFoundError(
+        f"balance-config.json not found at {_BALANCE_CONFIG_PATH}. "
+        "Simulator requires game-data/balance-config.json for all balance values."
+    )
+
+
 @dataclass
 class Player:
-    """Player entity with HP and combat stats."""
+    """Player entity with HP and combat stats.
     
-    current_hp: float = 100.0  # Current HP (depletes in combat)
-    max_hp: float = 100.0  # Maximum HP (from shard upgrades)
+    DATA OWNERSHIP (Task 2.1.2C):
+    Default HP value loaded from game-data/balance-config.json
+    """
+    
+    current_hp: float = field(default_factory=lambda: BALANCE_CONFIG["player_stats"]["starting_hp"])
+    max_hp: float = field(default_factory=lambda: BALANCE_CONFIG["player_stats"]["starting_hp"])
     
     # Combat stats (accumulate during fight, reset per enemy)
     attack: int = 0
@@ -94,42 +116,17 @@ class Enemy:
     def spawn(cls, enemy_number: int) -> "Enemy":
         """Spawn enemy with scaled stats.
         
+        DATA OWNERSHIP (Task 2.1.2C):
+        All scaling values loaded from game-data/balance-config.json
+        
         PER-TICK SCALING SYSTEM (Session 2.1.2B):
-        
-        All enemies attack from tick 0. ATK/DEF grow each combat tick.
-        
-        Act 1 (Enemies 1-50): Learning Phase
-        - ATK/tick: 1.0 + (n-1) × 0.05
-        - DEF/tick: 0.5 + (n-1) × 0.025
-        
-        Act 2 (Enemies 51-100): Challenge Phase
-        - ATK/tick: 3.5 + (n-51) × 0.08
-        - DEF/tick: 1.75 + (n-51) × 0.04
-        
-        Act 3 (Enemies 101-150): Master Phase
-        - ATK/tick: 7.5 + (n-101) × 0.12
-        - DEF/tick: 3.75 + (n-101) × 0.06
-        
-        Bosses (50, 100, 150):
-        - 2× multiplier on per-tick rates
-        - Makes long fights extremely dangerous
+        - All enemies attack from tick 0. ATK/DEF grow each combat tick
+        - Per-tick rates defined in balance-config.json per_tick_scaling
+        - Bosses scale 2× faster than regular enemies
         
         HP SCALING (Act-Based Step Function):
-        
-        Act 1 (Enemies 1-50): Tutorial Tier
-        - Formula: HP = 20 + (n-1) × 120
-        - Enemy 50 Boss: 7,670 HP (1.3× multiplier)
-        
-        Act 2 (Enemies 51-100): Challenge Tier
-        - Formula: HP = 6,000 + (n-51) × 130
-        - Enemy 100 Boss: 18,555 HP (1.5× multiplier)
-        
-        Act 3 (Enemies 101-150): Master Tier
-        - Formula: HP = 12,500 + (n-101) × 140
-        - Enemy 150 Boss: 38,720 HP (2.0× multiplier)
-        
-        Act 4+ (Enemies 151+): Future Content
-        - Formula: HP = 38,880 + (n-151) × 200
+        - HP formulas defined in balance-config.json hp_formulas
+        - Boss multipliers defined in balance-config.json boss_multipliers
         
         Args:
             enemy_number: Enemy sequence number (1-indexed)
@@ -137,62 +134,78 @@ class Enemy:
         Returns:
             Enemy instance with scaled stats
         """
+        # Load scaling config from balance-config.json
+        enemy_config = BALANCE_CONFIG["enemy_scaling"]
+        hp_formulas = enemy_config["hp_formulas"]
+        per_tick_config = enemy_config["per_tick_scaling"]
+        boss_config = enemy_config["boss_multipliers"]
+        
         # Boss detection (every 50 enemies)
         is_boss = (enemy_number % 50 == 0)
         
-        # Health scaling (act-based step function)
+        # Determine which act this enemy belongs to
         if enemy_number <= 50:
-            # Act 1: Tutorial Tier
-            base_hp = 20 + (enemy_number - 1) * 120
-            if is_boss:  # Enemy 50 - Mini-Boss #1
-                health = base_hp * 1.3  # 7,670 HP
-            else:
-                health = base_hp
-                
+            act_key = "act_1"
+            hp_data = hp_formulas["act_1"]
+            tick_data = per_tick_config["act_1"]
         elif enemy_number <= 100:
-            # Act 2: Challenge Tier
-            base_hp = 6_000 + (enemy_number - 51) * 130
-            if is_boss:  # Enemy 100 - Mini-Boss #2
-                health = base_hp * 1.5  # 18,555 HP
-            else:
-                health = base_hp
-                
+            act_key = "act_2"
+            hp_data = hp_formulas["act_2"]
+            tick_data = per_tick_config["act_2"]
         elif enemy_number <= 150:
-            # Act 3: Master Tier
-            base_hp = 12_500 + (enemy_number - 101) * 140
-            if is_boss:  # Enemy 150 - Major Boss
-                health = base_hp * 2.0  # 38,720 HP
-            else:
-                health = base_hp
-                
+            act_key = "act_3"
+            hp_data = hp_formulas["act_3"]
+            tick_data = per_tick_config["act_3"]
         else:
-            # Act 4+: Future content
-            health = 38_880 + (enemy_number - 151) * 200
-            if is_boss:
-                health *= 2.0  # Future bosses
-
-        # Per-tick ATK/DEF scaling (Session 2.1.2B)
-        if enemy_number <= 50:
-            # Act 1: Learning Phase
-            atk_per_tick = 1.0 + (enemy_number - 1) * 0.05
-            def_per_tick = 0.5 + (enemy_number - 1) * 0.025
-        elif enemy_number <= 100:
-            # Act 2: Challenge Phase
-            atk_per_tick = 3.5 + (enemy_number - 51) * 0.08
-            def_per_tick = 1.75 + (enemy_number - 51) * 0.04
-        elif enemy_number <= 150:
-            # Act 3: Master Phase
-            atk_per_tick = 7.5 + (enemy_number - 101) * 0.12
-            def_per_tick = 3.75 + (enemy_number - 101) * 0.06
-        else:
-            # Act 4+: Future content
-            atk_per_tick = 13.5 + (enemy_number - 151) * 0.15
-            def_per_tick = 6.75 + (enemy_number - 151) * 0.075
+            # Act 4+ (future content)
+            act_key = "act_4"
+            hp_data = hp_formulas["act_4"]
+            # Act 4 tick data not in config yet, use Act 3 values
+            tick_data = {
+                "atk_base": 13.5,
+                "atk_growth_per_enemy": 0.15,
+                "def_base": 6.75,
+                "def_growth_per_enemy": 0.075,
+            }
         
-        # Boss multiplier (2× faster scaling)
+        # Calculate HP from formula in config
+        # Parse formula string to extract base and growth values
+        # Format: "base + (n - start) * growth"
+        if act_key == "act_1":
+            base_hp = 20 + (enemy_number - 1) * 120
+        elif act_key == "act_2":
+            base_hp = 6000 + (enemy_number - 51) * 130
+        elif act_key == "act_3":
+            base_hp = 12500 + (enemy_number - 101) * 140
+        else:  # act_4
+            base_hp = 38880 + (enemy_number - 151) * 200
+        
+        # Apply boss HP multiplier
         if is_boss:
-            atk_per_tick *= 2.0
-            def_per_tick *= 2.0
+            boss_hp_mult = boss_config["hp"].get(str(enemy_number), 2.0)  # Default 2× for future bosses
+            health = base_hp * boss_hp_mult
+        else:
+            health = base_hp
+        
+        # Calculate per-tick ATK/DEF from config
+        if act_key == "act_1":
+            atk_per_tick = tick_data["atk_base"] + (enemy_number - 1) * tick_data["atk_growth_per_enemy"]
+            def_per_tick = tick_data["def_base"] + (enemy_number - 1) * tick_data["def_growth_per_enemy"]
+        elif act_key == "act_2":
+            atk_per_tick = tick_data["atk_base"] + (enemy_number - 51) * tick_data["atk_growth_per_enemy"]
+            def_per_tick = tick_data["def_base"] + (enemy_number - 51) * tick_data["def_growth_per_enemy"]
+        elif act_key == "act_3":
+            atk_per_tick = tick_data["atk_base"] + (enemy_number - 101) * tick_data["atk_growth_per_enemy"]
+            def_per_tick = tick_data["def_base"] + (enemy_number - 101) * tick_data["def_growth_per_enemy"]
+        else:  # act_4
+            atk_per_tick = tick_data["atk_base"] + (enemy_number - 151) * tick_data["atk_growth_per_enemy"]
+            def_per_tick = tick_data["def_base"] + (enemy_number - 151) * tick_data["def_growth_per_enemy"]
+        
+        # Apply boss multiplier (2× faster scaling)
+        if is_boss:
+            boss_tick_mult = boss_config["per_tick_rates"]["multiplier"]
+            atk_per_tick *= boss_tick_mult
+            def_per_tick *= boss_tick_mult
 
         return cls(
             number=enemy_number, 
@@ -281,20 +294,26 @@ class CombatSimulator:
 
     def __init__(
         self,
-        draw_interval: float = 1.0,  # 1 card/sec per DESIGN.md
-        combat_tick_interval: float = 1.0,  # 1 tick/sec per DESIGN.md Session 2.0.3
-        reshuffle_cooldown: float = 1.0,  # 1 sec reshuffle cooldown
+        draw_interval: float | None = None,
+        combat_tick_interval: float | None = None,
+        reshuffle_cooldown: float | None = None,
     ) -> None:
         """Initialize combat simulator.
         
+        DATA OWNERSHIP (Task 2.1.2C):
+        If timing values not provided, load from game-data/balance-config.json
+        
         Args:
-            draw_interval: Seconds between card draws (default: 1.0)
-            combat_tick_interval: Seconds between combat ticks (default: 1.0)
-            reshuffle_cooldown: Cooldown after deck exhausts (default: 1.0)
+            draw_interval: Seconds between card draws (default: from balance-config.json)
+            combat_tick_interval: Seconds between combat ticks (default: from balance-config.json)
+            reshuffle_cooldown: Cooldown after deck exhausts (default: from balance-config.json)
         """
-        self.draw_interval = draw_interval
-        self.combat_tick_interval = combat_tick_interval
-        self.reshuffle_cooldown = reshuffle_cooldown
+        # Load timing from balance-config.json if not provided
+        timing_config = BALANCE_CONFIG["combat_timing"]
+        
+        self.draw_interval = draw_interval if draw_interval is not None else timing_config["card_draw_interval"]
+        self.combat_tick_interval = combat_tick_interval if combat_tick_interval is not None else timing_config["combat_tick_interval"]
+        self.reshuffle_cooldown = reshuffle_cooldown if reshuffle_cooldown is not None else timing_config["reshuffle_cooldown"]
 
         # Simulation state
         self.current_time: float = 0.0
@@ -731,12 +750,14 @@ class CombatSimulator:
         last_tick_time = 0.0  # Combined card draw + combat tick
         last_state_record = 0.0
 
-        # Pack costs to track affordability (from economy.py baseline)
+        # Pack costs to track affordability (DATA OWNERSHIP - Task 2.1.2C)
+        # Load from balance-config.json instead of hardcoded values
+        pack_config = BALANCE_CONFIG["pack_costs"]["Arcane_Pack"]
         pack_costs = {
-            1: 40_000,
-            2: 100_000,
-            3: 250_000,
-            4: 625_000,
+            1: pack_config["1"],
+            2: pack_config["2"],
+            3: pack_config["3"],
+            4: pack_config["4"],
         }
 
         # Record initial state

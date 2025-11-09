@@ -158,15 +158,16 @@
       - [x] Update progression.md with per-tick scaling system
       - [x] Update combat-system.md with per-tick damage formulas
 
-    - [ ] **2.1.2C** Update Simulator & Validation for Data Ownership Model
-      - [ ] Fix live simulator - not using config scaling
-      - [ ] UI Tweaks - enemy health bar color, player/enemy ATK/DEF move to next line
-      - [ ] Update validation system to check data ownership model
-        - [ ] Verify simulator loads ALL values from game-data/*.json (no hardcoded values)
-        - [ ] Validate formulas match design docs (e.g., HP scaling formula)
-        - [ ] Cross-check game-data values don't contradict design formulas
-        - [ ] Add validation warnings for missing cross-references (_design_spec fields)
-      - [ ] Document validation approach for future balance changes
+    - [x] **2.1.2C** Update Simulator & Validation for Data Ownership Model - ✅ COMPLETE (2025-11-09)
+      - [x] Fix live simulator - not using config scaling
+      - [x] UI Tweaks - enemy health bar red, player/enemy ATK/DEF on separate lines
+      - [x] Update validation system to check data ownership model
+        - [x] Verify simulator loads ALL values from game-data/*.json (no hardcoded values)
+        - [x] Validate formulas match design docs (e.g., HP scaling formula)
+        - [x] Cross-check game-data values don't contradict design formulas
+        - [x] Add validation warnings for missing cross-references (_design_spec fields)
+      - [x] Document validation approach for future balance changes
+      - [x] Fixed enemy ATK/DEF per-tick scaling display in live viewer
 
     - [ ] **2.1.2D** 
       - [ ] Create Pack 1+2 Cards

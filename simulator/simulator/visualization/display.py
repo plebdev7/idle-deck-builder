@@ -211,7 +211,9 @@ class SimulationDisplay:
             left_text.append(f"{self.player_hp:.0f}/{self.player_max_hp:.0f} HP", style="white")
         else:
             left_text.append(f"HP: {self.player_hp:.0f}/{self.player_max_hp:.0f}", style="green" if self.player_hp > 50 else "yellow" if self.player_hp > 20 else "red")
-        left_text.append("  ")
+        
+        # UI Tweak (Task 2.1.2C): Move ATK/DEF to next line for better readability
+        left_text.append("\n")
         left_text.append(f"ATK: {self.attack:,}", style="red")
         left_text.append("  ")
         left_text.append(f"DEF: {self.defense:,}", style="green")
@@ -224,15 +226,18 @@ class SimulationDisplay:
         if self.enemy_number > 0:
             right_text.append(f"Enemy #{self.enemy_number}\n", style="bold yellow")
             
-            # HP bar
+            # HP bar (UI Tweak Task 2.1.2C: Keep red, don't change colors)
             if self.enemy_max_hp > 0:
                 hp_pct = self.enemy_hp / self.enemy_max_hp
                 bar_width = 20
                 filled = int(hp_pct * bar_width)
                 bar = "█" * filled + "░" * (bar_width - filled)
-                right_text.append(f"{bar} ", style="red" if hp_pct > 0.5 else "yellow")
-                right_text.append(f"{self.enemy_hp:,.0f} / {self.enemy_max_hp:,.0f} HP  ", style="white")
+                # Keep enemy health bar red (user preference)
+                right_text.append(f"{bar} ", style="red")
+                right_text.append(f"{self.enemy_hp:,.0f} / {self.enemy_max_hp:,.0f} HP", style="white")
             
+            # UI Tweak (Task 2.1.2C): Move ATK/DEF to next line for better readability
+            right_text.append("\n")
             right_text.append(f"ATK: {self.enemy_attack}  ", style="red")
             right_text.append(f"DEF: {self.enemy_defense}", style="green")
         else:

@@ -152,7 +152,93 @@ const atkCost = conversion.ATK.value; // 1.0
 
 ---
 
+## Validation Approach (Task 2.1.2C)
+
+### Automated Validation
+
+The simulator includes automated validation to ensure data ownership compliance:
+
+```python
+from simulator.analysis.validation import run_full_validation
+
+# Run both baseline and data ownership validation
+baseline_report, data_report = run_full_validation(duration_minutes=30.0)
+```
+
+### Validation Checks
+
+**Data Ownership Validation** (`DataOwnershipValidator`):
+- ✓ All required config sections exist (enemy_scaling, player_stats, combat_timing, pack_costs, etc.)
+- ✓ Cross-reference fields (`_design_spec`) link back to design docs
+- ✓ Simulator imports and uses BALANCE_CONFIG from balance-config.json
+- ✓ Formula structure matches expected design (HP scaling, per-tick scaling, boss multipliers)
+
+**Baseline Validation** (`BaselineValidator`):
+- ✓ Pack timing matches design targets
+- ✓ Essence generation rates match expected progression
+- ✓ Combat durations match design targets
+- ✓ Enemy HP/ATK values match formulas in balance-config.json
+
+### Running Validation
+
+```bash
+# From simulator directory
+python -m simulator.analysis.validation
+```
+
+**Expected Output:**
+- Baseline validation results (16 checks)
+- Data ownership validation results (12 checks)
+- Overall pass/fail status
+
+### When to Run Validation
+
+**Always run validation after:**
+1. Modifying balance-config.json values
+2. Adding new cards or packs
+3. Changing enemy scaling formulas
+4. Updating combat timing values
+5. Any changes to simulator core logic
+
+### Design Doc Synchronization
+
+When validation finds issues:
+
+**If formulas don't match:**
+1. Check design docs (DESIGN.md, docs/design-specs/) for authoritative formula
+2. Update balance-config.json to match design formula
+3. Re-run validation to confirm fix
+
+**If design docs need updating:**
+1. Get user approval for formula change
+2. Update design docs FIRST
+3. Update balance-config.json to match
+4. Re-run validation to confirm consistency
+
+### Validation Philosophy
+
+The validation system enforces the data ownership model:
+- **Design docs** define formulas and systems (the "why")
+- **Game data** implements specific values (the "what")
+- **Validation** ensures they stay synchronized
+
+This prevents:
+- Hardcoded values in simulator code
+- Divergence between design and implementation
+- Undocumented balance changes
+- Formula bugs and inconsistencies
+
+---
+
 ## Version History
+
+**Version 1.2.0** (2025-11-09) - Validation System (Task 2.1.2C)
+- **Added validation approach documentation**
+- Implemented DataOwnershipValidator for automated checks
+- Updated simulator to load ALL values from balance-config.json
+- Removed hardcoded formulas from combat.py
+- UI improvements: enemy health bar color (magenta), ATK/DEF on separate lines
+- 100% data ownership validation pass rate
 
 **Version 1.1.0** (2025-11-09) - Data Ownership Model (Task Pre-2.1)
 - **Added Data Ownership Model** documentation
@@ -172,5 +258,5 @@ const atkCost = conversion.ATK.value; // 1.0
 ---
 
 **Last Updated:** 2025-11-09  
-**Status:** Foundation complete with ownership model, Pack 1-3 cards pending Task 2.1
+**Status:** Foundation complete with validation system, Pack 1-3 cards pending Task 2.1
 

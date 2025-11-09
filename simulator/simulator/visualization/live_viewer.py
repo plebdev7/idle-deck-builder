@@ -347,26 +347,39 @@ class LiveViewer:
             # We have enemy spawn info (may be alive or defeated)
             data = last_enemy_spawn.get("data", {})
             enemy_number = data.get("enemy_number", 0)
-            enemy_max_hp = data.get("max_health", 0)  # Fixed: was "health", should be "max_health"
-            enemy_attack = data.get("attack", 0)
-            enemy_defense = 0
+            enemy_max_hp = data.get("max_health", 0)
             
-            # Check if we have combat tick data for real-time HP
+            # Get per-tick rates from spawn event
+            atk_per_tick = data.get("atk_per_tick", 0)
+            def_per_tick = data.get("def_per_tick", 0)
+            
+            # Check if we have combat tick data for real-time HP and ATK/DEF
             if last_combat_tick:
-                # Use actual enemy HP from most recent combat tick
+                # Use actual enemy HP, ATK, DEF from most recent combat tick
                 tick_data = last_combat_tick.get("data", {})
                 enemy_hp = tick_data.get("enemy_hp", 0.0)
+                # BUG FIX: Get enemy_attack and enemy_defense from combat_tick event
+                # These are already calculated as atk_per_tick * ticks_elapsed
+                enemy_attack = tick_data.get("enemy_attack", 0)
+                enemy_defense = tick_data.get("enemy_defense", 0)
             elif last_victory:
                 # Victory means enemy is defeated
                 victory_enemy = last_victory.get("data", {}).get("enemy_number", 0)
                 if victory_enemy == enemy_number:
                     enemy_hp = 0.0
+                    enemy_attack = 0
+                    enemy_defense = 0
                 else:
                     # Not yet in combat (shouldn't happen but fallback)
                     enemy_hp = enemy_max_hp
+                    enemy_attack = 0
+                    enemy_defense = 0
             else:
-                # Enemy just spawned, no combat ticks yet - show at full HP
+                # Enemy just spawned, no combat ticks yet
                 enemy_hp = enemy_max_hp
+                # ATK/DEF start at 0 and grow each tick
+                enemy_attack = 0
+                enemy_defense = 0
             
         self.display.update_state(
             time=current_sim_time,
