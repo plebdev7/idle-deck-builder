@@ -51,30 +51,27 @@ Each log entry MUST include:
 
 ## Design Document Synchronization
 
-DESIGN.md is the source of truth. Implementation must match design documents.
+**Two sources of truth:**
+- **Design docs** (DESIGN.md, docs/design-specs/): Formulas, systems, rationale
+- **Game data** (game-data/*.json): Specific values, configs, implementations
 
 **Before Implementation:**
-- Read current DESIGN.md state
-- Confirm implementation will match specifications
+- Read current design docs AND relevant game-data files
+- Identify if changes are formulas (design docs) or values (game-data)
 - Note any ambiguities or potential issues
 
 **During Implementation:**
-- If you must deviate from DESIGN.md: STOP and seek user approval
-- Document every deviation in task log
-
-**After Design Changes Approved:**
-1. Update DESIGN.md IMMEDIATELY (before or concurrent with implementation)
-2. Update ROADMAP.md if scope/goals changed
-3. Update CHECKLIST.md if task definitions changed
-4. Document synchronization in task log
+- **Formula/system changes:** STOP, seek user approval, update design docs FIRST
+- **Specific value changes:** Update game-data directly, design docs may not need changes
+- Document which source(s) you're updating and why in task log
 
 **Task Completion Checklist:**
-- [ ] Implementation matches DESIGN.md specifications
-- [ ] OR DESIGN.md updated to match approved changes
-- [ ] No known discrepancies between docs and implementation
-- [ ] Task log documents any design changes and rationale
+- [ ] Implementation matches design docs (formulas) AND game-data (values)
+- [ ] Cross-references between docs and game-data intact
+- [ ] No known discrepancies between any sources
+- [ ] Task log documents changes and rationale
 
 **Never:**
-- Leave implementation and DESIGN.md out of sync
-- Defer design doc updates to "later"
-- Complete task with known design/implementation mismatches
+- Update specific values in design docs when they belong in game-data
+- Update formulas in game-data when they belong in design docs
+- Leave any source out of sync or defer updates to "later"

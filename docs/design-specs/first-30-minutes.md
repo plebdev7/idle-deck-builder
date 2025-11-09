@@ -199,6 +199,7 @@
 
 ### Player Progress
 
+**Expected state (as of current balance):**
 - 3-4 packs opened (25-28 cards owned)
 - 20-card optimized Arcane deck
 - ~5-7 Essence/sec passive generation rate
@@ -268,9 +269,9 @@
 
 ## Pacing Validation
 
-See [baseline-numbers.md](baseline-numbers.md) for detailed timing validation.
+**Authoritative Source:** See [`game-data/balance-config.json`](../../game-data/balance-config.json) for exact pack costs and timing values. See [baseline-numbers.md](baseline-numbers.md) for detailed timing validation.
 
-**Validated Milestones (Task 2.0):**
+**Validated Milestones (Task 2.0, as of current balance):**
 - Pack 1: ~7 minutes (40,000 Essence)
 - Pack 2: ~12 minutes (100,000 Essence)
 - Pack 3: ~19 minutes (250,000 Essence)

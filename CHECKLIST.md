@@ -1,56 +1,9 @@
 # Idle Deck Builder - Task Checklist
 
-## Session 1: Design Foundation & Theme
+**Completed Sessions Archive:** [.archive/CHECKLIST-completed-sessions.md](.archive/CHECKLIST-completed-sessions.md)  
+**Archived:** Session 1 (Tasks 1.1 through 1.3C) - Foundational design work
 
-- [x] **1.1** Theme Selection & Story Framework
-  - [x] Choose theme (Elemental Magic Tower Defense)
-  - [x] Define basic narrative framework (Apprentice mage defending tower from invaders)
-  - [x] Name currencies and tiers (Essence system: Arcane, Fire, Water, Earth, Air)
-  - [x] Create visual/style direction brief (completed in 1.1A)
-
-- [x] **1.1A** Visual Direction & Style Guide
-  - [x] Define color palettes for each tier (exact hex codes)
-  - [x] Design icon/symbol style for elements
-  - [x] Create card layout mockup (wireframe or text-based)
-  - [x] Specify UI color scheme and layout principles
-  - [x] Define animation/particle style (if any)
-  - [x] Create basic asset list
-
-- [x] **1.2** Critical Design Decisions (Outstanding Questions)
-  - [x] Answer Question 1: Class Switching Cost → Prestige-only
-  - [x] Answer Question 4: Arcane Tier Combat Role → Unified deck (contributes to colored decks)
-  - [x] Answer Question 5: Arcane Essence Currency Model → Universal currency with conversion mechanic
-  - [x] Answer Question 9: Deck Size Limits → Fixed with multi-layer constraints (per-tier, per-card)
-  - [x] Answer Question 10: Combat Timing → Interval-based with continuous card draw
-  - [x] Document decisions in DESIGN.md with rationale
-
-- [x] **1.3** High-Level Experience
-  - [x] Define exact first 30 minutes of gameplay (step-by-step, minute-by-minute narrative)
-  - [x] Create gameplay flow diagram showing decision points and branches
-  - [x] Identify key milestones and progression gates
-  - [x] Resolve 7 critical design questions (pack costs, guaranteed cards, defense, economy model, etc.)
-  - [x] Define baseline numbers (Part B: generator rates, shard drops, pack costs, enemy stats) - CORRECTED for stacking
-  - [x] Design starter deck (Part C: 8 starter cards with concrete stats) - COMPLETE
-
-- [x] **1.3B** Baseline Numbers (COMPLETE - Corrected for Stacking)
-  - [x] Establish resource generation baseline rates (generator cards, shard drops)
-  - [x] Define pack pricing model with scaling formulas (40,000 × 2.5^n)
-  - [x] Create economy flow model (Essence from generators, Shards from victories)
-  - [x] Calculate timing and pacing for first 30 minutes
-  - [x] Define enemy health scaling and attack values
-  - [x] Establish combat card stat ranges
-  - [x] CORRECTED: Generator stacking mechanic (every draw adds, including duplicates)
-  - [x] Validated complete 30-minute timeline with stacking accumulation
-
-- [x] **1.3C**: Starter Deck (COMPLETE)
-  - [x] Design 8 simple starter cards (using baseline numbers from 1.3B)
-  - [x] Specify exact starter deck composition (cards, stats, costs)
-  - [x] All flat values, no complex mechanics
-  - [x] 3 generator types: Rate (+2/sec), Burst (+150 flat), Hybrid (+1/sec + 12/6)
-  - [x] 5 combat cards: Pure specialists, generalists, various balance points
-  - [x] Design philosophy: Different strategies, not power levels
-  - [x] Guaranteed cards for first 2 packs (deferred to Session 2)
-  - [x] Validate deck against first 30 minutes experience (conceptual validation done, math validation awaits simulator)
+---
 
 ## Session 2: Card System Design & Specifications
 
@@ -205,7 +158,17 @@
       - [x] Update progression.md with per-tick scaling system
       - [x] Update combat-system.md with per-tick damage formulas
 
-    - [ ] **2.1.2C** 
+    - [ ] **2.1.2C** Update Simulator & Validation for Data Ownership Model
+      - [ ] Fix live simulator - not using config scaling
+      - [ ] UI Tweaks - enemy health bar color, player/enemy ATK/DEF move to next line
+      - [ ] Update validation system to check data ownership model
+        - [ ] Verify simulator loads ALL values from game-data/*.json (no hardcoded values)
+        - [ ] Validate formulas match design docs (e.g., HP scaling formula)
+        - [ ] Cross-check game-data values don't contradict design formulas
+        - [ ] Add validation warnings for missing cross-references (_design_spec fields)
+      - [ ] Document validation approach for future balance changes
+
+    - [ ] **2.1.2D** 
       - [ ] Create Pack 1+2 Cards
       - [ ] Model essence generation with Pack 1+2 cards
       - [ ] Model combat effectiveness (Enemy 100 feasibility with Pack 1+2)

@@ -61,7 +61,12 @@ When user input is needed:
 
 ## Design Document Change Protocol
 
-When implementation reveals problems in DESIGN.md:
+**Identify which source to update:**
+- **Design docs:** Formulas, systems, mechanics, rationale (e.g., enemy HP formula)
+- **Game data:** Specific values, configs (e.g., Arcane Bolt stats, pack costs)
+- **When uncertain:** Treat as formula change (seek approval)
+
+When implementation reveals problems in design docs or game-data:
 
 **STOP Immediately When:**
 - Formulas or numbers don't work mathematically

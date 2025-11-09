@@ -1,7 +1,8 @@
 {
+  "_design_spec": "../docs/design-specs/baseline-numbers.md",
   "version": "1.0.0",
   "last_updated": "2025-11-08",
-  "description": "Central configuration for all game balance values. These values are used by both the simulator and web game.",
+  "description": "Central configuration for all game balance values. These values are used by both the simulator and web game. This is the AUTHORITATIVE SOURCE for all conversion rates, costs, and timing values.",
   
   "stat_point_system": {
     "description": "Conversion rates for stat point budgets",

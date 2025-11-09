@@ -1,6 +1,26 @@
 # Game Data Directory
 
-**Purpose:** Centralized JSON data files for all game content and balance values. These files are shared between the Python simulator and the web game implementation.
+**Purpose:** Centralized JSON data files for all game content and balance values. These files are the **authoritative source of truth** for specific values, implementations, and configurations used by both the Python simulator and the web game.
+
+---
+
+## Data Ownership Model
+
+### Game Data Owns: INSTANCES, SPECIFIC VALUES, IMPLEMENTATIONS
+- **What:** Actual card stats, exact costs, specific configurations, conversion rates
+- **Why:** Single source of truth for what the game actually uses
+- **Examples:** The exact stats of "Arcane Bolt", pack cost of 40,000 Essence, conversion rate of 1.0 for ATK
+
+### Design Docs Own: SYSTEMS, FORMULAS, RATIONALE
+- **What:** Game mechanics, scaling formulas, design principles, the "why" behind decisions
+- **Why:** Explains the design thinking and mathematical models
+- **Examples:** Enemy HP scaling by act formula, boss multiplier system, resource generation mechanics
+
+### Cross-Reference Requirements
+- Game data files include `_design_spec` fields linking to the design documents that define their system
+- Design docs reference specific game-data files for implementation details
+- Changes to formulas in design docs → must regenerate/validate game-data
+- Changes to specific values in game-data → may not need design doc updates (unless formula changes)
 
 ---
 
@@ -134,6 +154,14 @@ const atkCost = conversion.ATK.value; // 1.0
 
 ## Version History
 
+**Version 1.1.0** (2025-11-09) - Data Ownership Model (Task Pre-2.1)
+- **Added Data Ownership Model** documentation
+- Added `_design_spec` cross-reference fields to JSON files
+- Established game-data as authoritative source for specific values
+- Updated descriptions to clarify role as implementation truth
+- Design docs now reference game-data for exact values
+- Rationale: Prevent divergence between design and implementation
+
 **Version 1.0.0** (2025-11-08) - Initial Creation (Task 2.1.2A)
 - Created balance-config.json with stat point system
 - Created cards-schema.json for card structure
@@ -143,6 +171,6 @@ const atkCost = conversion.ATK.value; // 1.0
 
 ---
 
-**Last Updated:** 2025-11-08  
-**Status:** Foundation complete, Pack 1-3 cards pending Task 2.1.2
+**Last Updated:** 2025-11-09  
+**Status:** Foundation complete with ownership model, Pack 1-3 cards pending Task 2.1
 

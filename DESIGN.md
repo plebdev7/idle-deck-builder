@@ -1,8 +1,8 @@
 # Idle Deck Builder - Game Design Document
 
-**Version:** 2.0 (Modular Structure)  
-**Last Updated:** 2025-11-08  
-**Status:** Complete core systems, pack cards pending (Session 2.1)
+**Version:** 2.0.3 (Modular Structure with Data Ownership Model)  
+**Last Updated:** 2025-11-09  
+**Status:** Complete core systems, data ownership model established, pack cards pending (Session 2.1)
 
 ---
 
@@ -18,6 +18,30 @@ This document serves as the **high-level design hub** for the Idle Deck Builder 
 - [Tier & Class System](docs/design-specs/tier-class-system.md) - Tiers, classes, deck limits
 - [Baseline Numbers](docs/design-specs/baseline-numbers.md) - All formulas, rates, timings
 - [First 30 Minutes](docs/design-specs/first-30-minutes.md) - New player experience
+
+---
+
+## Data Ownership Model
+
+### Design Documents vs Game Data
+
+**Design Documents (`DESIGN.md` and `docs/design-specs/`):**
+- Own: SYSTEMS, FORMULAS, RATIONALE, "WHY"
+- Examples: Enemy HP scaling formula, combat mechanics, design principles
+- Purpose: Explain thinking and mathematical models
+
+**Game Data (`game-data/*.json`):**
+- Own: INSTANCES, SPECIFIC VALUES, IMPLEMENTATIONS, "WHAT"
+- Examples: Exact card stats, specific costs, conversion rates
+- Purpose: Single source of truth for what the game actually uses
+
+**Cross-Reference Requirements:**
+- Design docs reference game-data files for specific implementations
+- Game-data files include `_design_spec` fields linking back to design docs
+- Changes to formulas → regenerate/validate game-data
+- Changes to specific values in game-data → may not require design doc updates
+
+**See:** [`game-data/README.md`](game-data/README.md) for detailed data ownership model
 
 ---
 
@@ -242,7 +266,8 @@ Multiple interconnected loops:
 **Total Per Cycle:** 62 ATK, 56 DEF, +3 Essence/sec
 - **Note:** These stats accumulate with each deck cycle (9 seconds for 8-card deck)
 
-→ **[Full Card System Specification](docs/design-specs/card-system.md)**
+→ **[Full Card System Specification](docs/design-specs/card-system.md)**  
+→ **[Exact Card Implementations](game-data/cards-starter-deck.json)**
 
 ### Pack Card Progression (To Be Designed in Session 2.1)
 
@@ -277,6 +302,8 @@ Multiple interconnected loops:
 - Pack 2: 100,000 Essence (~12 min)
 - Pack 3: 250,000 Essence (~19 min)
 - Pack 4: 625,000 Essence (~33 min)
+
+→ **[Exact Pack Costs & Configuration](game-data/balance-config.json)**
 
 ### Duplicate Handling
 
@@ -332,6 +359,8 @@ Multiple interconnected loops:
 ---
 
 ## Baseline Numbers Quick Reference
+
+**Note:** This section provides design-level summaries. See [`game-data/balance-config.json`](game-data/balance-config.json) for exact values used by the simulator and game.
 
 ### Core Timing
 
@@ -464,6 +493,15 @@ Multiple interconnected loops:
 
 ## Document History
 
+**Version 2.0.3** (2025-11-09) - Data Ownership Model
+- **Added Data Ownership Model** - Clear separation between design docs and game-data
+- Design docs own systems, formulas, and rationale ("why")
+- Game-data owns specific values, implementations, and configs ("what")
+- Added cross-references from design docs to game-data files
+- Added `_design_spec` fields in game-data JSON files
+- Updated game-data/README.md with ownership model
+- Rationale: Prevent divergence between design and implementation as project grows
+
 **Version 2.0.2** (2025-11-09) - Task 2.1: Combat System Synchronization
 - **Per-tick enemy scaling system** - All enemies attack from tick 0, scale every combat tick
 - Updated enemy attack/defense formulas to per-tick system (Acts 1-3)
@@ -503,8 +541,8 @@ Multiple interconnected loops:
 
 ---
 
-**Document Version:** 2.0.2  
+**Document Version:** 2.0.3  
 **Last Updated:** 2025-11-09  
-**Status:** Core systems complete, per-tick scaling synchronized, pack cards pending Task 2.1  
+**Status:** Core systems complete, data ownership model established, pack cards pending Task 2.1  
 **Archive:** [DESIGN-v1.9-pre-split.md](.archive/DESIGN-v1.9-pre-split.md)
 

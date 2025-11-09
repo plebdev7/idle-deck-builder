@@ -16,7 +16,9 @@ The combat system uses **Trimps-style combat-over-time** mechanics where player 
 
 ### Combat Tick System
 
-**Tick Rate:** 1.0 second per tick
+**Authoritative Source:** See [`game-data/balance-config.json`](../../game-data/balance-config.json) for exact timing values.
+
+**Tick Rate:** 1.0 second per tick (as of current balance)
 - Aligns with card draw rate (1 card/second)
 - Simple calculations and predictable pacing
 - Combat resolves tick-by-tick until victory or death
@@ -43,9 +45,11 @@ Where ATK_per_tick and DEF_per_tick scale with enemy number
 
 ## Player HP System
 
+**Authoritative Source:** See [`game-data/balance-config.json`](../../game-data/balance-config.json) for exact HP values and upgrade costs.
+
 ### Starting HP
 
-**Base HP:** 100 HP (fixed baseline)
+**Base HP:** 100 HP (as of current balance)
 
 ### HP Scaling
 
@@ -66,6 +70,8 @@ Where ATK_per_tick and DEF_per_tick scale with enemy number
 - ✅ Healing via card mechanics during run (instant heal, HP regen)
 
 ### HP Upgrade System (Shard Spending)
+
+**Example progression (as of current balance):**
 
 **Tier 1 (HP 100 → 150):**
 - 5 upgrades at 50/75/100/125/150 shards (+10 HP each)
@@ -101,6 +107,7 @@ Where ATK_per_tick and DEF_per_tick scale with enemy number
 
 ### Card Draw Mechanic
 
+**Timing (as of current balance):**
 - Cards draw at **1 card/second** continuously
 - When deck exhausts, **1-second reshuffle cooldown**
 - After cooldown, deck immediately reshuffles and drawing continues
@@ -125,6 +132,7 @@ Cycle 3 (Ticks 18-25): Draw 8 cards again → 124 to 186 ATK (+62)
 
 ### Deck Size Constraints
 
+**As of current balance:**
 - **Minimum:** 8 cards (prevents tiny deck exploit)
 - **Maximum:** Determined by active class (varies by rarity)
 
@@ -300,7 +308,7 @@ Player HP: ~80/100 (lost 20 HP before defense kicked in)
 
 ## Combat Duration
 
-**Combat Times with Starter Deck (62 ATK, 54 DEF):**
+**Example combat times with starter deck (as of current balance):**
 
 ```
 Enemy 1 (20 HP):          ~2 seconds

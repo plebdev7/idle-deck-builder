@@ -194,6 +194,8 @@ Class choice affects both tier access AND deck composition constraints
 
 ## Deck Limit Examples
 
+**Note:** These are example configurations to illustrate the system. Actual deck limits defined in game-data when classes are implemented.
+
 ### Fire Apprentice (Common)
 
 ```
@@ -272,8 +274,8 @@ Higher rarity classes unlock MORE content (more tiers) not just different conten
 ### Multi-Layered Constraint System
 
 **1. Total Deck Size (Fixed):**
-- Fixed number of cards in deck (e.g., 15 cards)
-- Varies by class rarity (Common: 15, Rare: 18, Epic: 21, Legendary: 24+)
+- Fixed number of cards in deck
+- Varies by class rarity (example: Common: 15, Rare: 18, Epic: 21, Legendary: 24+)
 - May increase with progression/prestige upgrades
 - Purchased with Arcane Essence or prestige currency
 

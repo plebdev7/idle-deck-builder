@@ -8,6 +8,8 @@
 
 ## Core Game Timing
 
+**Authoritative Source:** See [`game-data/balance-config.json`](../../game-data/balance-config.json) for exact timing values used by the simulator and game.
+
 ### Card Draw & Combat
 
 - **Card draw speed:** 1.0 second per card (60 cards/minute constant)
@@ -19,32 +21,28 @@
 
 ## Generator Card Rates (Essence Generation)
 
+**Authoritative Source:** See [`game-data/cards-starter-deck.json`](../../game-data/cards-starter-deck.json) for starter deck generators. Pack card generators to be defined in future game-data files.
+
 ### Mechanic
 
 Every draw of a generator adds to rate (stacks, even duplicates); rate persists until death.
 
-### Starter Deck
+### Starter Deck Generators
 
-- **"Arcane Spark":** +1 Essence/sec per draw
-- **"Mana Trickle":** +2 Essence/sec per draw
+See starter deck data file for exact values. Starter deck provides +3 Essence/sec total when all generators drawn.
 
-### Pack 1 Generators
+### Pack Generators (To Be Designed)
 
-- **"Arcane Conduit":** +3 Essence/sec per draw
-- **"Essence Flow":** +4 Essence/sec per draw
-
-### Pack 2 Generator
-
-- **"Greater Conduit":** +5 Essence/sec per draw
-
-### Random Generators (Pack 3+)
-
-- **Common:** +2 to +4 per draw
-- **Rare:** +5 to +7 per draw
-- **Epic:** +10+ per draw
+Target ranges for pack card generators:
+- **Pack 1:** +3 to +4 Essence/sec per draw
+- **Pack 2:** +5 Essence/sec per draw
+- **Pack 3+ Common:** +2 to +4 per draw
+- **Pack 3+ Rare:** +5 to +7 per draw
+- **Pack 3+ Epic:** +10+ per draw
 
 ### Expected Rate Progression
 
+With starter deck only:
 - **Minutes 0-8:** 0 → 180 Essence/sec (from ~120 draws)
 - **Minutes 8-17:** 180 → 652 Essence/sec
 - **Minutes 17-27:** 652 → 1,252 Essence/sec
@@ -54,11 +52,13 @@ Every draw of a generator adds to rate (stacks, even duplicates); rate persists 
 
 ## Pack Costs (Essence)
 
+**Authoritative Source:** See [`game-data/balance-config.json`](../../game-data/balance-config.json) for exact pack costs and formulas.
+
 ### Formula
 
 `40,000 × 2.5^(n-1)`
 
-### Pricing
+### Pricing (as of current balance)
 
 - **Pack 1:** 40,000 Essence (minute 8-9)
 - **Pack 2:** 100,000 Essence (minute 16-17)
@@ -76,6 +76,8 @@ Every draw of a generator adds to rate (stacks, even duplicates); rate persists 
 
 ## Shard System (Combat Rewards)
 
+**Authoritative Source:** See [`game-data/balance-config.json`](../../game-data/balance-config.json) for exact shard drop rates and upgrade costs.
+
 ### Drops per Victory
 
 - **Early (0-10 min):** 2-3 Shards
@@ -89,7 +91,7 @@ Every draw of a generator adds to rate (stacks, even duplicates); rate persists 
 - **Total by Enemy 50 (~23 min):** ~600-700 Shards
 - **Total by Enemy 60 (~30 min):** ~700-800 Shards
 
-### Usage
+### Usage Examples (Current Balance)
 
 - **HP upgrades:** 50/75/100/125/150 shards per +10 HP (Tier 1)
 - **Card upgrades:** 50-100+ Shards
@@ -140,34 +142,26 @@ See [progression.md](progression.md) for complete specifications.
 
 ## Combat Card Stats
 
+**Authoritative Source:** See [`game-data/cards-starter-deck.json`](../../game-data/cards-starter-deck.json) for exact starter deck stats. Pack card stats to be defined in future game-data files.
+
 ### Starter Deck Range
 
-- **Attack:** 4-10
-- **Defense:** 2-10
-- **Total:** 8-15 stat points
+- **Total:** 20-28 stat points (Common rarity range)
+- Provides 62 ATK, 56 DEF when all cards drawn
 
-### Pack 1 Cards
+### Pack Cards (To Be Designed)
 
-- **Attack:** 12-18
-- **Defense:** 5-12
-- **Total:** 25-30 stat points
+Target stat point budgets:
+- **Pack 1 Cards:** 25-30 stat points
+- **Pack 2 Cards:** 35-45 stat points
+- **Pack 3+ Rare:** 50-80 total stat points
+- **Pack 3+ Epic:** 100-150 total stat points
 
-### Pack 2 Cards
+### Power Accumulation Targets
 
-- **Attack:** 20-30
-- **Defense:** 8-15
-- **Total:** 35-45 stat points
-
-### Pack 3+ Cards
-
-- **Rare:** 50-80 total stat points
-- **Epic:** 100-150 total stat points
-
-### Power Accumulation
-
-- **Initial:** ~8 Attack/sec
-- **After Pack 1:** 15-25 Attack/sec
-- **By minute 30:** 40-60 Attack/sec
+- **Initial (starter deck):** ~6.9 ATK/tick, ~6.2 DEF/tick
+- **After Pack 1:** 10-15 ATK/tick
+- **By minute 30:** 20-30 ATK/tick
 
 ---
 

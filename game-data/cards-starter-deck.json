@@ -1,7 +1,8 @@
 {
+  "_design_spec": "../docs/design-specs/card-system.md#starter-deck-specification-session-13c",
   "version": "1.0.0",
   "last_updated": "2025-11-08",
-  "description": "Starter deck for all players (Arcane Student class)",
+  "description": "Starter deck for all players (Arcane Student class). This is the AUTHORITATIVE SOURCE for starter deck card stats and effects.",
   "cards": [
     {
       "id": "arcane_conduit",

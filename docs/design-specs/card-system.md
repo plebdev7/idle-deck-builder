@@ -76,72 +76,7 @@ Classes make certain combos more effective
 
 All players begin as "Arcane Student" with this pre-built 8-card deck. All cards are Arcane tier, Common rarity, with flat values and no complex abilities.
 
-### Generator Cards (3 cards)
-
-**1. Arcane Conduit** - Rate Generator
-- **Generation:** +2 Essence/sec when drawn
-- **Attack:** —
-- **Defense:** —
-- **Flavor:** *"A stable channel of pure arcane energy. Draw upon it to fuel your magic."*
-- **Identity:** Pure rate-building. Increases ongoing income permanently (until death).
-
-**2. Essence Burst** - Burst Generator
-- **Generation:** +250 Essence when drawn (flat amount)
-- **Attack:** —
-- **Defense:** —
-- **Flavor:** *"A concentrated surge of magical energy, released all at once."*
-- **Identity:** Immediate payoff. Doesn't increase rate, but provides instant essence.
-
-**3. Combat Siphon** - Hybrid Generator
-- **Generation:** +1 Essence/sec when drawn
-- **Attack:** 12
-- **Defense:** 6
-- **Flavor:** *"Draw power from combat itself, channeling the clash into usable essence."*
-- **Identity:** Does both roles. Less efficient at generation, but contributes to combat.
-
-### Combat Cards (5 cards)
-
-**4. Arcane Bolt** - Pure Offense
-- **Attack:** 20
-- **Defense:** —
-- **Flavor:** *"A focused blast of raw magical force."*
-- **Identity:** Glass cannon. Maximum offensive power, no defensive capability.
-
-**5. Mystic Shield** - Pure Defense
-- **Attack:** —
-- **Defense:** 20
-- **Flavor:** *"A shimmering barrier of protective magic."*
-- **Identity:** Pure survival. Maximum defensive power, no offensive capability.
-
-**6. Balanced Strike** - Generalist
-- **Attack:** 10
-- **Defense:** 10
-- **Flavor:** *"Harmonious magic balancing offense and defense."*
-- **Identity:** Versatile middle ground. Competent at both roles.
-
-**7. Power Strike** - Offense-Leaning
-- **Attack:** 15
-- **Defense:** 5
-- **Flavor:** *"Aggressive magic that prioritizes overwhelming force."*
-- **Identity:** Damage-focused but not reckless. Middle option between specialist and generalist.
-
-**8. Stalwart Guard** - Defense-Leaning
-- **Attack:** 5
-- **Defense:** 15
-- **Flavor:** *"Patient, enduring magic that outlasts threats."*
-- **Identity:** Survival-focused but not passive. Middle option between specialist and generalist.
-
-### Starter Deck Composition
-
-**Total:** 8 cards
-- **Generators:** 3 cards (37.5%) - mix of rate, burst, and hybrid
-- **Combat:** 5 cards (62.5%) - mix of specialists and generalists
-
-**Total Stats When All Cards Drawn:**
-- Attack: 62 total (20+10+15+5+12)
-- Defense: 56 total (20+10+5+15+6)
-- Rate Generation: +3 Essence/sec (2+1 from generators)
-- Burst Generation: +250 Essence
+**Authoritative Source:** See [`game-data/cards-starter-deck.json`](../../game-data/cards-starter-deck.json) for exact card stats, effects, and implementations.
 
 ### Design Philosophy
 
@@ -151,7 +86,36 @@ All players begin as "Arcane Student" with this pre-built 8-card deck. All cards
 - Rate vs Burst vs Hybrid generators (different strategies)
 - Pure specialist vs generalist vs leaning combat cards (different balance points)
 
-**What Players Learn:**
+### Starter Deck Composition
+
+**Total:** 8 cards
+- **Generators:** 3 cards (37.5%) - mix of rate, burst, and hybrid
+- **Combat:** 5 cards (62.5%) - mix of specialists and generalists
+
+**Total Stats When All Cards Drawn:**
+- Attack: 62 total
+- Defense: 56 total
+- Rate Generation: +3 Essence/sec
+- Burst Generation: +250 Essence
+
+**Note:** Stats accumulate with each deck cycle (9 seconds for 8-card deck). See [combat-system.md](combat-system.md) for deck cycling mechanics.
+
+### Card Roles
+
+**Generator Cards (3):**
+1. **Arcane Conduit** - Rate Generator (pure rate-building, +2 Essence/sec)
+2. **Essence Burst** - Burst Generator (immediate payoff, +250 flat Essence)
+3. **Combat Siphon** - Hybrid Generator (both roles, +1 Essence/sec + combat stats)
+
+**Combat Cards (5):**
+4. **Arcane Bolt** - Pure Offense (glass cannon, maximum ATK)
+5. **Mystic Shield** - Pure Defense (pure survival, maximum DEF)
+6. **Balanced Strike** - Generalist (versatile middle ground, equal ATK/DEF)
+7. **Power Strike** - Offense-Leaning (damage-focused but not reckless)
+8. **Stalwart Guard** - Defense-Leaning (survival-focused but not passive)
+
+### What Players Learn
+
 - Generator diversity (rate building, immediate payoff, hybrid approach)
 - Combat variety (specialization, balance, various distributions)
 - Deck building foundation (different cards for different strategies)
@@ -271,36 +235,24 @@ Full complexity (deck manipulation, state-based effects, advanced synergies)
 
 **Purpose:** Unified balancing system for all card effects. All values are configurable.
 
-```
-1 stat point = 1 ATK
-1 stat point = 1 DEF
-1 stat point = 10 flat Essence
-1 stat point = 0.1 Essence/sec
-1 stat point = 0.5 HP heal (instant)
-1 stat point = 0.1 HP/sec regen (until next enemy)
-```
+**Authoritative Source:** See [`game-data/balance-config.json`](../../game-data/balance-config.json) for exact conversion rates and rarity budgets.
+
+**System Overview:**
+- Each card effect type has a stat point cost
+- Cards are balanced by total stat point budget
+- Rarity determines stat point budget ranges
+- Provides consistent power scaling across all cards
 
 ### Rarity Stat Budgets (Level 1)
 
-```
-Common:     20-30 stat points
-Rare:       30-50 stat points
-Epic:       50-90 stat points
-Legendary:  90-180 stat points
-```
+- **Common:** 20-30 stat points
+- **Rare:** 30-50 stat points
+- **Epic:** 50-90 stat points
+- **Legendary:** 90-180 stat points
 
-### Starter Deck Audit (All Common Rarity)
+### Starter Deck Validation
 
-**Arcane Conduit:** +2 Essence/sec = 20 stat points ✓
-**Essence Burst:** +250 flat Essence = 25 stat points ✓
-**Combat Siphon:** +1 Essence/sec + 12 ATK + 6 DEF = 28 stat points ✓
-**Arcane Bolt:** 20 ATK = 20 stat points ✓
-**Mystic Shield:** 20 DEF = 20 stat points ✓
-**Balanced Strike:** 10 ATK + 10 DEF = 20 stat points ✓
-**Power Strike:** 15 ATK + 5 DEF = 20 stat points ✓
-**Stalwart Guard:** 5 ATK + 15 DEF = 20 stat points ✓
-
-**Starter deck range:** 20-28 stat points (well-balanced within Common rarity)
+All starter deck cards fall within the Common rarity range (20-30 stat points). See [`game-data/cards-starter-deck.json`](../../game-data/cards-starter-deck.json) for exact stat point budgets per card.
 
 ---
 
