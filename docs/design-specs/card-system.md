@@ -54,21 +54,29 @@ Special effects and abilities
 
 ## Card Interactions (Mechanical, Not Just Multipliers)
 
+**For detailed conditional mechanics specification, see [conditional-mechanics.md](conditional-mechanics.md)**
+
+### Conditional Abilities (Session 2.1.4 - COMPLETE)
+
+Cards that trigger bonuses based on game state, timing, or deck composition:
+- Timing conditions: "If drawn in first 3 cards this cycle"
+- Card count conditions: "If 5+ Arcane cards drawn this combat"
+- State conditions: "If player HP < 50%"
+- Sequence conditions: "If previous card was Generator"
+
+**Full specification:** [conditional-mechanics.md](conditional-mechanics.md)
+
 ### Trigger Chains
 
-Blue card effect triggers Green combo, which triggers Yellow effect
-
-### Conditional Abilities
-
-"If you have 3+ Blue cards in play, trigger X"
+Card A effect triggers Card B combo, which triggers Card C effect (To be designed in Task 2.1.5)
 
 ### Combo Requirements
 
-Multiple cards must be present for powerful effects
+Multiple cards must be present for powerful effects (To be designed in Task 2.1.5)
 
 ### Class Enhancements
 
-Classes make certain combos more effective
+Classes make certain combos more effective (To be designed with elemental tiers)
 
 ---
 

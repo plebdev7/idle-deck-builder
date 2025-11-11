@@ -112,17 +112,40 @@
 ### card-system.md
 
 **Purpose:** Card types, patterns, and specifications  
-**Size:** ~300 lines  
-**Status:** Starter deck complete, Pack cards pending (Task 2.1)
+**Size:** ~340 lines  
+**Status:** Starter deck complete, rarity system complete, Pack cards pending (Task 2.1)
 
 **Contains:**
 - Card type definitions (Combat, Generator, Synergy, Utility)
-- Card interaction patterns
+- Card interaction patterns overview
 - Complete starter deck specification (8 cards)
+- Card rarity system (Common/Rare/Epic/Legendary)
+- Card leveling and awakening system
+- Stat point budgeting system
 - Pack card progression roadmap
-- Card rarity system (pending)
+- References to conditional-mechanics.md
 
 **When to Use:** Designing new cards, understanding card mechanics, implementing card system
+
+### conditional-mechanics.md
+
+**Purpose:** Complete specification of conditional card abilities  
+**Size:** ~550 lines  
+**Status:** Complete (Task 2.1.4)
+
+**Contains:**
+- Four condition type categories (Timing, Card_Count, State, Sequence)
+- Pack 1-3 progression framework with complexity rules
+- Example cards for each pack tier
+- Condition coefficient balancing system (0.01-1.0 scale)
+- Coefficient guidelines by trigger probability
+- Per-card tuning process
+- Negative condition coefficients
+- Ability text templates (7 template types)
+- Writing guidelines for card text
+- Combat UI tracking requirements
+
+**When to Use:** Designing conditional cards, balancing condition bonuses, understanding condition types, implementing conditional logic
 
 ### tier-class-system.md
 
@@ -202,7 +225,7 @@
 **Purpose:** UI/UX implementation guide with exact specifications  
 **Audience:** Frontend developers, UI implementers  
 **Use Case:** Consulted during frontend implementation  
-**Size:** 899 lines  
+**Size:** ~1200 lines  
 **Why Separate:** Design decisions vs implementation specifications
 
 **Contains:**
@@ -212,6 +235,12 @@
 - Icon style guide with AI generation prompts
 - CSS variable structure
 - Animation specifications
+- **Combat UI specification** (Task 2.1.4):
+  - Reshuffle counter
+  - Cards drawn tracking (cycle/combat)
+  - Last 3 cards history display
+  - Current game state panel
+  - Condition trigger feedback
 - Accessibility considerations
 
 ---
@@ -234,6 +263,7 @@
 - `session-2-0-2-live-sim-viewer.md` - Live terminal visualization
 - `session-2-0-3-combat-system-redesign.md` - Combat-over-time redesign (Parts A-D)
 - `session-2-0-4-cli-fixes.md` - Bug fixes and improvements
+- `session-2-1-4-conditional-mechanics.md` - Conditional mechanics framework (Task 2.1.4)
 
 **Why Keep:**
 - Shows decision-making process (not just final decisions)
@@ -338,8 +368,14 @@ Session Work → .cursor/log/sessions/*.md      (detailed logs)
 **"What generator rates should Pack 1 have?"**  
 → [baseline-numbers.md](docs/design-specs/baseline-numbers.md) (generator rates by pack)
 
+**"How do conditional card abilities work?"**  
+→ [conditional-mechanics.md](docs/design-specs/conditional-mechanics.md) (complete condition spec)
+
 **"What color should Fire tier borders be?"**  
 → docs/visual-style-guide.md (implementation specs)
+
+**"How should combat UI track card history?"**  
+→ docs/visual-style-guide.md (Combat UI specification section)
 
 **"What naming convention for Air cards?"**  
 → docs/theme-specification.md (thematic reference)
@@ -417,7 +453,8 @@ Session Work → .cursor/log/sessions/*.md      (detailed logs)
 | **design-specs/combat-system.md** | 400 | ✅ Complete | Rarely |
 | **design-specs/progression.md** | 350 | ✅ Complete | Rarely |
 | **design-specs/resource-economy.md** | 250 | ✅ Complete | Session 4 (rates) |
-| **design-specs/card-system.md** | 300 | 🔄 Partial | Session 2.1 (packs) |
+| **design-specs/card-system.md** | 340 | 🔄 Partial | Session 2.1 (packs) |
+| **design-specs/conditional-mechanics.md** | 550 | ✅ Complete | Session 2.1 (cards) |
 | **design-specs/tier-class-system.md** | 350 | ✅ Complete | Session 7 (prestige) |
 | **design-specs/baseline-numbers.md** | 400 | 🔄 Baseline Complete | Session 2.1 (pack targets) |
 | **design-specs/first-30-minutes.md** | 350 | ✅ Complete | Rarely |
@@ -425,7 +462,7 @@ Session Work → .cursor/log/sessions/*.md      (detailed logs)
 | ROADMAP.md | 690 | ✅ Current | Session 3+ |
 | TECH-STACK.md | 650 | ✅ Current | Implementation |
 | docs/theme-specification.md | 376 | ✅ Complete | Rarely |
-| docs/visual-style-guide.md | 899 | ✅ Complete | Rarely |
+| docs/visual-style-guide.md | 1200 | ✅ Complete | Rarely |
 | Session logs | ~3000 | ✅ Current | Ongoing |
 
 ---
@@ -477,5 +514,5 @@ Create new spec files following the pattern:
 ---
 
 **Document Organization Status:** ✅ Version 2.0 Complete  
-**Last Review:** 2025-11-08 (Documentation Restructure)  
+**Last Review:** 2025-11-10 (Added conditional-mechanics.md, updated combat UI spec)  
 **Next Review:** After Session 4 (mid-project checkpoint)

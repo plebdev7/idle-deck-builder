@@ -779,7 +779,401 @@ const newCard = {
 
 ---
 
-## Accessibility Considerations
+## Combat UI Specification
+
+### Overview
+
+Combat UI must support conditional card mechanics by displaying game state and card history. All tracking elements must be visible and updateable in real-time.
+
+**Related Spec:** [conditional-mechanics.md](design-specs/conditional-mechanics.md)
+
+---
+
+### Required Tracking Elements
+
+#### 1. Reshuffle Counter
+
+**Purpose:** Tracks cycle-based timing conditions  
+**Location:** Near deck indicator (top-right recommended)  
+**Format:** `"Cycle 3"` or `"Reshuffle: 2"`
+
+**Visual Specs:**
+```
+Font: 14px medium
+Color: #f0f0f0 (primary text)
+Icon: Circular arrow (16px) in #8b7ab8 (arcane color)
+Layout: [Icon] Cycle 3
+```
+
+**Behavior:**
+- Starts at 0 (first cycle)
+- Increments on each deck reshuffle
+- Resets on new enemy
+
+---
+
+#### 2. Cards Drawn This Cycle
+
+**Purpose:** Track card counts within current cycle  
+**Location:** Near deck indicator or expandable overlay  
+**Format:** Compact icon summary with counts
+
+**Visual Specs - Compact View:**
+```
+┌─────────────────────┐
+│ This Cycle: 5 cards │
+│ 🔮3  ⚔️4  💎1      │
+└─────────────────────┘
+
+Legend:
+🔮 = Arcane tier count
+⚔️ = Combat type count
+💎 = Generator type count
+```
+
+**Visual Specs - Expanded View (Hover/Click):**
+```
+┌─────────────────────────┐
+│ Cards Drawn This Cycle  │
+├─────────────────────────┤
+│ By Tier:                │
+│ 🔮 Arcane: 3            │
+│ 🔥 Fire: 1              │
+│ 💧 Water: 1             │
+├─────────────────────────┤
+│ By Type:                │
+│ ⚔️ Combat: 4            │
+│ 💎 Generator: 1         │
+└─────────────────────────┘
+```
+
+**Styling:**
+```
+Background: #2d2d2d
+Border: 2px solid #4a4a4a
+Padding: 12px
+Font: 12px regular
+Icons: 16px, tier colors
+```
+
+**Behavior:**
+- Updates real-time as cards drawn
+- Resets to 0 on reshuffle
+- Highlights when conditions trigger (pulse tier color)
+
+---
+
+#### 3. Last 3 Cards Drawn
+
+**Purpose:** Enable sequence condition evaluation  
+**Location:** Below player stats or above combat log (horizontal row)  
+**Format:** 3 card summary blocks, most recent on right
+
+**Visual Specs - Standard View:**
+```
+┌──────────┐  ┌──────────┐  ┌──────────┐
+│ Arcane   │  │ Power    │  │ Essence  │
+│ Bolt     │  │ Strike   │  │ Burst    │
+│ ⚔️ +20   │  │ ⚔️ +15/5 │  │ 💎 +250  │
+└──────────┘  └──────────┘  └──────────┘
+  (2 ago)       (1 ago)       (current)
+```
+
+**Card Block Specs:**
+```
+Dimensions: 80px wide × 60px tall
+Background: #2d2d2d
+Border: 2px solid [Tier Primary color]
+Padding: 6px
+Text: 10px regular
+
+Content:
+- Card name (truncate if needed)
+- Type icon (14px)
+- Key stat (ATK/DEF or Essence)
+- Tier color border
+```
+
+**Behavior:**
+- Slides left when new card drawn (shift animation)
+- Oldest card fades out
+- New card fades in from right
+- Animation: 150ms ease-in-out
+- Cleared on new enemy
+
+**Mobile/Compact:**
+```
+Show icons only: [🔮][⚔️][💎]
+Tap to expand full card summary
+```
+
+---
+
+#### 4. Cards Drawn This Combat
+
+**Purpose:** Track cumulative combat conditions  
+**Location:** Expandable panel (click/tap to show)  
+**Format:** Running totals with tier/type breakdown
+
+**Visual Specs:**
+```
+┌─────────────────────────────┐
+│ Combat Stats: 23 cards      │
+├─────────────────────────────┤
+│ By Tier:                    │
+│ 🔮 Arcane: 15               │
+│ 🔥 Fire: 5                  │
+│ 💧 Water: 3                 │
+├─────────────────────────────┤
+│ By Type:                    │
+│ ⚔️ Combat: 18               │
+│ 💎 Generator: 5             │
+└─────────────────────────────┘
+```
+
+**Styling:**
+```
+Panel: 240px wide (right sidebar)
+Background: #2d2d2d
+Border: 2px solid #4a4a4a
+Header: 14px medium, #a0a0a0
+Counts: 14px regular, #f0f0f0
+Icons: 16px, tier colors
+Padding: 16px
+```
+
+**Behavior:**
+- Updates real-time throughout combat
+- Resets on new enemy
+- Can be collapsed (show just total count)
+- Expandable on hover or click
+
+---
+
+#### 5. Current Game State Panel
+
+**Purpose:** Display all state-based condition values  
+**Location:** Center/top of combat area (always visible)  
+**Format:** Clean horizontal layout with all key stats
+
+**Visual Layout:**
+```
+┌──────────────────────────────────────────────────┐
+│                  ENEMY #15                       │
+│  ██████████████████░░░░░░░░░  1,234 / 2,000 HP  │
+├──────────────────────────────────────────────────┤
+│                    PLAYER                        │
+│  ████████████████████████████░░  85 / 100 HP    │
+│                                                  │
+│  ATK: 124    DEF: 98    Rate: 5.2/sec          │
+└──────────────────────────────────────────────────┘
+```
+
+**Styling:**
+```
+Panel width: 500px (centered)
+Background: #2d2d2d
+Border: 2px solid #4a4a4a
+Padding: 16px
+
+HP Bars:
+- Height: 20px
+- Enemy bar: #e74c3c (fire red)
+- Player bar: #3498db (water blue)
+- Background: #1a1a1a
+- Border: 1px solid #4a4a4a
+
+Stats:
+- Font: 16px medium
+- Color: #f0f0f0
+- Spacing: 24px between stats
+- Labels uppercase, 10px
+```
+
+**Percentage Indicators:**
+```
+Show HP percentages in parentheses:
+"85 / 100 HP (85%)"
+
+Color coding:
+> 75%: #52c77a (green)
+50-75%: #f9e79f (yellow)
+25-50%: #ff6b5a (orange)
+< 25%: #e74c3c (red)
+```
+
+---
+
+### Visual Priority & Responsive Behavior
+
+#### Desktop (1200px+)
+**Always Visible:**
+- Current game state panel (center)
+- Reshuffle counter (top-right)
+- Last 3 cards drawn (below player stats)
+- Cards drawn this cycle (compact, top-right)
+
+**Expandable:**
+- Cards drawn this combat (panel/sidebar)
+
+---
+
+#### Tablet (768-1199px)
+**Always Visible:**
+- Current game state panel (shrink to 400px)
+- Reshuffle counter
+- Last 3 cards (smaller blocks, 60px wide)
+
+**Compact:**
+- Cards drawn this cycle (icon counts only)
+
+**Hidden/Expandable:**
+- Cards drawn this combat (tap to overlay)
+
+---
+
+#### Mobile (<768px)
+**Always Visible:**
+- HP bars only (full width)
+- Current stats (below HP)
+- Reshuffle counter (compact)
+
+**Icon-Only:**
+- Last 3 cards (tap to expand)
+- Cards this cycle (tap to expand)
+
+**Overlay:**
+- All detailed breakdowns accessible via tap
+
+---
+
+### Condition Trigger Feedback
+
+When a card's condition triggers, provide visual feedback:
+
+**Success Trigger:**
+```
+- Card border pulses with tier color (2× glow intensity)
+- "+X bonus!" text floats up from card (1s fade)
+- Color: Tier Light color
+- Font: 14px bold
+- Animation: floatUp 1000ms ease-out
+```
+
+**Failed Condition (Optional):**
+```
+- Dim the condition text slightly (70% opacity)
+- Show why it failed on hover
+- No intrusive feedback
+```
+
+---
+
+### Animation Specifications
+
+**Card History Slide (New Card Drawn):**
+```css
+@keyframes slideLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-90px); /* card width + gap */
+  }
+}
+
+/* Oldest card */
+animation: slideLeft 150ms ease-in-out, fadeOut 150ms ease-out;
+
+/* New card enters */
+@keyframes slideIn {
+  from {
+    transform: translateX(90px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+animation: slideIn 150ms ease-in-out;
+```
+
+**Counter Increment:**
+```css
+/* Number changes */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); color: [Tier Light color]; }
+  100% { transform: scale(1); }
+}
+
+animation: pulse 200ms ease-out;
+```
+
+**Reshuffle Counter Update:**
+```css
+/* On reshuffle increment */
+@keyframes highlight {
+  0% { 
+    background: transparent; 
+  }
+  50% { 
+    background: [Tier Primary color] at 20% opacity;
+    box-shadow: 0 0 8px [Tier Light color];
+  }
+  100% { 
+    background: transparent; 
+  }
+}
+
+animation: highlight 400ms ease-in-out;
+```
+
+---
+
+### Accessibility Considerations
+
+**Screen Reader Announcements:**
+- Announce reshuffle count changes
+- Announce when cards drawn exceed thresholds (3+, 5+, etc.)
+- Announce condition triggers ("Bonus activated: +15 ATK")
+- Provide text descriptions for all icons
+
+**Keyboard Navigation:**
+- Tab through expandable panels
+- Arrow keys to navigate card history
+- Enter/Space to expand collapsed panels
+
+**Color Independence:**
+- All tier indicators have icons + text labels
+- HP percentages shown as text (not just color)
+- Card type icons distinct shapes (not just colors)
+
+---
+
+### Implementation Notes
+
+**Performance:**
+- Use CSS transforms for animations (GPU-accelerated)
+- Throttle counter updates (max 60 FPS)
+- Virtual scrolling for combat history if > 100 cards
+- Minimize DOM reflows (batch updates)
+
+**State Management:**
+- Track all counters in game state object
+- Update UI reactively (React/Vue patterns)
+- Reset logic on enemy/combat transitions
+- Persist reshuffle count between enemies (resets on death)
+
+**Testing:**
+- Validate all counters with simulator
+- Test responsive breakpoints
+- Verify animations don't block interaction
+- Check accessibility with screen readers
+
+---
 
 ### Contrast Ratios
 - All text (#f0f0f0) on backgrounds (#2d2d2d, #1a1a1a): **WCAG AAA** (>7:1)

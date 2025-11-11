@@ -175,11 +175,13 @@
       - [x] Design stat scaling formulas per level (20% multiplicative, all rarities)
       - [x] Define max level caps and progression curve (Level 10 cap, awakening to 20)
   - **Phase 2: Mechanic Design Research (DESIGN SESSION)**
-    - [ ] **2.1.4** Research conditional mechanics
-      - [ ] Evaluate condition types (timing, composition, state-based)
-      - [ ] Identify "fun to build around" vs "too random/confusing"
-      - [ ] Define testable conditions for Pack 1-3
-      - [ ] Create conditional ability templates
+    - [x] **2.1.4** Research conditional mechanics - ✅ COMPLETE (2025-11-10)
+      - [x] Evaluate condition types (timing, composition, state-based)
+      - [x] Identify "fun to build around" vs "too random/confusing"
+      - [x] Define testable conditions for Pack 1-3
+      - [x] Create conditional ability templates
+      - [x] Create condition coefficient balancing system
+      - [x] Define combat UI tracking requirements
     - [ ] **2.1.5** Research sequencing & order-dependent mechanics
       - [ ] Design "next card" and "previous card" tracking
       - [ ] Specify combo trigger chains
