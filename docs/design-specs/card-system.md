@@ -1,8 +1,17 @@
 # Card System Specification
 
-**Last Updated:** 2025-11-08  
+**Last Updated:** 2025-11-11  
 **Status:** Starter deck complete (Session 1.3C), Pack cards pending (Session 2.1)  
 **Parent Document:** [DESIGN.md](../../DESIGN.md)
+
+---
+
+## Related Specifications
+
+- **[Card Data Structure & Text Format](card-data-structure.md)** - Complete field specification, stat notation, ability text templates (Session 2.1.6)
+- **[Conditional Mechanics](conditional-mechanics.md)** - Condition types, templates, coefficient balancing (Session 2.1.4)
+- **[Resource Economy](resource-economy.md)** - Generator mechanics, essence rates, pack costs
+- **[Combat System](combat-system.md)** - Attack, defense, HP system, combat timing
 
 ---
 

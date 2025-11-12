@@ -258,6 +258,8 @@ Player HP: ~80/100 (lost 20 HP before defense kicked in)
 - Enemy counter resets to Enemy 1
 - Accumulated essence and shards persist
 
+**For complete state persistence rules (reshuffle, enemy, death), see:** [conditional-mechanics.md - State Persistence Rules](conditional-mechanics.md#state-persistence-rules)
+
 ---
 
 ## Strategic Implications

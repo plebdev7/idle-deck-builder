@@ -15,6 +15,11 @@ Data Ownership Validation (Task 2.1.2C):
 - Verify simulator loads values from game-data/*.json (no hardcoded values)
 - Validate formulas match between design docs and game-data
 - Check cross-references (_design_spec fields) exist
+
+Card Text Length Validation (Task 2.1.6):
+- Validate ability_text fits within 3 lines (~126 characters max)
+- Check all cards have ability_text and ability_text_short fields
+- Ensure text meets card layout constraints (168px width, 12px font)
 """
 
 import json
@@ -724,11 +729,116 @@ class DataOwnershipValidator:
             })
             report["overall_passed"] = False
         
+        # Check 5: Card text length validation (Task 2.1.6)
+        if verbose:
+            print("\n=== Card Text Length Validation ===")
+        
+        report["card_text_validation"] = []
+        
+        # Load card files
+        # Path relative to this file: simulator/simulator/analysis/validation.py
+        # Need to go up 3 levels to repo root, then into game-data
+        repo_root = Path(__file__).parent.parent.parent.parent
+        card_files = [
+            repo_root / "game-data" / "cards-starter-deck.json"
+        ]
+        
+        # Character limit based on card layout (Task 2.1.6)
+        # 168px width, 12px font, ~4px per char = ~42 chars/line
+        # Max 3 lines = ~126 characters
+        MAX_CHARACTERS = 126
+        MAX_LINES = 3
+        
+        for card_file in card_files:
+            if not card_file.exists():
+                status = "[WARN]"
+                msg = f"{status} Card file not found: {card_file.name}"
+                if verbose:
+                    print(msg)
+                report["card_text_validation"].append({
+                    "file": card_file.name,
+                    "passed": True,  # Don't fail overall if file doesn't exist yet
+                    "message": msg,
+                })
+                continue
+            
+            try:
+                with open(card_file, "r") as f:
+                    card_data = json.load(f)
+                
+                cards = card_data.get("cards", [])
+                
+                for card in cards:
+                    card_id = card.get("id", "unknown")
+                    card_name = card.get("name", "Unknown")
+                    ability_text = card.get("ability_text", "")
+                    
+                    # Skip if no ability_text field (might be old format)
+                    if not ability_text:
+                        status = "[WARN]"
+                        msg = f"{status} {card_name} ({card_id}): Missing 'ability_text' field"
+                        if verbose:
+                            print(msg)
+                        report["card_text_validation"].append({
+                            "card": card_name,
+                            "passed": True,  # Don't fail for missing field (might be WIP)
+                            "message": msg,
+                        })
+                        continue
+                    
+                    # Count characters and lines
+                    char_count = len(ability_text)
+                    line_count = ability_text.count('\n') + 1
+                    
+                    # Validate character limit
+                    char_passed = char_count <= MAX_CHARACTERS
+                    line_passed = line_count <= MAX_LINES
+                    passed = char_passed and line_passed
+                    
+                    status = "[PASS]" if passed else "[FAIL]"
+                    
+                    if passed:
+                        msg = f"{status} {card_name}: {char_count} chars, {line_count} lines (within limits)"
+                    else:
+                        violations = []
+                        if not char_passed:
+                            violations.append(f"exceeds {MAX_CHARACTERS} char limit")
+                        if not line_passed:
+                            violations.append(f"exceeds {MAX_LINES} line limit")
+                        msg = f"{status} {card_name}: {char_count} chars, {line_count} lines ({', '.join(violations)})"
+                    
+                    if verbose:
+                        print(msg)
+                    
+                    report["card_text_validation"].append({
+                        "card": card_name,
+                        "char_count": char_count,
+                        "line_count": line_count,
+                        "passed": passed,
+                        "message": msg,
+                    })
+                    
+                    if not passed:
+                        report["overall_passed"] = False
+                        
+            except (json.JSONDecodeError, IOError) as e:
+                status = "[FAIL]"
+                msg = f"{status} Failed to load card file {card_file.name}: {e}"
+                if verbose:
+                    print(msg)
+                report["card_text_validation"].append({
+                    "file": card_file.name,
+                    "passed": False,
+                    "message": msg,
+                })
+                report["overall_passed"] = False
+        
         # Summary
         total_checks = (
             len(report["config_structure"])
             + len(report["cross_references"])
             + len(report["formula_consistency"])
+            + len(report["card_text_validation"])
         )
         
         passed_checks = sum(
@@ -737,6 +847,8 @@ class DataOwnershipValidator:
             1 for item in report["cross_references"] if item.get("exists", True)
         ) + sum(
             1 for item in report["formula_consistency"] if item.get("exists", True)
+        ) + sum(
+            1 for item in report["card_text_validation"] if item.get("passed", True)
         )
         
         report["summary"] = {

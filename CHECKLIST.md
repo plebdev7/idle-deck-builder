@@ -182,32 +182,19 @@
       - [x] Create conditional ability templates
       - [x] Create condition coefficient balancing system
       - [x] Define combat UI tracking requirements
-    - [ ] **2.1.5** Research sequencing & order-dependent mechanics
-      - [ ] Design "next card" and "previous card" tracking
-      - [ ] Specify combo trigger chains
-      - [ ] Define state persistence rules (reshuffle, enemy, death)
-    - [ ] **2.1.6** Create card data structure & text format
-      - [ ] Define complete card template (all fields)
-      - [ ] Specify stat notation format
-      - [ ] Create ability description templates with keywords
-      - [ ] Validate text fits card layout (3 lines max, 12px font)
+    - [x] **2.1.5** Research sequencing & order-dependent mechanics - ✅ COMPLETE (2025-11-12)
+      - [x] Design "next card" and "previous card" tracking
+      - [x] Specify combo trigger chains
+      - [x] Define state persistence rules (reshuffle, enemy, death)
+    - [x] **2.1.6** Create card data structure & text format - ✅ COMPLETE (2025-11-11)
+      - [x] Define complete card template (all fields)
+      - [x] Specify stat notation format
+      - [x] Create ability description templates with keywords
+      - [x] Validate text fits card layout (3 lines max, 12px font)
   - **Phase 3: Card Content Design (DESIGN SESSION)**
-    - [ ] **2.1.7** Design Pack 1 guaranteed cards (5 deterministic cards)
-      - [ ] 2 generator cards (+3, +4 Essence/sec range)
-      - [ ] 2 combat cards (25-30 total stats)
-      - [ ] 1 utility card (introduce first simple conditional)
-      - [ ] Document design rationale for each card
-    - [ ] **2.1.8** Design Pack 2 guaranteed cards (5 deterministic cards)
-      - [ ] 1 multiplier generator (Current rate × Y seconds)
-      - [ ] 3 combat cards (35-45 total stats, introduce sequencing)
-      - [ ] 1 Rare synergy card (first combo mechanic)
-      - [ ] Document design rationale for each card
-    - [ ] **2.1.9** Design Pack 3+ random pool (5-10 cards for Arcane tier)
-      - [ ] Mix of Common/Rare/Epic cards
-      - [ ] Deck manipulation cards ("Draw extra card", "Shuffle deck")
-      - [ ] State-based effects ("Lasts until reshuffle")
-      - [ ] Higher power level cards (Rare 50-80 stats, Epic 100-150 stats)
-      - [ ] Document design rationale for each card
+    - [ ] **2.1.7** Design Pack 1 guaranteed cards
+    - [ ] **2.1.8** Design Pack 2 guaranteed cards
+    - [ ] **2.1.9** Design Pack 3 guaranteed cards
   - **Phase 4: Validation & Documentation**
     - [ ] **2.1.10** Validate all cards against design constraints
       - [ ] Check against visual-style-guide.md (layout, text length, stats fit)
@@ -220,15 +207,23 @@
       - [ ] Document all 15-20 pack cards with full stats
       - [ ] Update pack contents and guaranteed card lists
       - [ ] Add card data structure specification
-      - [ ] Update Outstanding Questions (Question 7 resolved)
   - **Phase 5: Implementation (if needed)**
-    - [ ] **2.1.12** Implement new card mechanics in simulator (if required)
+    - [ ] **2.1.12** Implement new card mechanics in simulator
       - [ ] Add conditional trigger system
       - [ ] Add sequencing/order-dependent effect tracking
       - [ ] Add state persistence management
       - [ ] Add deck manipulation mechanics
+      - [ ] Add simplified combat UI tracking items
+    - [ ] **2.1.13** Create and test all new cards
       - [ ] Test all new pack cards in simulator
+      - [ ] Create deck variation for pack 1 cards
+      - [ ] Create deck variation for pack 1 + 2 cards
+      - [ ] Create several deck variations for pack 1 + 2 + 3 cards
+      - [ ] Confirm simulator runs for all variations
+    - [ ] **2.1.14** Review and update validation targets
       - [ ] Validate balance and progression targets
+      - [ ] Validate "bad player" progression
+      - [ ] Define and validate "good player" progression
 
 - [ ] **2.2** Card Interaction Specifications
   - [ ] Define trigger chains (exact conditions and effects)

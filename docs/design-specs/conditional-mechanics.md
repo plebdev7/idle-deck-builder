@@ -638,6 +638,86 @@ For smaller screens:
 
 ---
 
+## State Persistence Rules
+
+**CRITICAL:** Understanding what resets and when is essential for designing conditional cards and player strategy. This section consolidates all persistence rules for card designers.
+
+### What Resets and When
+
+#### On Reshuffle (Deck Cycles)
+
+**Resets:**
+- Cards drawn this cycle → 0
+- Cycle position counter → 0 (starts new cycle)
+- Card sequence history (last 3 cards) → clears
+
+**Persists:**
+- ATK stat (accumulated from all cards)
+- DEF stat (accumulated from all cards)
+- Essence rate (accumulated from generator cards)
+- Cards drawn this combat counter
+- HP (no healing on reshuffle)
+
+**Design Implications:**
+- "This cycle" conditions create predictable reset points
+- Cycle position conditions enable "opener" and "finisher" cards
+- Sequence conditions create short-term memory gameplay
+
+---
+
+#### On New Enemy (Combat End)
+
+**Resets:**
+- Cards drawn this combat → 0
+- ATK stat → 0 (fresh start for new enemy)
+- DEF stat → 0 (fresh start for new enemy)
+- Card sequence history → clears
+- Reshuffle counter → 0
+
+**Persists:**
+- Essence rate (accumulates across all enemies until death)
+- HP (no healing between enemies - intentional death spiral)
+- Accumulated essence (resource continues growing)
+- Deck composition (no forced changes)
+
+**Design Implications:**
+- Essence rate is the only combat stat that persists between enemies
+- HP management is critical for multi-enemy runs
+- "This combat" counters enable escalating bonuses within single enemy fights
+- Defense must be re-established each enemy (no carryover protection)
+
+---
+
+#### On Death (Player HP = 0)
+
+**Resets:**
+- All combat stats (ATK → 0, DEF → 0, Essence rate → 0)
+- Enemy counter → 1 (restart from beginning)
+- HP → full restore (based on permanent max HP from shard upgrades)
+- All combat tracking counters (this combat, this cycle, sequence history)
+
+**Persists:**
+- Accumulated essence (spend on packs)
+- Accumulated shards (spend on permanent upgrades)
+- Deck composition (all cards remain)
+- Permanent upgrades (max HP increases, future class unlocks)
+
+**Design Implications:**
+- Death is progression, not punishment (resources persist)
+- Each run starts fresh but with better deck/HP
+- Conditional abilities based on "enemy number" or "death count" are intentionally avoided (meta-progression would complicate balance)
+- Essence rate reset encourages generator-heavy deck strategies for each run
+
+---
+
+### Cross-Document References
+
+**Combat System:** Full combat mechanics and death screen details in [combat-system.md](combat-system.md)  
+**Resource Economy:** Essence rate persistence and generation in [resource-economy.md](resource-economy.md)  
+**Progression System:** Death loop progression expectations in [progression.md](progression.md)
+
+---
+
 ## Validation Checklist
 
 - [x] All four condition type categories defined (Timing, Card_Count, State, Sequence)
@@ -658,6 +738,12 @@ For smaller screens:
 
 ## Document History
 
+**Version 1.1** (2025-11-12) - Task 2.1.5 Complete
+- Added consolidated State Persistence Rules section
+- Documented reset behavior for reshuffle, enemy, and death
+- Added design implications for each reset type
+- Cross-referenced to combat-system.md, resource-economy.md, progression.md
+
 **Version 1.0** (2025-11-10) - Task 2.1.4 Complete
 - Created comprehensive conditional mechanics framework
 - Defined all four condition type categories
@@ -671,5 +757,5 @@ For smaller screens:
 ---
 
 **Document Status:** Complete  
-**Next Steps:** Proceed to Task 2.1.5 (Sequencing & Order-Dependent Mechanics) or skip to Task 2.1.7 (Pack 1 Card Design)
+**Next Steps:** Proceed to Task 2.1.6 (Card Data Structure & Text Format)
 

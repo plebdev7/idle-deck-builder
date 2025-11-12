@@ -18,6 +18,8 @@
           "duration": "until_death"
         }
       ],
+      "ability_text": "+2 Essence/sec",
+      "ability_text_short": "+2/sec",
       "flavor_text": "A stable channel of pure arcane energy. Draw upon it to fuel your magic.",
       "acquisition": {
         "source": "starter"
@@ -37,6 +39,8 @@
           "duration": "instant"
         }
       ],
+      "ability_text": "+250 Essence",
+      "ability_text_short": "+250",
       "flavor_text": "A concentrated surge of magical energy, released all at once.",
       "acquisition": {
         "source": "starter"
@@ -66,6 +70,8 @@
           "duration": "until_enemy_defeated"
         }
       ],
+      "ability_text": "+12 ATK, +6 DEF, +1 Essence/sec",
+      "ability_text_short": "+12/6, +1/sec",
       "flavor_text": "Draw power from combat itself, channeling the clash into usable essence.",
       "acquisition": {
         "source": "starter"
@@ -85,6 +91,8 @@
           "duration": "until_enemy_defeated"
         }
       ],
+      "ability_text": "+20 ATK",
+      "ability_text_short": "+20 ATK",
       "flavor_text": "A focused blast of raw magical force.",
       "acquisition": {
         "source": "starter"
@@ -104,6 +112,8 @@
           "duration": "until_enemy_defeated"
         }
       ],
+      "ability_text": "+20 DEF",
+      "ability_text_short": "+20 DEF",
       "flavor_text": "A shimmering barrier of protective magic.",
       "acquisition": {
         "source": "starter"
@@ -128,6 +138,8 @@
           "duration": "until_enemy_defeated"
         }
       ],
+      "ability_text": "+10 ATK, +10 DEF",
+      "ability_text_short": "+10/10",
       "flavor_text": "Harmonious magic balancing offense and defense.",
       "acquisition": {
         "source": "starter"
@@ -152,6 +164,8 @@
           "duration": "until_enemy_defeated"
         }
       ],
+      "ability_text": "+15 ATK, +5 DEF",
+      "ability_text_short": "+15/5",
       "flavor_text": "Aggressive magic that prioritizes overwhelming force.",
       "acquisition": {
         "source": "starter"
@@ -176,6 +190,8 @@
           "duration": "until_enemy_defeated"
         }
       ],
+      "ability_text": "+5 ATK, +15 DEF",
+      "ability_text_short": "+5/15",
       "flavor_text": "Patient, enduring magic that outlasts threats.",
       "acquisition": {
         "source": "starter"

@@ -15,6 +15,7 @@ This document serves as the **high-level design hub** for the Idle Deck Builder 
 - [Progression & Scaling](docs/design-specs/progression.md) - Enemy scaling, bosses, death loops
 - [Resource Economy](docs/design-specs/resource-economy.md) - Generators, essence, shards
 - [Card System](docs/design-specs/card-system.md) - Card types, starter deck, pack cards
+- [Card Data Structure & Text Format](docs/design-specs/card-data-structure.md) - Card fields, stat notation, ability text templates
 - [Conditional Mechanics](docs/design-specs/conditional-mechanics.md) - Conditional abilities, balancing, UI tracking
 - [Tier & Class System](docs/design-specs/tier-class-system.md) - Tiers, classes, deck limits
 - [Baseline Numbers](docs/design-specs/baseline-numbers.md) - All formulas, rates, timings
@@ -276,6 +277,7 @@ Multiple interconnected loops:
 - **Pack 2:** Sequencing effects, scaling bonuses, multiplier generators, first Rare
 - **Pack 3+:** Full complexity, deck manipulation, AND/OR conditions, Rare/Epic cards
 
+→ **[Card Data Structure & Text Format](docs/design-specs/card-data-structure.md)**  
 → **[Conditional Mechanics Specification](docs/design-specs/conditional-mechanics.md)**
 
 ---
@@ -490,11 +492,12 @@ Multiple interconnected loops:
   - ✅ **Task 2.1.2:** Stat Point Balancing System
   - ✅ **Task 2.1.3:** Card Leveling & Awakening System
   - ✅ **Task 2.1.4:** Conditional Mechanics Framework
-  - Pending: Card data structure, Pack 1-3 card content design
+  - ✅ **Task 2.1.5:** Sequencing Mechanics (State Persistence)
+  - ✅ **Task 2.1.6:** Card Data Structure & Text Format
+  - Pending: Pack 1-3 card content design
 
 ### Next Up
 
-- **Task 2.1.6:** Card Data Structure & Text Format
 - **Task 2.1.7-2.1.9:** Pack 1-3 Card Content Design
 - **Session 2.2-2.4:** Card interaction specifications, patterns
 
@@ -551,7 +554,7 @@ Multiple interconnected loops:
 ---
 
 **Document Version:** 2.0.3  
-**Last Updated:** 2025-11-10  
-**Status:** Core systems complete, conditional mechanics framework complete, pack card content design pending  
+**Last Updated:** 2025-11-11  
+**Status:** Core systems complete, conditional mechanics framework complete, card data structure complete, pack card content design pending  
 **Archive:** [DESIGN-v1.9-pre-split.md](.archive/DESIGN-v1.9-pre-split.md)
 
