@@ -139,23 +139,76 @@ All players begin as "Arcane Student" with this pre-built 8-card deck. All cards
 
 ---
 
-## Pack Card Progression (To Be Designed in Session 2.1)
+## Pack Card Progression
 
-### Pack 1: Simple Synergies
+### Pack 1: Guaranteed Cards (Session 2.1.7 - COMPLETE)
 
-Introduces conditional bonuses and simple synergies
-- Conditional bonuses ("If drawn in first 5 seconds...")
-- Simple synergies ("If you have 3+ Arcane cards...")
-- Better generators (+3, +4 Essence/sec)
+**Authoritative Source:** See [`game-data/cards-pack1.json`](../../game-data/cards-pack1.json) for exact card stats and effects.
 
-### Pack 2: Sequencing Effects
+**Design Philosophy:**
+- Introduces tradeoffs (negative effects on 3/5 cards)
+- First conditional card (Battle Surge rare)
+- First healing card (Minor Restoration)
+- Forces first deck-building decision (13 cards owned, 12-card limit)
+- No strictly better cards than starter (sidegrades with specialization)
+
+**Card Distribution:**
+- 2 Generators: Essence Drain (penalty), Battle Surge (rare hybrid with conditional)
+- 2 Combat: Reckless Bolt (penalty), Fortified Stance (penalty)
+- 1 Utility: Minor Restoration (healing)
+
+#### Card 1: Reckless Bolt (Common, Combat)
+- **Stats:** +30 ATK, -10 DEF
+- **Budget:** 20 points
+- **Teaching:** Glass cannon specialization, tradeoffs exist
+- **Strategy:** Highest single ATK in Pack 1, but defense penalty
+
+#### Card 2: Essence Drain (Common, Generator)
+- **Stats:** +3 Essence/sec, -5 ATK
+- **Budget:** 25 points
+- **Teaching:** Generator specialization has combat cost
+- **Strategy:** Best rate generator (50% better than starter), creates deck tension
+
+#### Card 3: Fortified Stance (Common, Combat)
+- **Stats:** +35 DEF, -5 ATK
+- **Budget:** 30 points
+- **Teaching:** Extreme defense viable, prepares for Enemy 50 boss
+- **Strategy:** 75% more defense than Mystic Shield, critical for first attacker
+
+#### Card 4: Minor Restoration (Common, Utility)
+- **Stats:** Heal 12 HP
+- **Budget:** 24 points
+- **Teaching:** Healing introduced (12% of base HP)
+- **Strategy:** First healing card, essential for Enemy 50+ survival
+
+#### Card 5: Battle Surge (Rare, Hybrid) ⭐
+- **Stats:** +12 ATK, +12 DEF, +1 Essence/sec
+- **Condition:** If player HP < 50%: +12 ATK, +12 DEF
+- **Budget:** 46 points (34 base + 12 conditional @ 0.5 coefficient)
+- **Teaching:** First conditional card in game, visible state mechanics
+- **Strategy:** Always useful hybrid, powerful comeback mechanic (24/24/1 when triggered)
+
+**Power Increase:**
+- +15-20% combat power with optimal choices
+- +50% generation rate if taking Essence Drain
+- Healing enables longer fights
+
+**Strategic Impact:**
+- Player must cut 1 card from 13 total
+- First meaningful deck-building decision
+- Specialization vs balance tradeoffs
+- Conditional awareness introduced
+
+---
+
+### Pack 2: Sequencing Effects (To Be Designed)
 
 Introduces sequencing effects and multiplier generators
 - Multiplier generator (Current rate × Y seconds)
 - Order-dependent effects ("Next card gets +50%")
-- First Rare card with combo mechanics
+- More Rare cards with combo mechanics
 
-### Pack 3+: Full Complexity
+### Pack 3+: Full Complexity (To Be Designed)
 
 Full complexity (deck manipulation, state-based effects, advanced synergies)
 - Deck manipulation ("Draw extra card", "Shuffle deck")
@@ -328,6 +381,17 @@ All starter deck cards fall within the Common rarity range (20-30 stat points). 
 ---
 
 ## Document History
+
+**Version 1.3** (2025-11-11) - Task 2.1.7 Complete
+- **Added Pack 1 guaranteed card specifications**
+- 5 cards designed: Reckless Bolt, Essence Drain, Fortified Stance, Minor Restoration, Battle Surge
+- 4 Commons (flat values, 3 with negative effects) + 1 Rare (first conditional)
+- First conditional card: Battle Surge (HP < 50% condition, 0.5 coefficient)
+- First healing card: Minor Restoration (Heal 12 HP)
+- All cards validated against stat budget ranges (20-30 Common, 30-50 Rare)
+- Tradeoff mechanics introduced (no strictly better cards)
+- Teaches specialization, conditionals, and healing
+- Cross-references to game-data/cards-pack1.json
 
 **Version 1.2** (2025-11-09) - Task 2.1.3 Complete
 - **Added complete leveling and awakening system**

@@ -1,0 +1,184 @@
+{
+  "_design_spec": "../docs/design-specs/card-system.md#pack-1-guaranteed-cards",
+  "version": "1.0.0",
+  "last_updated": "2025-11-11",
+  "description": "Pack 1 guaranteed cards - Player's first major deck upgrade (~7 minutes, 40,000 Essence). Teaches conditional mechanics, tradeoffs with negative effects, and introduces healing. This is the AUTHORITATIVE SOURCE for Pack 1 card stats and effects.",
+  "cards": [
+    {
+      "id": "reckless_bolt",
+      "name": "Reckless Bolt",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Combat",
+      "stat_point_budget": 20,
+      "effects": [
+        {
+          "effect_type": "add_attack",
+          "value": 30,
+          "duration": "until_enemy_defeated"
+        },
+        {
+          "effect_type": "add_defense",
+          "value": -10,
+          "duration": "until_enemy_defeated"
+        }
+      ],
+      "ability_text": "+30 ATK, -10 DEF",
+      "ability_text_short": "+30/-10",
+      "flavor_text": "Raw arcane power, heedless of consequence. Devastating, but leaves you exposed.",
+      "acquisition": {
+        "source": "pack1_guaranteed",
+        "pack_type": "Arcane",
+        "position": 1
+      },
+      "_design_notes": "Glass cannon extreme. Teaches tradeoffs - more ATK than any starter card but defense penalty. Not strictly better than Arcane Bolt (+20 pure ATK)."
+    },
+    {
+      "id": "essence_drain",
+      "name": "Essence Drain",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Generator",
+      "stat_point_budget": 25,
+      "effects": [
+        {
+          "effect_type": "essence_per_sec",
+          "value": 3.0,
+          "duration": "until_death"
+        },
+        {
+          "effect_type": "add_attack",
+          "value": -5,
+          "duration": "until_enemy_defeated"
+        }
+      ],
+      "ability_text": "+3 Essence/sec, -5 ATK",
+      "ability_text_short": "+3/sec, -5 ATK",
+      "flavor_text": "Channel your combat strength into pure essence. Wealth comes at a price.",
+      "acquisition": {
+        "source": "pack1_guaranteed",
+        "pack_type": "Arcane",
+        "position": 2
+      },
+      "_design_notes": "Best rate generator (vs starter 2/sec) but with ATK penalty. Teaches generator specialization has combat cost. Creates deck composition tension."
+    },
+    {
+      "id": "fortified_stance",
+      "name": "Fortified Stance",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Combat",
+      "stat_point_budget": 30,
+      "effects": [
+        {
+          "effect_type": "add_defense",
+          "value": 35,
+          "duration": "until_enemy_defeated"
+        },
+        {
+          "effect_type": "add_attack",
+          "value": -5,
+          "duration": "until_enemy_defeated"
+        }
+      ],
+      "ability_text": "+35 DEF, -5 ATK",
+      "ability_text_short": "+35/-5",
+      "flavor_text": "Impenetrable defense through unwavering focus. Speed matters less when nothing can harm you.",
+      "acquisition": {
+        "source": "pack1_guaranteed",
+        "pack_type": "Arcane",
+        "position": 3
+      },
+      "_design_notes": "Extreme defense specialist (75% better than Mystic Shield +20). Critical for Enemy 50 boss (first attacker). Minor ATK penalty for defensive builds."
+    },
+    {
+      "id": "minor_restoration",
+      "name": "Minor Restoration",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Utility",
+      "stat_point_budget": 24,
+      "effects": [
+        {
+          "effect_type": "heal_flat",
+          "value": 12,
+          "duration": "instant"
+        }
+      ],
+      "ability_text": "Heal 12 HP",
+      "ability_text_short": "Heal 12",
+      "flavor_text": "A simple healing spell, but in desperate moments, simplicity saves lives.",
+      "acquisition": {
+        "source": "pack1_guaranteed",
+        "pack_type": "Arcane",
+        "position": 4
+      },
+      "_design_notes": "First healing card in game. Simple burst heal (12% of 100 HP start). Essential for Enemy 50+ survival. Creates new deck-building consideration."
+    },
+    {
+      "id": "battle_surge",
+      "name": "Battle Surge",
+      "tier": "Arcane",
+      "rarity": "Rare",
+      "type": "Hybrid",
+      "stat_point_budget": 46,
+      "effects": [
+        {
+          "effect_type": "add_attack",
+          "value": 12,
+          "duration": "until_enemy_defeated"
+        },
+        {
+          "effect_type": "add_defense",
+          "value": 12,
+          "duration": "until_enemy_defeated"
+        },
+        {
+          "effect_type": "essence_per_sec",
+          "value": 1.0,
+          "duration": "until_death"
+        },
+        {
+          "effect_type": "add_attack",
+          "value": 12,
+          "duration": "until_enemy_defeated",
+          "condition": {
+            "type": "state",
+            "parameters": {
+              "stat": "player_hp_percent",
+              "operator": "<",
+              "threshold": 50
+            },
+            "coefficient": 0.5,
+            "description": "If player HP < 50%"
+          }
+        },
+        {
+          "effect_type": "add_defense",
+          "value": 12,
+          "duration": "until_enemy_defeated",
+          "condition": {
+            "type": "state",
+            "parameters": {
+              "stat": "player_hp_percent",
+              "operator": "<",
+              "threshold": 50
+            },
+            "coefficient": 0.5,
+            "description": "If player HP < 50%"
+          }
+        }
+      ],
+      "ability_text": "+12 ATK, +12 DEF, +1 Essence/sec. If HP < 50%: +12 ATK, +12 DEF",
+      "ability_text_short": "+12/12, +1/s. HP<50%: +12/12",
+      "flavor_text": "Adversity sharpens focus. When wounded, your magic burns twice as bright.",
+      "acquisition": {
+        "source": "pack1_guaranteed",
+        "pack_type": "Arcane",
+        "position": 5
+      },
+      "_design_notes": "FIRST CONDITIONAL CARD IN GAME. Teaches visible state conditions (HP bar always visible). Balanced hybrid always useful. When triggered (24/24/1 total) - powerful Rare. Coefficient 0.5 per conditional-mechanics.md (HP < 50% = Often True in challenging fights)."
+    }
+  ]
+}
+
