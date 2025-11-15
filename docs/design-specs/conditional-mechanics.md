@@ -642,6 +642,39 @@ For smaller screens:
 
 **CRITICAL:** Understanding what resets and when is essential for designing conditional cards and player strategy. This section consolidates all persistence rules for card designers.
 
+### Combat Initialization (Random Shuffle)
+
+**Before Every Combat:**
+- Deck is **shuffled into random order**
+- Reshuffle counter = 0 (first cycle begins)
+- Card sequence history cleared
+- No memory from previous combats
+
+**Before Every Reshuffle:**
+- Deck is **shuffled into random order** again
+- Reshuffle counter increments
+- Card sequence history cleared
+
+**CRITICAL DESIGN IMPLICATION:**
+- Players have **ZERO CONTROL** over card draw order
+- "First cycle" conditions are probabilistic (based on shuffle)
+- "Position in cycle" conditions (e.g., "If drawn in first 3 cards") are RNG-dependent
+- Cannot manipulate deck order through gameplay
+- All conditional cards must be balanced assuming random draw order
+
+**Examples of What This Means:**
+- "If first card after reshuffle" = 1 in 8 chance (8-card deck)
+- "If drawn in first 3 cards this cycle" = ~37.5% chance (3/8 cards)
+- "If previous card was Generator" = depends on generator % in deck, but order is random
+
+**Why This Matters:**
+- Condition coefficients must account for randomness
+- Cannot design "combo" cards that assume specific draw orders
+- Deck composition matters, card ordering doesn't
+- Creates variance and prevents "solved" optimal sequences
+
+---
+
 ### What Resets and When
 
 #### On Reshuffle (Deck Cycles)
@@ -737,6 +770,14 @@ For smaller screens:
 ---
 
 ## Document History
+
+**Version 1.2** (2025-11-15) - Combat Initialization Clarification
+- Added "Combat Initialization (Random Shuffle)" subsection to State Persistence Rules
+- Documented deck shuffle before every combat and reshuffle
+- Clarified ZERO CONTROL over card draw order (critical for card design)
+- Added probability examples for position-based conditions
+- Documented design implications for condition coefficients
+- Ensures balanced conditional cards that account for randomness
 
 **Version 1.1** (2025-11-12) - Task 2.1.5 Complete
 - Added consolidated State Persistence Rules section

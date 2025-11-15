@@ -1,0 +1,217 @@
+{
+  "_design_spec": "../docs/design-specs/card-system.md#pack-2-guaranteed-cards",
+  "version": "1.0.0",
+  "last_updated": "2025-11-15",
+  "description": "Pack 2 guaranteed cards - Second major deck upgrade (~15-20 minutes, 100,000 Essence). Introduces sequence tracking and timing-based conditionals. Adds generator variety and hybrid options. This is the AUTHORITATIVE SOURCE for Pack 2 card stats and effects.",
+  "cards": [
+    {
+      "id": "arcane_reservoir",
+      "name": "Arcane Reservoir",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Hybrid",
+      "stat_point_budget": 23,
+      "effects": [
+        {
+          "effect_type": "essence_flat",
+          "value": 200,
+          "duration": "instant"
+        },
+        {
+          "effect_type": "add_defense",
+          "value": 15,
+          "duration": "until_enemy_defeated"
+        }
+      ],
+      "ability_text": "+200 Essence, +15 DEF",
+      "ability_text_short": "+200, +15 DEF",
+      "flavor_text": "Store your magic for the right moment, and let it shield you when you release it.",
+      "acquisition": {
+        "source": "pack2_guaranteed",
+        "pack_type": "Arcane",
+        "position": 1
+      },
+      "_design_notes": "First burst generator with combat stats. Defensive focus. Not strictly better than Essence Burst (+250 pure burst) or Combat Siphon (+1/sec, +12/6 balanced). Unique niche: defensive burst hybrid."
+    },
+    {
+      "id": "steady_channeling",
+      "name": "Steady Channeling",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Generator",
+      "stat_point_budget": 27,
+      "effects": [
+        {
+          "effect_type": "essence_per_sec",
+          "value": 3.0,
+          "duration": "until_death"
+        },
+        {
+          "effect_type": "add_defense",
+          "value": -3,
+          "duration": "until_enemy_defeated"
+        }
+      ],
+      "ability_text": "+3 Essence/sec, -3 DEF",
+      "ability_text_short": "+3/sec, -3 DEF",
+      "flavor_text": "Pure essence flow requires absolute focus. Defensive posture interferes with the channel.",
+      "acquisition": {
+        "source": "pack2_guaranteed",
+        "pack_type": "Arcane",
+        "position": 2
+      },
+      "_design_notes": "Completes penalty generator set with Essence Drain. Essence Drain has -5 ATK (offensive penalty), Steady Channeling has -3 DEF (defensive penalty). Gives choice of which penalty to accept. Same rate as Essence Drain."
+    },
+    {
+      "id": "offensive_siphon",
+      "name": "Offensive Siphon",
+      "tier": "Arcane",
+      "rarity": "Common",
+      "type": "Hybrid",
+      "stat_point_budget": 25,
+      "effects": [
+        {
+          "effect_type": "essence_per_sec",
+          "value": 1.0,
+          "duration": "until_death"
+        },
+        {
+          "effect_type": "add_attack",
+          "value": 15,
+          "duration": "until_enemy_defeated"
+        }
+      ],
+      "ability_text": "+1 Essence/sec, +15 ATK",
+      "ability_text_short": "+1/sec, +15 ATK",
+      "flavor_text": "Channel your aggression into essence. Every strike fuels your magic.",
+      "acquisition": {
+        "source": "pack2_guaranteed",
+        "pack_type": "Arcane",
+        "position": 3
+      },
+      "_design_notes": "Attack-focused hybrid generator. Not strictly better than Combat Siphon (+1/sec, +12/6 = 18 total combat) or Arcane Conduit (+2/sec no combat). Pure offense focus, same rate as Combat Siphon but unbalanced stats."
+    },
+    {
+      "id": "arcane_synergy",
+      "name": "Arcane Synergy",
+      "tier": "Arcane",
+      "rarity": "Rare",
+      "type": "Hybrid",
+      "stat_point_budget": 43,
+      "effects": [
+        {
+          "effect_type": "add_attack",
+          "value": 15,
+          "duration": "until_enemy_defeated"
+        },
+        {
+          "effect_type": "add_defense",
+          "value": 10,
+          "duration": "until_enemy_defeated"
+        },
+        {
+          "effect_type": "essence_per_sec",
+          "value": 1.0,
+          "duration": "until_death"
+        },
+        {
+          "effect_type": "add_attack",
+          "value": 10,
+          "duration": "until_enemy_defeated",
+          "condition": {
+            "type": "sequence",
+            "parameters": {
+              "position": "previous",
+              "card_type": "Generator"
+            },
+            "coefficient": 0.4,
+            "description": "If previous card was Generator"
+          }
+        },
+        {
+          "effect_type": "add_defense",
+          "value": 10,
+          "duration": "until_enemy_defeated",
+          "condition": {
+            "type": "sequence",
+            "parameters": {
+              "position": "previous",
+              "card_type": "Generator"
+            },
+            "coefficient": 0.4,
+            "description": "If previous card was Generator"
+          }
+        }
+      ],
+      "ability_text": "+15 ATK, +10 DEF, +1 Essence/sec. If previous card was Generator: +10 ATK, +10 DEF",
+      "ability_text_short": "+15/10, +1/s. Prev=Gen: +10/10",
+      "flavor_text": "Magic begets magic. Build momentum with each spell, and channel the overflow into power.",
+      "acquisition": {
+        "source": "pack2_guaranteed",
+        "pack_type": "Arcane",
+        "position": 4
+      },
+      "_design_notes": "FIRST SEQUENCE-TRACKING CARD IN GAME. Teaches 'previous card' mechanic. Rewards generator-heavy decks (30-40% generators = ~35% trigger rate). When triggered: 25/20/1 total. Coefficient 0.4 per conditional-mechanics.md (Sometimes True, depends on deck composition)."
+    },
+    {
+      "id": "battle_focus",
+      "name": "Battle Focus",
+      "tier": "Arcane",
+      "rarity": "Rare",
+      "type": "Combat",
+      "stat_point_budget": 47.5,
+      "effects": [
+        {
+          "effect_type": "add_attack",
+          "value": 20,
+          "duration": "until_enemy_defeated"
+        },
+        {
+          "effect_type": "add_defense",
+          "value": 15,
+          "duration": "until_enemy_defeated"
+        },
+        {
+          "effect_type": "add_attack",
+          "value": 15,
+          "duration": "until_enemy_defeated",
+          "condition": {
+            "type": "timing",
+            "parameters": {
+              "stat": "reshuffle_count",
+              "operator": ">=",
+              "threshold": 2
+            },
+            "coefficient": 0.5,
+            "description": "After 2nd reshuffle"
+          }
+        },
+        {
+          "effect_type": "add_defense",
+          "value": 10,
+          "duration": "until_enemy_defeated",
+          "condition": {
+            "type": "timing",
+            "parameters": {
+              "stat": "reshuffle_count",
+              "operator": ">=",
+              "threshold": 2
+            },
+            "coefficient": 0.5,
+            "description": "After 2nd reshuffle"
+          }
+        }
+      ],
+      "ability_text": "+20 ATK, +15 DEF. After 2nd reshuffle: +15 ATK, +10 DEF",
+      "ability_text_short": "+20/15. Reshuffle 2+: +15/10",
+      "flavor_text": "The longer the battle, the sharper your mind. By the third cycle, you've found every advantage.",
+      "acquisition": {
+        "source": "pack2_guaranteed",
+        "pack_type": "Arcane",
+        "position": 5
+      },
+      "_design_notes": "Teaches reshuffle timing (different from state-based conditions). Rewards longer fights (Enemy 50+ reach 2nd reshuffle naturally). Short fights: 20/15. Long fights: 35/25 total. Coefficient 0.5 per conditional-mechanics.md (Often True in non-trivial fights)."
+    }
+  ]
+}
+

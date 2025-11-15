@@ -105,6 +105,32 @@ Where ATK_per_tick and DEF_per_tick scale with enemy number
 
 ## Continuous Deck Cycling
 
+### Combat Initialization
+
+**CRITICAL: No Control Over Draw Order**
+
+Before the first card is drawn in any combat:
+1. Deck is **shuffled into random order**
+2. Reshuffle counter set to 0 (first cycle)
+3. Card sequence history cleared
+4. Combat begins at tick 0
+5. First card draws immediately at tick 0
+
+**Key Implications:**
+- Players have **NO CONTROL** over initial card draw order
+- "First cycle" cards are drawn in random shuffled order
+- Position-based conditions ("If drawn in first 3 cards") are **probabilistic**
+- Cannot "stack" deck or manipulate draw order
+- This applies to **every cycle** - each reshuffle randomizes again
+
+**Design Rationale:**
+- Ensures conditional cards are balanced (cannot be gamed)
+- Makes deck composition matter more than deck ordering
+- Creates variance and replayability
+- Prevents "perfect draw" exploits
+
+---
+
 ### Card Draw Mechanic
 
 **Timing (as of current balance):**
@@ -351,6 +377,13 @@ The following sections from Version 1.8 are superseded by this combat redesign:
 ---
 
 ## Document History
+
+**Version 1.1** (2025-11-15) - Combat Initialization Clarification  
+- Added "Combat Initialization" section to Continuous Deck Cycling
+- Documented random shuffle before every combat and reshuffle
+- Clarified NO CONTROL over card draw order (critical for conditional design)
+- Added design rationale for random draw order
+- Ensures card designers understand position-based conditions are probabilistic
 
 **Version 1.0** (2025-11-08) - Split from DESIGN.md Version 1.9  
 - Extracted complete Combat System section from Session 2.0.3

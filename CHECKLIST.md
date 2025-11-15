@@ -200,13 +200,13 @@
       - [x] Validate all stat budgets per rarity
       - [x] Create game-data/cards-pack1.json
       - [x] Update card-system.md with Pack 1 specifications
-    - [ ] **2.1.8** Design Pack 2 guaranteed cards
-      - [ ] Design 5 guaranteed cards (3 Commons + 2 Rares)
-      - [ ] Introduce sequencing mechanics ("If previous card...")
-      - [ ] Add cycle position conditions ("If first 3 cards this cycle")
-      - [ ] Validate stat budgets per rarity
-      - [ ] Create game-data/cards-pack2.json
-      - [ ] Update card-system.md with Pack 2 specifications
+    - [x] **2.1.8** Design Pack 2 guaranteed cards - ✅ COMPLETE (2025-11-15)
+      - [x] Design 5 guaranteed cards (3 Commons + 2 Rares)
+      - [x] Introduce sequencing mechanics ("If previous card was Generator")
+      - [x] Add timing-based conditions ("After 2nd reshuffle")
+      - [x] Validate stat budgets per rarity
+      - [x] Create game-data/cards-pack2.json
+      - [x] Update card-system.md with Pack 2 specifications
     - [ ] **2.1.9** Design Pack 3 guaranteed cards
       - [ ] Design 5 guaranteed cards (2 Commons + 2 Rares + 1 Epic)
       - [ ] Introduce complex conditionals (AND/OR, multiple thresholds)

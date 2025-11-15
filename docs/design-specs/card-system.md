@@ -201,12 +201,67 @@ All players begin as "Arcane Student" with this pre-built 8-card deck. All cards
 
 ---
 
-### Pack 2: Sequencing Effects (To Be Designed)
+### Pack 2: Sequencing & Timing Mechanics (Session 2.1.8 - COMPLETE)
 
-Introduces sequencing effects and multiplier generators
-- Multiplier generator (Current rate × Y seconds)
-- Order-dependent effects ("Next card gets +50%")
-- More Rare cards with combo mechanics
+**Authoritative Source:** See [`game-data/cards-pack2.json`](../../game-data/cards-pack2.json) for exact card stats and effects.
+
+**Design Philosophy:**
+- Introduces sequence tracking ("If previous card was X")
+- Introduces timing-based conditionals ("After Nth reshuffle")
+- Adds generator variety (penalty alternatives, offensive hybrid)
+- All Commons remain flat values (no conditions)
+- Rares use simple single conditions
+- Maintains "vanilla filler" philosophy (useful in various deck types)
+
+**Card Distribution:**
+- 2 Generators: Steady Channeling (penalty alternative), Offensive Siphon (attack hybrid)
+- 1 Hybrid Gen+Combat: Arcane Reservoir (defensive burst)
+- 2 Rare Conditionals: Arcane Synergy (sequence), Battle Focus (timing)
+
+#### Card 1: Arcane Reservoir (Common, Hybrid)
+- **Stats:** +200 Essence, +15 DEF
+- **Budget:** 23 points
+- **Teaching:** First burst generator with combat stats, defensive focus
+- **Strategy:** Bridges pure burst and hybrid rate generators, adds survivability
+
+#### Card 2: Steady Channeling (Common, Generator)
+- **Stats:** +3 Essence/sec, -3 DEF
+- **Budget:** 27 points
+- **Teaching:** Defensive penalty alternative to Essence Drain's offensive penalty
+- **Strategy:** Completes penalty generator set, gives choice of which penalty to accept
+
+#### Card 3: Offensive Siphon (Common, Hybrid)
+- **Stats:** +1 Essence/sec, +15 ATK
+- **Budget:** 25 points
+- **Teaching:** Attack-focused hybrid generator alternative to Combat Siphon's balance
+- **Strategy:** Pure offense hybrid, mirrors Combat Siphon's rate but unbalanced stats
+
+#### Card 4: Arcane Synergy (Rare, Hybrid) ⭐
+- **Stats:** +15 ATK, +10 DEF, +1 Essence/sec
+- **Condition:** If previous card was Generator: +10 ATK, +10 DEF
+- **Budget:** 43 points (35 base + 8 conditional @ 0.4 coefficient)
+- **Teaching:** First sequence-tracking card, teaches "previous card" mechanic
+- **Strategy:** Rewards generator-heavy decks (25/20/1 when triggered, ~35% in balanced decks)
+
+#### Card 5: Battle Focus (Rare, Combat) ⭐
+- **Stats:** +20 ATK, +15 DEF
+- **Condition:** After 2nd reshuffle: +15 ATK, +10 DEF
+- **Budget:** 47.5 points (35 base + 12.5 conditional @ 0.5 coefficient)
+- **Teaching:** Teaches reshuffle timing, rewards longer fights
+- **Strategy:** Scales naturally with enemy difficulty (35/25 total in boss fights)
+
+**Power Increase:**
+- +10-15% combat power with optimal choices
+- More generator variety enables specialized builds
+- Sequence tracking rewards strategic deck composition
+- Timing conditionals create scaling power in longer fights
+
+**Strategic Impact:**
+- Player owns 18 total cards, 12-card deck limit (must cut 6)
+- More meaningful deck-building decisions emerge
+- 3 total conditional cards available (Battle Surge, Arcane Synergy, Battle Focus)
+- Generator specialization becomes viable (offense vs defense penalty choice)
+- Deck composition awareness introduced (sequence tracking matters)
 
 ### Pack 3+: Full Complexity (To Be Designed)
 
@@ -381,6 +436,17 @@ All starter deck cards fall within the Common rarity range (20-30 stat points). 
 ---
 
 ## Document History
+
+**Version 1.4** (2025-11-15) - Task 2.1.8 Complete
+- **Added Pack 2 guaranteed card specifications**
+- 5 cards designed: Arcane Reservoir, Steady Channeling, Offensive Siphon, Arcane Synergy, Battle Focus
+- 3 Commons (flat values, 1 with penalty) + 2 Rares (sequence and timing conditionals)
+- First sequence-tracking card: Arcane Synergy (previous card was Generator, 0.4 coefficient)
+- First timing-based conditional: Battle Focus (After 2nd reshuffle, 0.5 coefficient)
+- Generator variety expanded: defensive penalty (Steady Channeling), offensive hybrid (Offensive Siphon), defensive burst (Arcane Reservoir)
+- Maintains "vanilla filler" philosophy (all cards useful in various deck types)
+- Teaches sequence tracking and reshuffle timing mechanics
+- Cross-references to game-data/cards-pack2.json
 
 **Version 1.3** (2025-11-11) - Task 2.1.7 Complete
 - **Added Pack 1 guaranteed card specifications**
